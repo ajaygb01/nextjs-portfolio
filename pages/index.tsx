@@ -348,7 +348,14 @@ export default function Index() {
               href={project.link}
               target="_blank"
               rel="noopener noreferrer"
-              sx={{ alignItems: "center" }}
+              sx={{ alignItems: "center",
+               backgroundColor: darkMode
+              ? darkTheme.palette.info.main
+              : lightTheme.palette.info.main,
+               "&:hover": {
+                backgroundColor: darkMode ? darkTheme.palette.info.dark : lightTheme.palette.info.dark,
+                
+              }}}
             >
               View Project
             </Button>
