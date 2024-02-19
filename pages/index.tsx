@@ -117,18 +117,18 @@ export default function Index() {
     {
       from: "2019-May",
       to: "2021-Feb",
-      company: "Company B",
-      location: "Location B",
+      company: "Insyght AI",
+      location: "Toronto, ON",
       position: "Intern + Full Stack Developer",
-      keySkills: ["Python", "Django", "REST APIs"],
+      keySkills: ["Python", ".Net", "Angular", "Springboot", "REST APIs"],
     },
     {
       from: "2021-Feb",
       to: "2024-Feb",
-      company: "Company B",
-      location: "Location B",
+      company: "Lithia / Pfaff Motors Inc",
+      location: "Toronto",
       position: "Software Developer",
-      keySkills: ["Python", "Django", "REST APIs"],
+      keySkills: ["Python", "React","CI/CD","ExpressJs", "MySql","Azure Cloud/Devops"],
     },
     // Add more experiences as needed
   ];
