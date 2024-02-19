@@ -279,6 +279,7 @@ export default function Index() {
                         backgroundColor: darkMode
                           ? darkTheme.palette.info.main
                           : lightTheme.palette.info.main,
+                        
                       }}
                       key={skill}
                       label={skill}

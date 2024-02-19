@@ -130,8 +130,8 @@ const Portfilo: React.FC = () => {
               {formValues.isTechStack && renderTechStackFields()}
 
               <FormControlLabel
-                control={<Checkbox checked={formValues.isTechStack} onChange={(e) => handleChange('isTechStack', e.target.checked)} />}
-                label="Tech Stack"
+                control={<Checkbox checked={formValues.isExperience} onChange={(e) => handleChange('isExperience', e.target.checked)} />}
+                label="Experience"
               />
               <Button type="submit" variant="contained" color="primary">Submit</Button>
             </form>
