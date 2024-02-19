@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button,Toolbar,Modal, TextField, FormControlLabel, Checkbox, Typography, Box, Container } from '@mui/material';
-import { Contact, Experience, FormValues, TechStack, initialFormValues } from '@/app/state/initialState';
+import { Contact, Experience, FormValues, Project, TechStack, initialFormValues } from '@/app/state/initialState';
 
 interface UserInfo {
   name: string;
