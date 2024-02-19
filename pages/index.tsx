@@ -24,6 +24,7 @@ import ChatIcon from "@mui/icons-material/WhatsApp";
 import EmailIcon from "@mui/icons-material/Email";
 import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
+import Link from 'next/link';
 
 const lightTheme = createTheme({
   palette: {
@@ -145,7 +146,7 @@ export default function Index() {
     {
       name: "Portfolio Website",
       description: "Built using Next.js and Material-UI / Randomize user info",
-      link: "https://www.google.com",
+      link: "/portfolio",
     },
     {
       name: "Project 2",
@@ -351,6 +352,7 @@ export default function Index() {
             >
               View Project
             </Button>
+
           </Box>
         ))}
       </Box>
