@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
-import { Button,Toolbar,Modal, TextField, FormControlLabel, Checkbox, Typography, Box, Container } from '@mui/material';
+import { Button,Toolbar,Modal, TextField, FormControlLabel, Checkbox, Typography, Box, IconButton, Autocomplete,Container } from '@mui/material';
 import { Contact, Experience, FormValues, Project, TechStack, initialFormValues } from '@/app/state/initialState';
+import { Add, Delete } from '@mui/icons-material';
+import { DatePicker } from '@mui/lab';
+import { Close } from '@mui/icons-material';
 
 interface UserInfo {
   name: string;
@@ -70,26 +73,115 @@ const Portfilo: React.FC = () => {
     updatedArray[index] = { ...updatedArray[index], [key]: value };
     handleChange('projects', updatedArray);
   };
+
+
+  const [experiences, setExperiences] = useState<Experience[]>([initialFormValues.experience[0]]);
+
+
+  const handleAddExperience = () => {
+    setExperiences([...experiences, initialFormValues.experience[0]]);
+  };
+
+  const handleRemoveExperience = (index: number) => {
+    const newExperiences = [...experiences];
+    newExperiences.splice(index, 1);
+    setExperiences(newExperiences);
+  };
+
+
   
   const renderTechStackFields = () => {
+    const handleAddTechStack = () => {
+      setFormValues({
+        ...formValues,
+        techStack: [...formValues.techStack, { language: '', year: 0 }]
+      });
+    };
+  
+    const handleRemoveTechStack = (index: number) => {
+      const newTechStack = [...formValues.techStack];
+      newTechStack.splice(index, 1);
+      setFormValues({
+        ...formValues,
+        techStack: newTechStack
+      });
+    };
+  
     return (
-      formValues.techStack.map((stack, index) => (
-        <div key={index}>
-          <TextField
-            label="Language"
-            value={stack.language}
-            onChange={(e) => handleTechStackChange(index, 'language', e.target.value)}
-          />
-          <TextField
-            label="Year"
-            type="number"
-            value={stack.year}
-            onChange={(e) => handleTechStackChange(index, 'year', parseInt(e.target.value))}
-          />
-        </div>
-      ))
+      <>
+        {formValues.techStack.map((stack, index) => (
+          <div key={index}>
+            <TextField
+              label="Language"
+              value={stack.language}
+              onChange={(e) => handleTechStackChange(index, 'language', e.target.value)}
+            />
+            <TextField
+              label="Year"
+              type="number"
+              value={stack.year}
+              onChange={(e) => handleTechStackChange(index, 'year', parseInt(e.target.value))}
+            />
+            <IconButton onClick={() => handleRemoveTechStack(index)}>
+              <Delete />
+            </IconButton>
+          </div>
+        ))}
+        <IconButton onClick={handleAddTechStack}>
+          <Add />
+        </IconButton>
+      </>
     );
   };
+
+  const renderExperienceFields = () => {
+    return (<form>
+      {experiences.map((experience, index) => (
+        <div key={index}>
+          <DatePicker
+            views={['year', 'month']}
+            label="From"
+            value={experience.from}
+            onChange={(newValue: any) => handleExperienceChange(index, 'from', newValue)}
+            renderInput={(params: any) => <TextField {...params} />}
+          />
+          <DatePicker
+            views={['year', 'month']}
+            label="To"
+            value={experience.to}
+            onChange={(newValue: any) => handleExperienceChange(index, 'to', newValue)}
+            renderInput={(params: any) => <TextField {...params} />}
+          />
+          <TextField
+            label="Company"
+            value={experience.company}
+            onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
+          />
+          <TextField
+            label="Location"
+            value={experience.location}
+            onChange={(e) => handleExperienceChange(index, 'location', e.target.value)}
+          />
+          <TextField
+            label="Position"
+            value={experience.position}
+            onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
+          />
+          <Autocomplete
+            multiple
+            options={[]}
+            value={experience.keySkills}
+            onChange={(event, newValue) => handleExperienceChange(index, 'keySkills', newValue)}
+            renderInput={(params) => <TextField {...params} label="Key Skills" />}
+          />
+          <IconButton onClick={() => handleRemoveExperience(index)}>
+            <Delete />
+          </IconButton>
+        </div>
+      ))}
+      <button type="button" onClick={handleAddExperience}>Add Experience</button>
+    </form>);
+  }
 
   const handleCheckboxChange = (key: keyof FormValues) => (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(key, event.target.checked);
@@ -112,31 +204,83 @@ const Portfilo: React.FC = () => {
         </Button>
       </Toolbar>
       <Modal open={openModal} onClose={handleCloseModal}>
-        <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', backgroundColor: 'white', padding: '20px' }}>
-          <Typography variant="h6" gutterBottom>
-            Modal Form
-          </Typography>
-          {/* Your modal form content goes here */}
-          {/* Example: */}
-          <Box sx={{ maxWidth: 600, margin: 'auto' }}>
-            <form onSubmit={handleSubmit}>
-              <Typography variant="h4" gutterBottom>
-                Form
-              </Typography>
-              <FormControlLabel
-                control={<Checkbox checked={formValues.isTechStack} onChange={(e) => handleChange('isTechStack', e.target.checked)} />}
-                label="Tech Stack"
-              />
-              {formValues.isTechStack && renderTechStackFields()}
+      <Box
+  sx={{
+    position: 'absolute',
+    top: { xs: '0%', md: '50%' },
+    left: { xs: '0%', md: '50%' },
+    transform: { md: 'translate(-50%, -50%)' },
+    backgroundColor: 'white',
+    padding: '20px',
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+    width: { xs: '100%', md: 'auto' },
+    height: { xs: '100%', md: 'auto' },
+    overflowY: { xs: 'scroll', md: 'auto' },
+  }}
+>
+<Box
+    sx={{
+      display: 'flex',
+      justifyContent: 'space-between',
+      width: '100%',
+      alignItems: 'center',
+    }}
+  >
+  <Typography variant="h6" gutterBottom>
+    Portfolio Writer
+  </Typography>
+  <IconButton onClick={handleCloseModal}>
+      <Close />
+    </IconButton>
+</Box>
+  <Box
+    component="form"
+    onSubmit={handleSubmit}
+    sx={{
+      maxWidth: 1200,
+      margin: 'auto',
+      width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '20px',
+    }}
+  >
+    <FormControlLabel
+      control={
+        <Checkbox
+          checked={formValues.isTechStack}
+          onChange={(e) => handleChange('isTechStack', e.target.checked)}
+        />
+      }
+      label="Tech Stack"
+    />
+    {formValues.isTechStack && (
+      <Box sx={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
+        {renderTechStackFields()}
+      </Box>
+    )}
 
-              <FormControlLabel
-                control={<Checkbox checked={formValues.isExperience} onChange={(e) => handleChange('isExperience', e.target.checked)} />}
-                label="Experience"
-              />
-              <Button type="submit" variant="contained" color="primary">Submit</Button>
-            </form>
-          </Box>
-        </Box>
+    <FormControlLabel
+      control={
+        <Checkbox
+          checked={formValues.isExperience}
+          onChange={(e) => handleChange('isExperience', e.target.checked)}
+        />
+      }
+      label="Experience"
+    />
+    {formValues.isExperience && (
+      <Box sx={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
+        {renderExperienceFields()}
+      </Box>
+    )}
+    <Button type="submit" variant="contained" color="primary">
+      Submit
+    </Button>
+  </Box>
+</Box>
       </Modal>
       {userInfo && (
         <div>
