@@ -110,7 +110,7 @@ const Portfilo: React.FC = () => {
     return (
       <>
         {formValues.techStack.map((stack, index) => (
-          <div key={index}>
+          <Box key={index} sx={{ margin: '10px 0' }}>
             <TextField
               label="Language"
               value={stack.language}
@@ -125,7 +125,7 @@ const Portfilo: React.FC = () => {
             <IconButton onClick={() => handleRemoveTechStack(index)}>
               <Delete />
             </IconButton>
-          </div>
+          </Box>
         ))}
         <IconButton onClick={handleAddTechStack}>
           <Add />
@@ -137,7 +137,7 @@ const Portfilo: React.FC = () => {
   const renderExperienceFields = () => {
     return (<form>
       {experiences.map((experience, index) => (
-        <div key={index}>
+        <Box key={index} sx={{ margin: '10px 0' }}>
           <DatePicker
             views={['year', 'month']}
             label="From"
@@ -177,9 +177,12 @@ const Portfilo: React.FC = () => {
           <IconButton onClick={() => handleRemoveExperience(index)}>
             <Delete />
           </IconButton>
-        </div>
+        </Box>
       ))}
-      <button type="button" onClick={handleAddExperience}>Add Experience</button>
+      <IconButton onClick={handleAddExperience}>
+          <Add />
+        </IconButton>
+      
     </form>);
   }
 
