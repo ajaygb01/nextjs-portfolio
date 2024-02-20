@@ -148,11 +148,6 @@ export default function Index() {
       description: "Built using Next.js and Material-UI / Randomize user info",
       link: "/portfolio",
     },
-    {
-      name: "Project 2",
-      description: "Description 2",
-      link: "https://www.google.com",
-    },
   ];
 
   const footer = {
