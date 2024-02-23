@@ -4,6 +4,10 @@ import { Contact, Experience, FormValues, Project, TechStack, initialFormValues 
 import { Add, Delete } from '@mui/icons-material';
 import { DatePicker } from '@mui/lab';
 import { Close } from '@mui/icons-material';
+import TechStackForm from '@/app/component/techStack/techStackForm';
+import ExperienceForm from '@/app/component/experience/experienceForm';
+import UserInfoForm from '@/app/component/userInfo/userInfoForm';
+import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay';
 
 interface UserInfo {
   name: string;
@@ -43,148 +47,17 @@ const Portfilo: React.FC = () => {
     }
   };
 
-  const handleChange = (key: keyof FormValues, value: any) => {
-    setFormValues(prevState => ({
-      ...prevState,
-      [key]: value,
-    }));
-  };
-
-  const handleTechStackChange = (index: number, key: keyof TechStack, value: any) => {
-    const updatedArray = [...formValues.techStack];
-    updatedArray[index] = { ...updatedArray[index], [key]: value };
-    handleChange('techStack', updatedArray);
-  };
-  
-  const handleExperienceChange = (index: number, key: keyof Experience, value: any) => {
-    const updatedArray = [...formValues.experience];
-    updatedArray[index] = { ...updatedArray[index], [key]: value };
-    handleChange('experience', updatedArray);
-  };
-  
-  const handleContactChange = (index: number, key: keyof Contact, value: any) => {
-    const updatedArray = [...formValues.contact];
-    updatedArray[index] = { ...updatedArray[index], [key]: value };
-    handleChange('contact', updatedArray);
-  };
+  // const handleContactChange = (index: number, key: keyof Contact, value: any) => {
+  //   const updatedArray = [...formValues.contact];
+  //   updatedArray[index] = { ...updatedArray[index], [key]: value };
+  //   handleChange('contact', updatedArray);
+  // };
   
   const handleProjectChange = (index: number, key: keyof Project, value: any) => {
     const updatedArray = [...formValues.projects];
     updatedArray[index] = { ...updatedArray[index], [key]: value };
     handleChange('projects', updatedArray);
   };
-
-
-  const [experiences, setExperiences] = useState<Experience[]>([initialFormValues.experience[0]]);
-
-
-  const handleAddExperience = () => {
-    setExperiences([...experiences, initialFormValues.experience[0]]);
-  };
-
-  const handleRemoveExperience = (index: number) => {
-    const newExperiences = [...experiences];
-    newExperiences.splice(index, 1);
-    setExperiences(newExperiences);
-  };
-
-
-  
-  const renderTechStackFields = () => {
-    const handleAddTechStack = () => {
-      setFormValues({
-        ...formValues,
-        techStack: [...formValues.techStack, { language: '', year: 0 }]
-      });
-    };
-  
-    const handleRemoveTechStack = (index: number) => {
-      const newTechStack = [...formValues.techStack];
-      newTechStack.splice(index, 1);
-      setFormValues({
-        ...formValues,
-        techStack: newTechStack
-      });
-    };
-  
-    return (
-      <>
-        {formValues.techStack.map((stack, index) => (
-          <Box key={index} sx={{ margin: '10px 0' }}>
-            <TextField
-              label="Language"
-              value={stack.language}
-              onChange={(e) => handleTechStackChange(index, 'language', e.target.value)}
-            />
-            <TextField
-              label="Year"
-              type="number"
-              value={stack.year}
-              onChange={(e) => handleTechStackChange(index, 'year', parseInt(e.target.value))}
-            />
-            <IconButton onClick={() => handleRemoveTechStack(index)}>
-              <Delete />
-            </IconButton>
-          </Box>
-        ))}
-        <IconButton onClick={handleAddTechStack}>
-          <Add />
-        </IconButton>
-      </>
-    );
-  };
-
-  const renderExperienceFields = () => {
-    return (<form>
-      {experiences.map((experience, index) => (
-        <Box key={index} sx={{ margin: '10px 0' }}>
-          <DatePicker
-            views={['year', 'month']}
-            label="From"
-            value={experience.from}
-            onChange={(newValue: any) => handleExperienceChange(index, 'from', newValue)}
-            renderInput={(params: any) => <TextField {...params} />}
-          />
-          <DatePicker
-            views={['year', 'month']}
-            label="To"
-            value={experience.to}
-            onChange={(newValue: any) => handleExperienceChange(index, 'to', newValue)}
-            renderInput={(params: any) => <TextField {...params} />}
-          />
-          <TextField
-            label="Company"
-            value={experience.company}
-            onChange={(e) => handleExperienceChange(index, 'company', e.target.value)}
-          />
-          <TextField
-            label="Location"
-            value={experience.location}
-            onChange={(e) => handleExperienceChange(index, 'location', e.target.value)}
-          />
-          <TextField
-            label="Position"
-            value={experience.position}
-            onChange={(e) => handleExperienceChange(index, 'position', e.target.value)}
-          />
-          <Autocomplete
-            multiple
-            options={[]}
-            value={experience.keySkills}
-            onChange={(event, newValue) => handleExperienceChange(index, 'keySkills', newValue)}
-            renderInput={(params) => <TextField {...params} label="Key Skills" />}
-          />
-          <IconButton onClick={() => handleRemoveExperience(index)}>
-            <Delete />
-          </IconButton>
-        </Box>
-      ))}
-      <IconButton onClick={handleAddExperience}>
-          <Add />
-        </IconButton>
-      
-    </form>);
-  }
 
   const handleCheckboxChange = (key: keyof FormValues) => (event: React.ChangeEvent<HTMLInputElement>) => {
     handleChange(key, event.target.checked);
@@ -196,11 +69,24 @@ const Portfilo: React.FC = () => {
     // Perform form submission or further processing here
   };
 
+  const handleChange = (key: keyof FormValues, value: any) => {
+    setFormValues(prevState => ({
+        ...prevState,
+        [key]: value,
+    }));
+};
+
+const handleExperienceChange = (index: number, key: keyof Experience, value: any) => {
+  const updatedArray = [...formValues.experience];
+  updatedArray[index] = { ...updatedArray[index], [key]: value };
+  handleChange('experience', updatedArray);
+};
+
   return (
     <Box>
       <Toolbar style={{ display: 'flex', justifyContent: 'space-between' }}>
         <Button variant="contained" onClick={handleOpenModal}>
-          Open Modal
+          Enter Portfolio Info
         </Button>
         <Button variant="contained" onClick={fetchRandomUserInfo}>
           Fetch Random User Info
@@ -208,82 +94,86 @@ const Portfilo: React.FC = () => {
       </Toolbar>
       <Modal open={openModal} onClose={handleCloseModal}>
       <Box
-  sx={{
-    position: 'absolute',
-    top: { xs: '0%', md: '50%' },
-    left: { xs: '0%', md: '50%' },
-    transform: { md: 'translate(-50%, -50%)' },
-    backgroundColor: 'white',
-    padding: '20px',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    width: { xs: '100%', md: 'auto' },
-    height: { xs: '100%', md: 'auto' },
-    overflowY: { xs: 'scroll', md: 'auto' },
-  }}
->
-<Box
-    sx={{
-      display: 'flex',
-      justifyContent: 'space-between',
-      width: '100%',
-      alignItems: 'center',
-    }}
-  >
-  <Typography variant="h6" gutterBottom>
-    Portfolio Writer
-  </Typography>
-  <IconButton onClick={handleCloseModal}>
-      <Close />
-    </IconButton>
-</Box>
-  <Box
-    component="form"
-    onSubmit={handleSubmit}
-    sx={{
-      maxWidth: 1200,
-      margin: 'auto',
-      width: '100%',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: '20px',
-    }}
-  >
-    <FormControlLabel
-      control={
-        <Checkbox
-          checked={formValues.isTechStack}
-          onChange={(e) => handleChange('isTechStack', e.target.checked)}
-        />
-      }
-      label="Tech Stack"
-    />
-    {formValues.isTechStack && (
-      <Box sx={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
-        {renderTechStackFields()}
+        sx={{
+          position: 'absolute',
+          top: { xs: '0%', md: '50%' },
+          left: { xs: '0%', md: '50%' },
+          transform: { md: 'translate(-50%, -50%)' },
+          backgroundColor: 'white',
+          padding: '20px',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          width: { xs: '100%', md: 'auto' },
+          height: { xs: '100%', md: 'auto' },
+          overflowY: { xs: 'scroll', md: 'auto' },
+        }}
+      >
+      <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            width: '100%',
+            alignItems: 'center',
+          }}
+        >
+        <Typography variant="h6" gutterBottom>
+          Portfolio Writer
+        </Typography>
+        <IconButton onClick={handleCloseModal}>
+            <Close />
+          </IconButton>
       </Box>
-    )}
+        <Box
+          component="form"
+          onSubmit={handleSubmit}
+          sx={{
+            maxWidth: 1200,
+            margin: 'auto',
+            width: '100%',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '20px',
+          }}
+        >
 
-    <FormControlLabel
-      control={
-        <Checkbox
-          checked={formValues.isExperience}
-          onChange={(e) => handleChange('isExperience', e.target.checked)}
-        />
-      }
-      label="Experience"
-    />
-    {formValues.isExperience && (
-      <Box sx={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
-        {renderExperienceFields()}
+          
+          <UserInfoForm formValues={formValues} setFormValues={setFormValues} />
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={formValues.isTechStack}
+                onChange={(e) => handleChange('isTechStack', e.target.checked)}
+              />
+            }
+            label="Tech Stack"
+          />
+
+          {formValues.isTechStack && (
+            <Box sx={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
+              <TechStackForm formValues={formValues} setFormValues={setFormValues} />
+            </Box>
+          )}
+
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={formValues.isExperience}
+                    onChange={(e) => handleChange('isExperience', e.target.checked)}
+                  />
+                }
+                label="Experience"
+              />
+              {formValues.isExperience && (
+            <Box sx={{ margin: '10px 0', padding: '10px', border: '1px solid #ccc' }}>
+              <ExperienceForm onExperienceChange={handleExperienceChange} handleChange={handleChange} handleExperienceChange={handleExperienceChange} />
+            </Box>
+          )}
+          <Button type="submit" variant="contained" color="primary">
+            Submit
+          </Button>
+        </Box>
       </Box>
-    )}
-    <Button type="submit" variant="contained" color="primary">
-      Submit
-    </Button>
-  </Box>
-</Box>
       </Modal>
       {userInfo && (
         <div>
@@ -296,6 +186,13 @@ const Portfilo: React.FC = () => {
           {/* Display other user info fields as needed */}
         </div>
       )}
+      <Box>
+        <Typography variant="h6" gutterBottom>
+          Sample Portfolio
+        </Typography>
+        {/* <PortfolioDisplay  /> */}
+      </Box>
+
     </Box>
   );
 };

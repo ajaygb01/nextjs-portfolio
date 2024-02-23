@@ -15,6 +15,7 @@ export interface TechStack {
   export interface Contact {
     app: string;
     link: string;
+    icon?: React.JSX.Element;
   }
   
   export interface Project {
@@ -22,8 +23,15 @@ export interface TechStack {
     description: string;
     link: string;
   }
+  export interface UserInfo {name: string; title: string; bio: string;}
+
+  export interface Footer {
+    year: number;
+    companyName: string;
+  }
   
   export interface FormValues {
+    userInfo: UserInfo;
     isTechStack: boolean;
     techStack: TechStack[];
     isExperience: boolean;
@@ -32,9 +40,11 @@ export interface TechStack {
     contact: Contact[];
     isProject: boolean;
     projects: Project[];
+    footer: Footer;
   }
   
   export const initialFormValues: FormValues = {
+    userInfo:{name:'',title:'',bio:''},
     isTechStack: false,
     techStack: [{ language: '', year: 0 }],
     isExperience: false,
@@ -43,5 +53,6 @@ export interface TechStack {
     contact: [{ app: '', link: '' }],
     isProject: false,
     projects: [{ name: '', description: '', link: '' }],
+    footer: { year: 0, companyName: '' },
   };
   
