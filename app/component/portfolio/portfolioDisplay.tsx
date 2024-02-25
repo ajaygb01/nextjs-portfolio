@@ -124,66 +124,73 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
                         marginBottom: '5px',
                     }}
                 >
-                    <Grid container spacing={1}>
-                        {Object.keys(icons).map((section) => (
-                            <Grid item xs={12} sm={6} md={3} key={section}>
-                                <Card
-                                    sx={{
-                                        backgroundColor:
-                                            theme.palette.secondary.main,
-                                    }}
-                                >
-                                    <CardContent>
-                                        <Box
-                                            sx={{
-                                                display: 'flex',
-                                                flexDirection: 'row',
-                                                alignItems: 'center',
-                                            }}
-                                            onClick={() =>
-                                                handleToggle(section)
-                                            }
-                                        >
-                                            <IconButton
+                    {formProps.isTechStack ||
+                    formProps.isExperience ||
+                    formProps.isContact ||
+                    formProps.isProject ? (
+                        <Grid container spacing={1}>
+                            {Object.keys(icons).map((section) => (
+                                <Grid item xs={12} sm={6} md={3} key={section}>
+                                    <Card
+                                        sx={{
+                                            backgroundColor:
+                                                theme.palette.secondary.main,
+                                        }}
+                                    >
+                                        <CardContent>
+                                            <Box
                                                 sx={{
-                                                    color: theme.palette.text
-                                                        .primary,
+                                                    display: 'flex',
+                                                    flexDirection: 'row',
+                                                    alignItems: 'center',
                                                 }}
-                                            >
-                                                {
-                                                    icons[
-                                                        section as keyof typeof icons
-                                                    ]
+                                                onClick={() =>
+                                                    handleToggle(section)
                                                 }
-                                            </IconButton>
-                                            <Typography
-                                                variant="h6"
-                                                component="div"
                                             >
-                                                {section
-                                                    .charAt(0)
-                                                    .toUpperCase() +
-                                                    section.slice(1)}
-                                            </Typography>
-                                        </Box>
-                                        {open[section] && (
-                                            <Typography
-                                                variant="body2"
-                                                color="text.secondary"
-                                                component="div"
-                                            >
-                                                {
-                                                    sectionContent[
-                                                        section as keyof typeof sectionContent
-                                                    ]
-                                                }
-                                            </Typography>
-                                        )}
-                                    </CardContent>
-                                </Card>
-                            </Grid>
-                        ))}
-                    </Grid>
+                                                <IconButton
+                                                    sx={{
+                                                        color: theme.palette
+                                                            .text.primary,
+                                                    }}
+                                                >
+                                                    {
+                                                        icons[
+                                                            section as keyof typeof icons
+                                                        ]
+                                                    }
+                                                </IconButton>
+                                                <Typography
+                                                    variant="h6"
+                                                    component="div"
+                                                >
+                                                    {section
+                                                        .charAt(0)
+                                                        .toUpperCase() +
+                                                        section.slice(1)}
+                                                </Typography>
+                                            </Box>
+                                            {open[section] && (
+                                                <Typography
+                                                    variant="body2"
+                                                    color="text.secondary"
+                                                    component="div"
+                                                >
+                                                    {
+                                                        sectionContent[
+                                                            section as keyof typeof sectionContent
+                                                        ]
+                                                    }
+                                                </Typography>
+                                            )}
+                                        </CardContent>
+                                    </Card>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    ) : (
+                        <></>
+                    )}
                 </Box>
                 <Box
                     component={'footer'}

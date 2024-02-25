@@ -54,23 +54,27 @@ const Portfilo: React.FC = () => {
             const response = await fetch('https://randomuser.me/api/')
             const data = await response.json()
             const user = data.results[0]
-            const userInfo: UserInfo = {
-                name: `${user.name.first} ${user.name.last}`,
-                email: user.email,
-                phone: user.phone,
-                // Add other fields as needed
+
+            const updatedFormValues = {
+                ...formValues,
+                userInfo: {
+                    ...formValues.userInfo,
+                    name: `${user.name.first} ${user.name.last}`,
+                    title: 'Software Developer',
+                    bio: `Random text for bio ${user.email} 
+                  ${user.phone} ${user.cell}
+                  ${user.location.city} ${user.location.country}
+                  ${user.location.postcode} ${user.location.state}
+                  ${user.location.street.name} ${user.location.street.number} 
+                  ${user.location.timezone.description}`,
+                },
             }
-            setUserInfo(userInfo)
+
+            setFormValues(updatedFormValues)
         } catch (error) {
             console.error('Error fetching user info:', error)
         }
     }
-
-    // const handleContactChange = (index: number, key: keyof Contact, value: any) => {
-    //   const updatedArray = [...formValues.contact];
-    //   updatedArray[index] = { ...updatedArray[index], [key]: value };
-    //   handleChange('contact', updatedArray);
-    // };
 
     const handleProjectChange = (
         index: number,

@@ -214,9 +214,25 @@ const renderProjects = (projects: Project[], theme: any) => (
 
 export const getSectionContent = (formValues: FormValues, theme: any) => {
     return {
-        techstack: renderTechStack(formValues.techStack, theme),
-        experience: renderExperience(formValues.experience, theme),
-        contact: renderContact(formValues.contact, theme),
-        projects: renderProjects(formValues.projects, theme),
+        techstack: formValues.isTechStack ? (
+            renderTechStack(formValues.techStack, theme)
+        ) : (
+            <></>
+        ),
+        experience: formValues.isExperience ? (
+            renderExperience(formValues.experience, theme)
+        ) : (
+            <></>
+        ),
+        contact: formValues.isContact ? (
+            renderContact(formValues.contact, theme)
+        ) : (
+            <></>
+        ),
+        projects: formValues.isProject ? (
+            renderProjects(formValues.projects, theme)
+        ) : (
+            <></>
+        ),
     }
 }

@@ -20,9 +20,7 @@ import ChatIcon from '@mui/icons-material/WhatsApp'
 import EmailIcon from '@mui/icons-material/Email'
 import Link from 'next/link'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
-import { getSectionContent } from '@/app/component/sectionGenerator/section'
 import { FormValues } from '@/app/state/initialState'
-import { darkTheme, icons, lightTheme } from '@/app/state/initialTheme'
 
 export default function Index() {
     const formValues: FormValues = {
