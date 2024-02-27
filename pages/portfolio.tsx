@@ -1,3 +1,4 @@
+'use client'
 import React, { useState } from 'react'
 import {
     Button,
@@ -8,6 +9,7 @@ import {
     Checkbox,
     Typography,
     Box,
+    Grid,
     IconButton,
     Autocomplete,
     Container,
@@ -42,6 +44,7 @@ const Portfilo: React.FC = () => {
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
 
     const handleOpenModal = () => {
+        setFormValues(initialFormValues)
         setOpenModal(true)
     }
 
@@ -127,155 +130,124 @@ const Portfilo: React.FC = () => {
                     Fetch Random User Info
                 </Button>
             </Toolbar>
-            <Modal open={openModal} onClose={handleCloseModal}>
-                <Box
-                    sx={{
-                        position: 'absolute',
-                        top: { xs: '0%', md: '50%' },
-                        left: { xs: '0%', md: '50%' },
-                        transform: { md: 'translate(-50%, -50%)' },
-                        backgroundColor: 'white',
-                        padding: '20px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        width: { xs: '100%', md: 'auto' },
-                        height: { xs: '100%', md: 'auto' },
-                        overflowY: { xs: 'scroll', md: 'auto' },
-                    }}
-                >
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'space-between',
-                            width: '100%',
-                            alignItems: 'center',
-                        }}
-                    >
-                        <Typography variant="h6" gutterBottom>
-                            Portfolio Writer
-                        </Typography>
-                        <IconButton onClick={handleCloseModal}>
-                            <Close />
-                        </IconButton>
-                    </Box>
-                    <Box
-                        component="form"
-                        onSubmit={handleSubmit}
-                        sx={{
-                            maxWidth: 1200,
-                            margin: 'auto',
-                            width: '100%',
-                            display: 'flex',
-                            flexDirection: 'column',
-                            gap: '20px',
-                        }}
-                    >
-                        <UserInfoForm
-                            formValues={formValues}
-                            setFormValues={setFormValues}
-                        />
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={formValues.isTechStack}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            'isTechStack',
-                                            e.target.checked
-                                        )
-                                    }
-                                />
-                            }
-                            label="Tech Stack"
-                        />
-
-                        {formValues.isTechStack && (
-                            <Box
-                                sx={{
-                                    margin: '10px 0',
-                                    padding: '10px',
-                                    border: '1px solid #ccc',
-                                }}
-                            >
-                                <TechStackForm
-                                    formValues={formValues}
-                                    setFormValues={setFormValues}
-                                />
-                            </Box>
-                        )}
-
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    checked={formValues.isExperience}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            'isExperience',
-                                            e.target.checked
-                                        )
-                                    }
-                                />
-                            }
-                            label="Experience"
-                        />
-                        {formValues.isExperience && (
-                            <Box
-                                sx={{
-                                    margin: '10px 0',
-                                    padding: '10px',
-                                    border: '1px solid #ccc',
-                                }}
-                            >
-                                <ExperienceForm
-                                    onExperienceChange={handleExperienceChange}
-                                    handleChange={handleChange}
-                                    handleExperienceChange={
-                                        handleExperienceChange
-                                    }
-                                />
-                            </Box>
-                        )}
-                        <Button
-                            type="submit"
-                            variant="contained"
-                            color="primary"
+            <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                    <Box sx={{}}>
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'space-between',
+                                width: '100%',
+                                alignItems: 'center',
+                            }}
                         >
-                            Submit
-                        </Button>
-                    </Box>
-                </Box>
-            </Modal>
-            {userInfo && (
-                <div>
-                    <Typography variant="h6" gutterBottom>
-                        Random User Info
-                    </Typography>
-                    <Typography>Name: {userInfo.name}</Typography>
-                    <Typography>Email: {userInfo.email}</Typography>
-                    <Typography>Phone: {userInfo.phone}</Typography>
-                    {/* Display other user info fields as needed */}
-                </div>
-            )}
-            <Box>
-                <Typography variant="h6" gutterBottom>
-                    Sample Portfolio
-                </Typography>
+                            <Typography variant="h6" gutterBottom>
+                                Portfolio Writer
+                            </Typography>
+                        </Box>
+                        <Box
+                            component="form"
+                            onSubmit={handleSubmit}
+                            sx={{
+                                maxWidth: 1200,
+                                margin: 'auto',
+                                width: '100%',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '20px',
+                            }}
+                        >
+                            <UserInfoForm
+                                formValues={formValues}
+                                setFormValues={setFormValues}
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={formValues.isTechStack}
+                                        onChange={(e) =>
+                                            handleChange(
+                                                'isTechStack',
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                }
+                                label="Tech Stack"
+                            />
 
-                <Box
-                    sx={{
-                        width: 375,
-                        height: 812,
-                        overflow: 'auto',
-                        margin: '0 auto',
-                        border: '1px solid #000',
-                        borderRadius: 2,
-                        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-                    }}
-                >
-                    <PortfolioDisplay formProps={formValues} />
-                </Box>
-            </Box>
+                            {formValues.isTechStack && (
+                                <Box
+                                    sx={{
+                                        margin: '10px 0',
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                    }}
+                                >
+                                    <TechStackForm
+                                        formValues={formValues}
+                                        setFormValues={setFormValues}
+                                    />
+                                </Box>
+                            )}
+
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={formValues.isExperience}
+                                        onChange={(e) =>
+                                            handleChange(
+                                                'isExperience',
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                }
+                                label="Experience"
+                            />
+                            {formValues.isExperience && (
+                                <Box
+                                    sx={{
+                                        margin: '10px 0',
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                    }}
+                                >
+                                    <ExperienceForm
+                                        onExperienceChange={
+                                            handleExperienceChange
+                                        }
+                                        handleChange={handleChange}
+                                        handleExperienceChange={
+                                            handleExperienceChange
+                                        }
+                                    />
+                                </Box>
+                            )}
+                            <Button
+                                type="submit"
+                                variant="contained"
+                                color="primary"
+                            >
+                                Submit
+                            </Button>
+                        </Box>
+                    </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Box
+                        sx={{
+                            overflow: 'auto',
+                            margin: '0 auto',
+                            border: '1px solid #000',
+                            borderRadius: 2,
+                            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+                        }}
+                    >
+                        <PortfolioDisplay formProps={formValues} />
+                    </Box>
+                </Grid>
+            </Grid>
         </Box>
     )
 }

@@ -1,24 +1,9 @@
 'use client'
 import React, { useState } from 'react'
-import {
-    Box,
-    Card,
-    CardContent,
-    Typography,
-    CardActions,
-    Button,
-    Grid,
-    AppBar,
-    Toolbar,
-    IconButton,
-    Chip,
-} from '@mui/material'
-import { ThemeProvider } from '@mui/material/styles'
 
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import ChatIcon from '@mui/icons-material/WhatsApp'
 import EmailIcon from '@mui/icons-material/Email'
-import Link from 'next/link'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
 import { FormValues } from '@/app/state/initialState'
 
@@ -112,7 +97,6 @@ export default function Index() {
                     'Built using Next.js and Material-UI / Randomize user info',
                 link: '/portfolio',
             },
-            // add more project items here
         ],
         footer: { year: new Date().getFullYear(), companyName: 'Ajay GB' },
     }
