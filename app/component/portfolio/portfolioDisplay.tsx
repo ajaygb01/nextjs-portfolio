@@ -53,6 +53,7 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
                     padding: 2,
                     flexDirection: 'column',
                     minHeight: '100vh',
+                    justifyContent: 'space-between',
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.text.primary,
                 }}
@@ -109,15 +110,18 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <Box
-                    sx={{
-                        p: 2,
-                        textAlign: 'center',
-                    }}
-                >
-                    <Typography variant="body1" component="div">
-                        {formProps.userInfo.bio}
-                    </Typography>
+                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                    <Box
+                        sx={{
+                            p: 2,
+                            textAlign: 'center',
+                            width: { xs: '100%', md: '50%' },
+                        }}
+                    >
+                        <Typography variant="body1" component="div">
+                            {formProps.userInfo.bio}
+                        </Typography>
+                    </Box>
                 </Box>
                 <Box
                     sx={{

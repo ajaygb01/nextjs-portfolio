@@ -19,7 +19,7 @@ export default function Index() {
       collaborate with a team of developers to build applications using
       microservices. I am committed to continuous learning and
       implementing new technologies and practices to enhance my skills and
-      contribute to my team&apos;s success.`,
+      contribute to my team success.`,
         },
         isTechStack: true,
         techStack: [
