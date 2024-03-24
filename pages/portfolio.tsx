@@ -22,9 +22,6 @@ import {
     TechStack,
     initialFormValues,
 } from '@/app/state/initialState'
-import { Add, Delete } from '@mui/icons-material'
-import { DatePicker } from '@mui/lab'
-import { Close } from '@mui/icons-material'
 import TechStackForm from '@/app/component/techStack/techStackForm'
 import ExperienceForm from '@/app/component/experience/experienceForm'
 import UserInfoForm from '@/app/component/userInfo/userInfoForm'
@@ -35,6 +32,37 @@ interface UserInfo {
     email: string
     phone: string
     // Add other fields as needed
+}
+
+const styles = {
+    toolbar: {
+        display: 'flex',
+        justifyContent: 'space-between',
+    },
+    header: {
+        width: '100%',
+        alignItems: 'center',
+    },
+    outerform: {
+        maxWidth: 1200,
+        margin: 'auto',
+        width: '100%',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '20px',
+    },
+    formStack: {
+        margin: '10px 0',
+        padding: '10px',
+        border: '1px solid #ccc',
+    },
+    displayBlock: {
+        overflow: 'auto',
+        margin: '0 auto',
+        border: '1px solid #000',
+        borderRadius: 2,
+        boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
+    },
 }
 
 const Portfilo: React.FC = () => {
@@ -120,9 +148,7 @@ const Portfilo: React.FC = () => {
 
     return (
         <Box>
-            <Toolbar
-                style={{ display: 'flex', justifyContent: 'space-between' }}
-            >
+            <Toolbar sx={styles.toolbar}>
                 <Button variant="contained" onClick={handleOpenModal}>
                     Enter Portfolio Info
                 </Button>
@@ -132,15 +158,8 @@ const Portfilo: React.FC = () => {
             </Toolbar>
             <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
-                    <Box sx={{}}>
-                        <Box
-                            sx={{
-                                display: 'flex',
-                                justifyContent: 'space-between',
-                                width: '100%',
-                                alignItems: 'center',
-                            }}
-                        >
+                    <Box>
+                        <Box sx={[styles.header, styles.toolbar]}>
                             <Typography variant="h6" gutterBottom>
                                 Portfolio Writer
                             </Typography>
@@ -148,14 +167,7 @@ const Portfilo: React.FC = () => {
                         <Box
                             component="form"
                             onSubmit={handleSubmit}
-                            sx={{
-                                maxWidth: 1200,
-                                margin: 'auto',
-                                width: '100%',
-                                display: 'flex',
-                                flexDirection: 'column',
-                                gap: '20px',
-                            }}
+                            sx={styles.outerform}
                         >
                             <UserInfoForm
                                 formValues={formValues}
@@ -177,13 +189,7 @@ const Portfilo: React.FC = () => {
                             />
 
                             {formValues.isTechStack && (
-                                <Box
-                                    sx={{
-                                        margin: '10px 0',
-                                        padding: '10px',
-                                        border: '1px solid #ccc',
-                                    }}
-                                >
+                                <Box sx={styles.formStack}>
                                     <TechStackForm
                                         formValues={formValues}
                                         setFormValues={setFormValues}
@@ -206,13 +212,7 @@ const Portfilo: React.FC = () => {
                                 label="Experience"
                             />
                             {formValues.isExperience && (
-                                <Box
-                                    sx={{
-                                        margin: '10px 0',
-                                        padding: '10px',
-                                        border: '1px solid #ccc',
-                                    }}
-                                >
+                                <Box sx={styles.formStack}>
                                     <ExperienceForm
                                         onExperienceChange={
                                             handleExperienceChange
@@ -235,15 +235,7 @@ const Portfilo: React.FC = () => {
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
-                    <Box
-                        sx={{
-                            overflow: 'auto',
-                            margin: '0 auto',
-                            border: '1px solid #000',
-                            borderRadius: 2,
-                            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
-                        }}
-                    >
+                    <Box sx={styles.displayBlock}>
                         <PortfolioDisplay formProps={formValues} />
                     </Box>
                 </Grid>
