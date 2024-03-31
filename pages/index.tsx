@@ -61,7 +61,10 @@ export default function Index() {
             },
             {
                 from: '2021-Feb',
-                to: '2024-Feb',
+                to: new Date().toLocaleString('default', {
+                    year: 'numeric',
+                    month: 'short',
+                }),
                 company: 'Lithia / Pfaff Motors Inc',
                 location: 'Toronto',
                 position: 'Software Developer',
