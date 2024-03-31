@@ -15,7 +15,12 @@ import {
 } from '@mui/material'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
-import { darkTheme, icons, lightTheme } from '@/app/state/initialTheme'
+import {
+    darkTheme,
+    getIcons,
+    icons,
+    lightTheme,
+} from '@/app/state/initialTheme'
 import { FormValues } from '@/app/state/initialState'
 import { get } from 'http'
 import { getSectionContent } from '../sectionGenerator/section'
@@ -133,7 +138,7 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
                     formProps.isContact ||
                     formProps.isProject ? (
                         <Grid container spacing={1}>
-                            {Object.keys(icons).map((section) => (
+                            {Object.keys(getIcons(formProps)).map((section) => (
                                 <Grid item xs={12} sm={6} md={3} key={section}>
                                     <Card
                                         sx={{

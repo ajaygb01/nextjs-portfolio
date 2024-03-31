@@ -4,6 +4,7 @@ import ExperienceIcon from '@mui/icons-material/BusinessCenter'
 import ContactIcon from '@mui/icons-material/Contacts'
 import AboutIcon from '@mui/icons-material/Info'
 import ProjectsIcon from '@mui/icons-material/Work'
+import { FormValues } from './initialState'
 
 export const lightTheme = createTheme({
     palette: {
@@ -53,4 +54,17 @@ export const icons = {
     contact: <ContactIcon />,
     // about: <AboutIcon />,
     projects: <ProjectsIcon />,
+}
+
+export const getIcons = (formProps: FormValues) => {
+    const iconsObj = {
+        techstack: formProps.isTechStack ? icons.techstack : null,
+        experience: formProps.isExperience ? icons.experience : null,
+        contact: formProps.isContact ? icons.contact : null,
+        // about: formProps.isAbout ? icons.about : null,
+        projects: formProps.isProject ? icons.projects : null,
+    }
+    return Object.entries(iconsObj)
+        .filter(([key, value]) => value !== null)
+        .reduce((obj, [key, value]) => ({ ...obj, [key]: value }), {})
 }
