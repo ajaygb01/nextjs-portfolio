@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Box, TextField, IconButton, Autocomplete } from '@mui/material'
 import { Delete, Add } from '@mui/icons-material'
 import {
@@ -6,27 +6,13 @@ import {
     FormValues,
     initialFormValues,
 } from '@/app/state/initialState'
-import { DatePicker } from '@mui/lab'
+import DatePicker from '@mui/lab/DatePicker'
 
 interface ExperienceFormProps {
-    onExperienceChange: (
-        index: number,
-        key: keyof Experience,
-        value: any
-    ) => void
     handleChange: (key: keyof FormValues, value: any) => void
-    handleExperienceChange: (
-        index: number,
-        key: keyof Experience,
-        value: any
-    ) => void
 }
 
-const ExperienceForm: React.FC<ExperienceFormProps> = ({
-    onExperienceChange,
-    handleChange,
-    handleExperienceChange,
-}) => {
+const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
     const [experiences, setExperiences] = useState<Experience[]>([
         initialFormValues.experience[0],
     ])
@@ -42,8 +28,24 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
         setExperiences(newExperiences)
     }
 
+    const handleExperienceChange = (
+        index: number,
+        key: keyof Experience,
+        value: any
+    ) => {
+        setExperiences((prevExperiences) => {
+            const newExperiences = [...prevExperiences]
+            newExperiences[index] = { ...newExperiences[index], [key]: value }
+            return newExperiences
+        })
+    }
+
+    useEffect(() => {
+        handleChange('experience', experiences)
+    }, [experiences])
+
     return (
-        <form>
+        <>
             {experiences.map((experience, index) => (
                 <Box key={index} sx={{ margin: '10px 0' }}>
                     <DatePicker
@@ -102,10 +104,11 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
                             )
                         }
                     />
+
                     <Autocomplete
                         multiple
                         options={['Html', 'Java']}
-                        value={experience.keySkills}
+                        value={experience.keySkills || []}
                         onChange={(event, newValue) =>
                             handleExperienceChange(index, 'keySkills', newValue)
                         }
@@ -121,7 +124,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({
             <IconButton onClick={handleAddExperience}>
                 <Add />
             </IconButton>
-        </form>
+        </>
     )
 }
 

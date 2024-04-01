@@ -59,7 +59,7 @@ export const initialFormValues: FormValues = {
             company: '',
             location: '',
             position: '',
-            keySkills: [''],
+            keySkills: [],
         },
     ],
     isContact: false,

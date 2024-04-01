@@ -130,20 +130,11 @@ const Portfilo: React.FC = () => {
     }
 
     const handleChange = (key: keyof FormValues, value: any) => {
+        console.log('key:', key, 'value:', value)
         setFormValues((prevState) => ({
             ...prevState,
             [key]: value,
         }))
-    }
-
-    const handleExperienceChange = (
-        index: number,
-        key: keyof Experience,
-        value: any
-    ) => {
-        const updatedArray = [...formValues.experience]
-        updatedArray[index] = { ...updatedArray[index], [key]: value }
-        handleChange('experience', updatedArray)
     }
 
     return (
@@ -214,13 +205,7 @@ const Portfilo: React.FC = () => {
                             {formValues.isExperience && (
                                 <Box sx={styles.formStack}>
                                     <ExperienceForm
-                                        onExperienceChange={
-                                            handleExperienceChange
-                                        }
                                         handleChange={handleChange}
-                                        handleExperienceChange={
-                                            handleExperienceChange
-                                        }
                                     />
                                 </Box>
                             )}
