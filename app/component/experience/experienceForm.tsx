@@ -6,7 +6,10 @@ import {
     FormValues,
     initialFormValues,
 } from '@/app/state/initialState'
-import DatePicker from '@mui/lab/DatePicker'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
+import { DatePicker } from '@mui/x-date-pickers/DatePicker'
+import dayjs from 'dayjs'
 
 interface ExperienceFormProps {
     handleChange: (key: keyof FormValues, value: any) => void
@@ -48,26 +51,34 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
         <>
             {experiences.map((experience, index) => (
                 <Box key={index} sx={{ margin: '10px 0' }}>
-                    <DatePicker
-                        sx={{ margin: 1 }}
-                        views={['year', 'month']}
-                        label="From"
-                        value={experience.from}
-                        onChange={(newValue: any) =>
-                            handleExperienceChange(index, 'from', newValue)
-                        }
-                        renderInput={(params: any) => <TextField {...params} />}
-                    />
-                    <DatePicker
-                        sx={{ margin: 1 }}
-                        views={['year', 'month']}
-                        label="To"
-                        value={experience.to}
-                        onChange={(newValue: any) =>
-                            handleExperienceChange(index, 'to', newValue)
-                        }
-                        renderInput={(params: any) => <TextField {...params} />}
-                    />
+                    <LocalizationProvider dateAdapter={AdapterDayjs}>
+                        <DatePicker
+                            sx={{ margin: 1 }}
+                            views={['year', 'month']}
+                            label="From"
+                            value={dayjs(experience.from)}
+                            onChange={(newValue: any) =>
+                                handleExperienceChange(
+                                    index,
+                                    'from',
+                                    dayjs(newValue).format('YYYY-MMM')
+                                )
+                            }
+                        />
+                        <DatePicker
+                            sx={{ margin: 1 }}
+                            views={['year', 'month']}
+                            label="To"
+                            value={dayjs(experience.to)}
+                            onChange={(newValue: any) =>
+                                handleExperienceChange(
+                                    index,
+                                    'to',
+                                    dayjs(newValue).format('YYYY-MMM')
+                                )
+                            }
+                        />
+                    </LocalizationProvider>
                     <TextField
                         sx={{ margin: 1 }}
                         label="Company"
@@ -79,6 +90,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                                 e.target.value
                             )
                         }
+                        fullWidth
                     />
                     <TextField
                         sx={{ margin: 1 }}
@@ -91,6 +103,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                                 e.target.value
                             )
                         }
+                        fullWidth
                     />
                     <TextField
                         sx={{ margin: 1 }}
@@ -103,6 +116,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                                 e.target.value
                             )
                         }
+                        fullWidth
                     />
 
                     <Autocomplete
@@ -113,7 +127,12 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                             handleExperienceChange(index, 'keySkills', newValue)
                         }
                         renderInput={(params) => (
-                            <TextField {...params} label="Key Skills" />
+                            <TextField
+                                {...params}
+                                label="Key Skills"
+                                sx={{ margin: 1 }}
+                                fullWidth
+                            />
                         )}
                     />
                     <IconButton onClick={() => handleRemoveExperience(index)}>
