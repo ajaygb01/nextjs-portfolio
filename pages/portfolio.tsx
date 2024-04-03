@@ -26,6 +26,7 @@ import TechStackForm from '@/app/component/techStack/techStackForm'
 import ExperienceForm from '@/app/component/experience/experienceForm'
 import UserInfoForm from '@/app/component/userInfo/userInfoForm'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
+import ContactForm from '@/app/component/contact/contactForm'
 
 interface UserInfo {
     name: string
@@ -209,6 +210,28 @@ const Portfilo: React.FC = () => {
                                     />
                                 </Box>
                             )}
+
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={formValues.isContact}
+                                        onChange={(e) =>
+                                            handleChange(
+                                                'isContact',
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                }
+                                label="Contact"
+                            />
+
+                            {formValues.isContact && (
+                                <Box sx={styles.formStack}>
+                                    <ContactForm handleChange={handleChange} />
+                                </Box>
+                            )}
+
                             <Button
                                 type="submit"
                                 variant="contained"
