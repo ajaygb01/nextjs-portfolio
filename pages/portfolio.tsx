@@ -28,6 +28,7 @@ import UserInfoForm from '@/app/component/userInfo/userInfoForm'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
 import ContactForm from '@/app/component/contact/contactForm'
 import ProjectForm from '@/app/component/projects/projectsForm'
+import { Height } from '@mui/icons-material'
 
 interface UserInfo {
     name: string

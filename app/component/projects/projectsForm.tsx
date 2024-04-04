@@ -46,13 +46,22 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
         setProjects(clearedProjects)
         handleChange('projects', clearedProjects)
     }
+    const handleAddProject = () => {
+        setProjects([
+            ...projects,
+            {
+                name: '',
+                description: '',
+                link: '',
+            },
+        ])
+    }
 
     return (
         <Box sx={{ margin: '10px 0' }}>
             {projects.map((item, index) => (
-                <>
+                <React.Fragment key={index}>
                     <TextField
-                        key={`${index}-name`}
                         label="Project Name"
                         value={item.name}
                         sx={{ margin: 1 }}
@@ -61,7 +70,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
                         }
                     />
                     <TextField
-                        key={`${index}-description`}
                         label="Project Description"
                         value={item.description}
                         sx={{ margin: 1 }}
@@ -74,7 +82,6 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
                         }
                     />
                     <TextField
-                        key={`${index}-link`}
                         label="Project Link"
                         value={item.link}
                         sx={{ margin: 1 }}
@@ -82,8 +89,9 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
                             handleProjectChange(index, 'link', e.target.value)
                         }
                     />
-                </>
+                </React.Fragment>
             ))}
+            <Button onClick={handleAddProject}>Add Project</Button>
             <Button onClick={handleClear}>Clear</Button>
         </Box>
     )

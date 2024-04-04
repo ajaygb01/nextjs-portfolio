@@ -57,7 +57,7 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
                     display: 'flex',
                     padding: 2,
                     flexDirection: 'column',
-                    minHeight: '100vh',
+                    minHeight: '90vh',
                     justifyContent: 'space-between',
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.text.primary,
