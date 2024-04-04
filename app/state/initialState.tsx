@@ -44,6 +44,7 @@ export interface FormValues {
     contact: Contact[]
     isProject: boolean
     projects: Project[]
+    isUseUserInfo: boolean
     footer: Footer
 }
 
@@ -66,5 +67,6 @@ export const initialFormValues: FormValues = {
     contact: [{ app: '', link: '' }],
     isProject: false,
     projects: [{ name: '', description: '', link: '' }],
+    isUseUserInfo: false,
     footer: { year: 0, companyName: '' },
 }

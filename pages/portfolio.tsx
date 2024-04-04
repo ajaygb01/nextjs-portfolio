@@ -27,6 +27,7 @@ import ExperienceForm from '@/app/component/experience/experienceForm'
 import UserInfoForm from '@/app/component/userInfo/userInfoForm'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
 import ContactForm from '@/app/component/contact/contactForm'
+import ProjectForm from '@/app/component/projects/projectsForm'
 
 interface UserInfo {
     name: string
@@ -142,7 +143,7 @@ const Portfilo: React.FC = () => {
         <Box>
             <Toolbar sx={styles.toolbar}>
                 <Button variant="contained" onClick={handleOpenModal}>
-                    Enter Portfolio Info
+                    Clear Form
                 </Button>
                 <Button variant="contained" onClick={fetchRandomUserInfo}>
                     Fetch Random User Info
@@ -229,6 +230,27 @@ const Portfilo: React.FC = () => {
                             {formValues.isContact && (
                                 <Box sx={styles.formStack}>
                                     <ContactForm handleChange={handleChange} />
+                                </Box>
+                            )}
+
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={formValues.isProject}
+                                        onChange={(e) =>
+                                            handleChange(
+                                                'isProject',
+                                                e.target.checked
+                                            )
+                                        }
+                                    />
+                                }
+                                label="Projects"
+                            />
+
+                            {formValues.isProject && (
+                                <Box sx={styles.formStack}>
+                                    <ProjectForm handleChange={handleChange} />
                                 </Box>
                             )}
 

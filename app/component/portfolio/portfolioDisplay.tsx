@@ -212,8 +212,13 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
                     }}
                 >
                     <Typography variant="body2" color="text.secondary">
-                        © {formProps.footer.year}{' '}
-                        {formProps.footer.companyName}
+                        ©{' '}
+                        {formProps.footer.year === 0
+                            ? new Date().getFullYear()
+                            : formProps.footer.year}{' '}
+                        {formProps.isUseUserInfo
+                            ? formProps.userInfo.name
+                            : formProps.footer.companyName}
                     </Typography>
                 </Box>
             </Box>

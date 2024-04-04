@@ -101,6 +101,7 @@ export default function Index() {
                 link: '/portfolio',
             },
         ],
+        isUseUserInfo: true,
         footer: { year: new Date().getFullYear(), companyName: 'Ajay GB' },
     }
 

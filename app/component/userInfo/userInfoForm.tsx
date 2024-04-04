@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box, TextField } from '@mui/material'
+import { Box, TextField, Checkbox, FormControlLabel } from '@mui/material'
 import { FormValues, UserInfo } from '@/app/state/initialState'
 
 interface UserInfoFormProps {
@@ -18,6 +18,14 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
                 ...prevState.userInfo,
                 [key]: value,
             },
+        }))
+    }
+    const handleCheckboxChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setFormValues((prevState) => ({
+            ...prevState,
+            isUseUserInfo: event.target.checked,
         }))
     }
 
@@ -57,6 +65,17 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
                     onChange={(e) =>
                         handleUserInfoChange('bio', e.target.value)
                     }
+                />
+            </Box>
+            <Box sx={{ margin: '10px 0' }}>
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            checked={formValues.isUseUserInfo}
+                            onChange={handleCheckboxChange}
+                        />
+                    }
+                    label="Apply this information to the footer"
                 />
             </Box>
         </Box>
