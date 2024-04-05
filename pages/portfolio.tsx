@@ -13,6 +13,9 @@ import {
     IconButton,
     Autocomplete,
     Container,
+    Dialog,
+    DialogTitle,
+    DialogContent,
 } from '@mui/material'
 import {
     Contact,
@@ -28,7 +31,7 @@ import UserInfoForm from '@/app/component/userInfo/userInfoForm'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
 import ContactForm from '@/app/component/contact/contactForm'
 import ProjectForm from '@/app/component/projects/projectsForm'
-import { Height } from '@mui/icons-material'
+import Badge from '@/app/component/badge/badge'
 
 interface UserInfo {
     name: string
@@ -73,6 +76,16 @@ const Portfilo: React.FC = () => {
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
 
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
+
+    const [open, setOpen] = React.useState(false)
+
+    const handleClickOpen = () => {
+        setOpen(true)
+    }
+
+    const handleClose = () => {
+        setOpen(false)
+    }
 
     const handleOpenModal = () => {
         setFormValues(initialFormValues)
@@ -255,19 +268,27 @@ const Portfilo: React.FC = () => {
                                 </Box>
                             )}
 
-                            {/* <Button
+                            <Button
                                 type="submit"
                                 variant="contained"
                                 color="primary"
+                                onClick={handleClickOpen}
                             >
-                                Submit
-                            </Button> */}
+                                View Badge
+                            </Button>
+
+                            <Dialog open={open} onClose={handleClose}>
+                                <DialogTitle>{'Your Badge'}</DialogTitle>
+                                <DialogContent>
+                                    <Badge formProps={formValues} />
+                                </DialogContent>
+                            </Dialog>
                         </Box>
                     </Box>
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Box sx={styles.displayBlock}>
-                        <PortfolioDisplay formProps={formValues} />
+                        <PortfolioDisplay formProps={formValues} height={90} />
                     </Box>
                 </Grid>
             </Grid>

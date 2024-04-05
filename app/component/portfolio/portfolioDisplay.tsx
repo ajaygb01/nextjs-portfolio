@@ -27,9 +27,13 @@ import { getSectionContent } from '../sectionGenerator/section'
 
 interface PortfolioDisplayProps {
     formProps: FormValues
+    height?: number
 }
 
-const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
+const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
+    formProps,
+    height = 100,
+}) => {
     const [darkMode, setDarkMode] = useState(false)
     const [prevMode, setPrevMode] = useState(true)
 
@@ -57,7 +61,7 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({ formProps }) => {
                     display: 'flex',
                     padding: 2,
                     flexDirection: 'column',
-                    minHeight: '90vh',
+                    minHeight: height + 'vh',
                     justifyContent: 'space-between',
                     backgroundColor: theme.palette.primary.main,
                     color: theme.palette.text.primary,
