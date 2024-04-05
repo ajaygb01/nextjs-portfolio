@@ -73,6 +73,7 @@ const styles = {
 
 const Portfilo: React.FC = () => {
     const [openModal, setOpenModal] = useState<boolean>(false)
+    const [isModal, setIsModal] = useState(true)
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
 
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
@@ -84,7 +85,8 @@ const Portfilo: React.FC = () => {
     }
 
     const handleClose = () => {
-        setOpen(false)
+        setIsModal(false)
+        //setOpen(false)
     }
 
     const handleOpenModal = () => {
@@ -146,7 +148,6 @@ const Portfilo: React.FC = () => {
     }
 
     const handleChange = (key: keyof FormValues, value: any) => {
-        console.log('key:', key, 'value:', value)
         setFormValues((prevState) => ({
             ...prevState,
             [key]: value,
@@ -288,7 +289,12 @@ const Portfilo: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Box sx={styles.displayBlock}>
-                        <PortfolioDisplay formProps={formValues} height={90} />
+                        <PortfolioDisplay
+                            formProps={formValues}
+                            height={90}
+                            isModal={isModal}
+                            handleClose={handleClose}
+                        />
                     </Box>
                 </Grid>
             </Grid>

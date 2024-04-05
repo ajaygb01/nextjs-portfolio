@@ -12,6 +12,10 @@ import {
     ThemeProvider,
     useMediaQuery,
     useTheme,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    DialogContentText,
 } from '@mui/material'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
@@ -28,11 +32,15 @@ import { getSectionContent } from '../sectionGenerator/section'
 interface PortfolioDisplayProps {
     formProps: FormValues
     height?: number
+    isModal?: boolean
+    handleClose?: () => void
 }
 
 const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
     formProps,
     height = 100,
+    isModal,
+    handleClose,
 }) => {
     const [darkMode, setDarkMode] = useState(false)
     const [prevMode, setPrevMode] = useState(true)
@@ -119,19 +127,44 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                {formProps.userInfo.bio && (
                     <Box
                         sx={{
-                            p: 2,
-                            textAlign: 'center',
-                            width: { xs: '100%', md: '50%' },
+                            display: 'flex',
+                            justifyContent: 'center',
+                            mt: 3,
                         }}
                     >
-                        <Typography variant="body1" component="div">
-                            {formProps.userInfo.bio}
-                        </Typography>
+                        <Box
+                            sx={{
+                                p: 2,
+                                textAlign: 'center',
+                                width: { xs: '100%', md: '50%' },
+                                bgcolor: theme.palette.secondary.main,
+                                boxShadow: 1,
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Typography
+                                variant="h6"
+                                component="div"
+                                gutterBottom
+                            >
+                                About Me
+                            </Typography>
+                            <Typography
+                                variant="subtitle1"
+                                component="div"
+                                sx={{
+                                    lineHeight: 1.7,
+                                    fontWeight: 'medium',
+                                }}
+                            >
+                                {formProps.userInfo.bio}
+                            </Typography>
+                        </Box>
                     </Box>
-                </Box>
+                )}
                 <Box
                     sx={{
                         marginBottom: '5px',
@@ -225,6 +258,28 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                             : formProps.footer.companyName}
                     </Typography>
                 </Box>
+                {isModal && (
+                    <Dialog open={isModal} onClose={handleClose}>
+                        <DialogTitle>Under construction</DialogTitle>
+                        <DialogContent>
+                            <DialogContentText>
+                                The following features are working:
+                            </DialogContentText>
+                            <DialogContentText component="div">
+                                <ul>
+                                    <li>Forms</li>
+                                    <li>Display badge</li>
+                                    <li>Design builder view</li>
+                                    <li>Function inside design builder</li>
+                                    <li>Theme switch</li>
+                                </ul>
+                            </DialogContentText>
+                            <DialogContentText>
+                                Press outside the dialog to close it.
+                            </DialogContentText>
+                        </DialogContent>
+                    </Dialog>
+                )}
             </Box>
         </ThemeProvider>
     )

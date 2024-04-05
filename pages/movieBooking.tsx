@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { AppBar, Toolbar, Typography, Button } from '@mui/material'
+import {
+    AppBar,
+    Toolbar,
+    Typography,
+    Button,
+    Dialog,
+    DialogTitle,
+} from '@mui/material'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 
@@ -19,6 +26,7 @@ if (!firebase.apps.length) {
 
 const MovieBooking: React.FC = () => {
     const [user, setUser] = useState<firebase.User | null>(null)
+    const [open, setOpen] = useState(true)
 
     useEffect(() => {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -35,6 +43,10 @@ const MovieBooking: React.FC = () => {
 
     const handleLogout = () => {
         firebase.auth().signOut()
+    }
+
+    const handleClose = () => {
+        setOpen(false)
     }
 
     return (
@@ -64,6 +76,11 @@ const MovieBooking: React.FC = () => {
                     )}
                 </Toolbar>
             </AppBar>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>
+                    Still under construction, only login works
+                </DialogTitle>
+            </Dialog>
         </>
     )
 }

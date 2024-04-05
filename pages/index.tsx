@@ -12,14 +12,10 @@ export default function Index() {
         userInfo: {
             name: 'Ajay GB',
             title: 'Software Developer',
-            bio: `I am a software developer with 5+ years of experience working in
-      multiple technologies, including the MERN stack and full-stack
-      development practices. I have experience in building CI/CD pipelines
-      and deploying applications to Microsoft Cloud. I am eager to
-      collaborate with a team of developers to build applications using
-      microservices. I am committed to continuous learning and
-      implementing new technologies and practices to enhance my skills and
-      contribute to my team success.`,
+            bio: `Experienced software developer specializing in MERN stack and full-stack practices. 
+            Proficient in building CI/CD pipelines and deploying applications to Microsoft Cloud. 
+            Passionate about microservices architecture and committed to continuous learning.
+            Eager to collaborate and contribute to team success.`,
         },
         isTechStack: true,
         techStack: [
