@@ -100,6 +100,12 @@ export default function Index() {
                     'Built using Next.js and Material-UI / Randomize user info',
                 link: '/portfolio',
             },
+            {
+                name: 'Movie Booking',
+                description:
+                    'Built using Next.js, Material-UI, and Firebase for authentication',
+                link: '/movieBooking',
+            },
         ],
         isUseUserInfo: true,
         footer: { year: new Date().getFullYear(), companyName: 'Ajay GB' },
