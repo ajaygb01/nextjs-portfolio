@@ -86,7 +86,7 @@ const Portfilo: React.FC = () => {
 
     const handleClose = () => {
         setIsModal(false)
-        //setOpen(false)
+        setOpen(false)
     }
 
     const handleOpenModal = () => {

@@ -5,6 +5,7 @@ import {
     Experience,
     FormValues,
     initialFormValues,
+    techChips,
 } from '@/app/state/initialState'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
@@ -53,34 +54,38 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                 <Box key={index} sx={{ margin: '10px 0' }}>
                     <LocalizationProvider dateAdapter={AdapterDayjs}>
                         <DatePicker
-                            sx={{ margin: 1 }}
+                            sx={{ mt: 1, width: '100%' }}
                             views={['year', 'month']}
                             label="From"
-                            value={dayjs(experience.from)}
+                            value={dayjs(experience.from || '2000-JAN')}
                             onChange={(newValue: any) =>
                                 handleExperienceChange(
                                     index,
                                     'from',
-                                    dayjs(newValue).format('YYYY-MMM')
+                                    newValue
+                                        ? dayjs(newValue).format('YYYY-MMM')
+                                        : ''
                                 )
                             }
                         />
                         <DatePicker
-                            sx={{ margin: 1 }}
+                            sx={{ mt: 1, width: '100%' }}
                             views={['year', 'month']}
                             label="To"
-                            value={dayjs(experience.to)}
+                            value={dayjs(experience.to || '2000-JAN')}
                             onChange={(newValue: any) =>
                                 handleExperienceChange(
                                     index,
                                     'to',
-                                    dayjs(newValue).format('YYYY-MMM')
+                                    newValue
+                                        ? dayjs(newValue).format('YYYY-MMM')
+                                        : ''
                                 )
                             }
                         />
                     </LocalizationProvider>
                     <TextField
-                        sx={{ margin: 1 }}
+                        sx={{ mt: 1 }}
                         label="Company"
                         value={experience.company}
                         onChange={(e) =>
@@ -93,7 +98,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                         fullWidth
                     />
                     <TextField
-                        sx={{ margin: 1 }}
+                        sx={{ mt: 1 }}
                         label="Location"
                         value={experience.location}
                         onChange={(e) =>
@@ -106,7 +111,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                         fullWidth
                     />
                     <TextField
-                        sx={{ margin: 1 }}
+                        sx={{ mt: 1 }}
                         label="Position"
                         value={experience.position}
                         onChange={(e) =>
@@ -121,7 +126,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
 
                     <Autocomplete
                         multiple
-                        options={['Html', 'Java']}
+                        options={techChips}
                         value={experience.keySkills || []}
                         onChange={(event, newValue) =>
                             handleExperienceChange(index, 'keySkills', newValue)
@@ -130,7 +135,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
                             <TextField
                                 {...params}
                                 label="Key Skills"
-                                sx={{ margin: 1 }}
+                                sx={{ mt: 1 }}
                                 fullWidth
                             />
                         )}

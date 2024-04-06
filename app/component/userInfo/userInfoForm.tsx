@@ -62,6 +62,7 @@ const UserInfoForm: React.FC<UserInfoFormProps> = ({
                     value={formValues.userInfo.bio}
                     fullWidth
                     multiline
+                    rows={4} // Set the number of rows
                     onChange={(e) =>
                         handleUserInfoChange('bio', e.target.value)
                     }

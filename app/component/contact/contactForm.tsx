@@ -8,6 +8,8 @@ import {
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import ChatIcon from '@mui/icons-material/Chat'
 import EmailIcon from '@mui/icons-material/Email'
+import IconButton from '@mui/material/IconButton'
+import { Delete, Add } from '@mui/icons-material'
 
 interface ContactFormProps {
     handleChange: (key: keyof FormValues, value: any) => void
@@ -62,11 +64,14 @@ const ContactForm: React.FC<ContactFormProps> = ({ handleChange }) => {
                     key={index}
                     label={item.app}
                     value={item.link}
-                    sx={{ margin: 1 }}
+                    sx={{ mt: 1 }}
+                    fullWidth
                     onChange={(e) => handleContactChange(index, e.target.value)}
                 />
             ))}
-            <Button onClick={handleClear}>Clear</Button>
+            <IconButton onClick={handleClear}>
+                <Delete />
+            </IconButton>
         </Box>
     )
 }

@@ -6,6 +6,9 @@ import {
     initialFormValues,
 } from '@/app/state/initialState'
 
+import IconButton from '@mui/material/IconButton'
+import { Delete, Add } from '@mui/icons-material'
+
 interface ProjectFormProps {
     handleChange: (key: keyof FormValues, value: any) => void
 }
@@ -64,7 +67,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
                     <TextField
                         label="Project Name"
                         value={item.name}
-                        sx={{ margin: 1 }}
+                        sx={{ mt: 1 }}
+                        fullWidth
                         onChange={(e) =>
                             handleProjectChange(index, 'name', e.target.value)
                         }
@@ -72,7 +76,8 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
                     <TextField
                         label="Project Description"
                         value={item.description}
-                        sx={{ margin: 1 }}
+                        sx={{ mt: 1 }}
+                        fullWidth
                         onChange={(e) =>
                             handleProjectChange(
                                 index,
@@ -84,15 +89,20 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
                     <TextField
                         label="Project Link"
                         value={item.link}
-                        sx={{ margin: 1 }}
+                        sx={{ mt: 1 }}
+                        fullWidth
                         onChange={(e) =>
                             handleProjectChange(index, 'link', e.target.value)
                         }
                     />
                 </React.Fragment>
             ))}
-            <Button onClick={handleAddProject}>Add Project</Button>
-            <Button onClick={handleClear}>Clear</Button>
+            <IconButton onClick={handleAddProject}>
+                <Add />
+            </IconButton>
+            <IconButton onClick={handleClear}>
+                <Delete />
+            </IconButton>
         </Box>
     )
 }

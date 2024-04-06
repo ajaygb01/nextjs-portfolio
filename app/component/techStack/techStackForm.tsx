@@ -48,7 +48,7 @@ const TechStackForm: React.FC<TechStackFormProps> = ({
                     <TextField
                         label="Language"
                         value={stack.language}
-                        sx={{ margin: 1 }}
+                        fullWidth
                         onChange={(e) =>
                             handleTechStackChange(
                                 index,
@@ -61,7 +61,8 @@ const TechStackForm: React.FC<TechStackFormProps> = ({
                         label="Year"
                         type="number"
                         value={stack.year}
-                        sx={{ margin: 1 }}
+                        sx={{ mt: 1 }}
+                        fullWidth
                         onChange={(e) =>
                             handleTechStackChange(
                                 index,
