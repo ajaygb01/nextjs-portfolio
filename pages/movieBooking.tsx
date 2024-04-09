@@ -11,6 +11,8 @@ import {
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import MbHome from '@/app/project/movieBooking/components/mbHome'
+import { Carousel } from 'react-responsive-carousel'
+import 'react-responsive-carousel/lib/styles/carousel.min.css'
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -78,9 +80,11 @@ const MovieBooking: React.FC = () => {
                     )}
                 </Toolbar>
             </AppBar>
-            <Box>
-                <MbHome />
-            </Box>
+            {user && (
+                <Box>
+                    <MbHome />
+                </Box>
+            )}
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>
                     Still under construction, only login works
