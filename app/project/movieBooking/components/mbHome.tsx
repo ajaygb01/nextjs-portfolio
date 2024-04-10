@@ -30,10 +30,12 @@ const carouselArrowStyles = {
 const MbHome: React.FC = () => {
     const [movies, setMovies] = useState<Movie[]>([])
 
+    const apiUrl =
+        'https://api.themoviedb.org/3/movie/now_playing?api_key' +
+        process.env.NEXT_PUBLIC_MOVIE_API_KEY
+
     useEffect(() => {
-        fetch(
-            'https://api.themoviedb.org/3/movie/now_playing?api_key=22b0398570904ff6fab740fe93e15a7f'
-        ) // Replace 'YOUR_API_KEY' with your actual API key
+        fetch(apiUrl)
             .then((response) => response.json())
             .then((data) => {
                 setMovies(data.results)
