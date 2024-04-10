@@ -45,6 +45,8 @@ export interface FormValues {
     isProject: boolean
     projects: Project[]
     isUseUserInfo: boolean
+    isBadge: boolean
+    profileImage: string
     footer: Footer
 }
 
@@ -68,6 +70,8 @@ export const initialFormValues: FormValues = {
     isProject: false,
     projects: [{ name: '', description: '', link: '' }],
     isUseUserInfo: false,
+    isBadge: false,
+    profileImage: '',
     footer: { year: 0, companyName: '' },
 }
 

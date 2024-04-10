@@ -5,11 +5,18 @@ import { Experience, Project, TechStack } from '@/app/state/initialState'
 
 interface BadgeProps {
     formProps: FormValues
-    isBadge: boolean
 }
 
-const Badge: React.FC<BadgeProps> = ({ formProps, isBadge }) => {
-    const { userInfo, techStack, experience, projects, contact } = formProps
+const Badge: React.FC<BadgeProps> = ({ formProps }) => {
+    const {
+        userInfo,
+        techStack,
+        experience,
+        projects,
+        contact,
+        isBadge,
+        profileImage,
+    } = formProps
 
     return (
         <Box
@@ -26,7 +33,7 @@ const Badge: React.FC<BadgeProps> = ({ formProps, isBadge }) => {
             <Typography variant="h4">{userInfo.name}</Typography>
             <Typography variant="subtitle1">{userInfo.title}</Typography>
             <Avatar
-                src={''}
+                src={profileImage}
                 sx={{
                     width: 100,
                     height: 100,

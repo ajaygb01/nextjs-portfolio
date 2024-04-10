@@ -155,14 +155,14 @@ const Portfilo: React.FC = () => {
         }))
     }
 
-    const [isBadge, setIsBadge] = useState(false)
-    const [badgeFile, setBadgeFile] = useState('')
-
     const handleFileChange = (event: any) => {
         const file = event.target.files[0]
         const reader = new FileReader()
         reader.onloadend = () => {
-            setBadgeFile(reader.result ? reader.result.toString() : '')
+            setFormValues((prevState) => ({
+                ...prevState,
+                profileImage: reader.result ? reader.result.toString() : '',
+            }))
         }
         reader.readAsDataURL(file)
     }
@@ -285,21 +285,26 @@ const Portfilo: React.FC = () => {
                             <FormControlLabel
                                 control={
                                     <Checkbox
-                                        checked={isBadge}
+                                        checked={formValues.isBadge}
                                         onChange={(e) =>
-                                            setIsBadge(e.target.checked)
+                                            setFormValues((prevState) => ({
+                                                ...prevState,
+                                                isBadge: e.target.checked,
+                                            }))
                                         }
                                     />
                                 }
                                 label="View Badge"
                             />
-                            {isBadge && (
-                                <input
-                                    type="file"
-                                    onChange={handleFileChange}
-                                />
+                            {formValues.isBadge && (
+                                <>
+                                    <input
+                                        type="file"
+                                        onChange={handleFileChange}
+                                    />
+                                    <Avatar src={formValues.profileImage} />
+                                </>
                             )}
-                            <Avatar src={badgeFile} />
 
                             <Button
                                 type="submit"
@@ -313,10 +318,7 @@ const Portfilo: React.FC = () => {
                             <Dialog open={open} onClose={handleClose}>
                                 <DialogTitle>{'Your Badge'}</DialogTitle>
                                 <DialogContent>
-                                    <Badge
-                                        formProps={formValues}
-                                        isBadge={false}
-                                    />
+                                    <Badge formProps={formValues} />
                                 </DialogContent>
                             </Dialog>
                         </Box>

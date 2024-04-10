@@ -31,7 +31,7 @@ const MbHome: React.FC = () => {
     const [movies, setMovies] = useState<Movie[]>([])
 
     const apiUrl =
-        'https://api.themoviedb.org/3/movie/now_playing?api_key' +
+        'https://api.themoviedb.org/3/movie/now_playing?api_key=' +
         process.env.NEXT_PUBLIC_MOVIE_API_KEY
 
     useEffect(() => {
