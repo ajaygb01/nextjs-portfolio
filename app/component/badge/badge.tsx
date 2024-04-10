@@ -5,9 +5,10 @@ import { Experience, Project, TechStack } from '@/app/state/initialState'
 
 interface BadgeProps {
     formProps: FormValues
+    isBadge: boolean
 }
 
-const Badge: React.FC<BadgeProps> = ({ formProps }) => {
+const Badge: React.FC<BadgeProps> = ({ formProps, isBadge }) => {
     const { userInfo, techStack, experience, projects, contact } = formProps
 
     return (

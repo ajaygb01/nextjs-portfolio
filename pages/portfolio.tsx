@@ -32,6 +32,7 @@ import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
 import ContactForm from '@/app/component/contact/contactForm'
 import ProjectForm from '@/app/component/projects/projectsForm'
 import Badge from '@/app/component/badge/badge'
+import Avatar from '@mui/material/Avatar'
 
 interface UserInfo {
     name: string
@@ -154,6 +155,18 @@ const Portfilo: React.FC = () => {
         }))
     }
 
+    const [isBadge, setIsBadge] = useState(false)
+    const [badgeFile, setBadgeFile] = useState('')
+
+    const handleFileChange = (event: any) => {
+        const file = event.target.files[0]
+        const reader = new FileReader()
+        reader.onloadend = () => {
+            setBadgeFile(reader.result ? reader.result.toString() : '')
+        }
+        reader.readAsDataURL(file)
+    }
+
     return (
         <Box>
             <Toolbar sx={styles.toolbar}>
@@ -269,6 +282,25 @@ const Portfilo: React.FC = () => {
                                 </Box>
                             )}
 
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={isBadge}
+                                        onChange={(e) =>
+                                            setIsBadge(e.target.checked)
+                                        }
+                                    />
+                                }
+                                label="View Badge"
+                            />
+                            {isBadge && (
+                                <input
+                                    type="file"
+                                    onChange={handleFileChange}
+                                />
+                            )}
+                            <Avatar src={badgeFile} />
+
                             <Button
                                 type="submit"
                                 variant="contained"
@@ -281,7 +313,10 @@ const Portfilo: React.FC = () => {
                             <Dialog open={open} onClose={handleClose}>
                                 <DialogTitle>{'Your Badge'}</DialogTitle>
                                 <DialogContent>
-                                    <Badge formProps={formValues} />
+                                    <Badge
+                                        formProps={formValues}
+                                        isBadge={false}
+                                    />
                                 </DialogContent>
                             </Dialog>
                         </Box>
