@@ -3,8 +3,23 @@ import { useRouter } from 'next/router'
 import firebase from 'firebase/compat/app'
 import 'firebase/compat/auth'
 import { firebaseConfig } from '@/app/state/initialState'
-import { Box, Button, Container, Typography } from '@mui/material'
+import {
+    Avatar,
+    Box,
+    Button,
+    Container,
+    Drawer,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    IconButton,
+    Typography,
+} from '@mui/material'
 import ChatBuilder from '@/app/project/resumeBuilder/components/chatBuilder'
+import InboxIcon from '@mui/icons-material/Inbox'
+import MenuIcon from '@mui/icons-material/Menu'
 
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig)
@@ -13,6 +28,7 @@ if (!firebase.apps.length) {
 const ResumeChat: React.FC = () => {
     const router = useRouter()
     const [user, setUser] = useState<firebase.User | null>(null)
+    const [drawerOpen, setDrawerOpen] = useState(false)
 
     useEffect(() => {
         const unsubscribe = firebase.auth().onAuthStateChanged((user) => {
@@ -20,6 +36,10 @@ const ResumeChat: React.FC = () => {
         })
         // Cleanup subscription on unmount
         return () => unsubscribe()
+    }, [])
+
+    useEffect(() => {
+        handleLogin()
     }, [])
 
     const handleLogin = async () => {
@@ -36,32 +56,60 @@ const ResumeChat: React.FC = () => {
         firebase.auth().signOut()
     }
 
+    const toggleDrawer = () => {
+        setDrawerOpen(!drawerOpen)
+    }
+
     return (
-        <Container>
-            <Typography variant="h1">Resume Chat</Typography>
-            {user ? (
-                <Box>
-                    <ChatBuilder />
-                </Box>
-            ) : (
-                <Button
-                    variant="contained"
-                    color="primary"
-                    onClick={handleLogin}
+        <Box sx={{ bgcolor: '#f5f5f5', height: '100vh' }}>
+            <Drawer open={drawerOpen} onClose={toggleDrawer}>
+                <List>
+                    {['Template 1', 'Template 2', 'Template 3'].map(
+                        (text, index) => (
+                            <ListItem button key={text}>
+                                <ListItemIcon>
+                                    <InboxIcon />
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        )
+                    )}
+                </List>
+            </Drawer>
+            <Toolbar>
+                <IconButton
+                    edge="start"
+                    color="inherit"
+                    aria-label="menu"
+                    onClick={toggleDrawer}
                 >
-                    Login with Google
-                </Button>
-            )}
-            {user && (
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    onClick={handleLogout}
-                >
-                    Logout
-                </Button>
-            )}
-        </Container>
+                    <MenuIcon />
+                </IconButton>
+                <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+                    Resume Chat
+                </Typography>
+                {user && (
+                    <Avatar onClick={handleLogout}>
+                        {user.displayName?.charAt(0)}
+                    </Avatar>
+                )}
+            </Toolbar>
+            <Container>
+                {user ? (
+                    <Box>
+                        <ChatBuilder />
+                    </Box>
+                ) : (
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleLogin}
+                    >
+                        Login with Google
+                    </Button>
+                )}
+            </Container>
+        </Box>
     )
 }
 

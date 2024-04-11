@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { TextField, Button, Box, Typography } from '@mui/material'
+import { TextField, Button, Box, Typography, Card } from '@mui/material'
+import { styled, keyframes } from '@mui/system'
 
 interface Message {
     sender: 'user' | 'bot'
@@ -39,6 +40,31 @@ const questions: Message[] = [
     // ...add more questions here...
 ]
 
+const popIn = keyframes`
+  0% {
+    transform: scale(0);
+  }
+  100% {
+    transform: scale(1);
+  }
+`
+
+const UserMessageCard = styled(Card)(({ theme }) => ({
+    backgroundColor: '#90EE90', // Light green background
+    margin: theme.spacing(1),
+    padding: theme.spacing(1),
+    alignSelf: 'flex-end',
+    animation: `${popIn} 0.2s ease`,
+}))
+
+const BotMessageCard = styled(Card)(({ theme }) => ({
+    backgroundColor: '#ADD8E6', // Light blue background
+    margin: theme.spacing(1),
+    padding: theme.spacing(1),
+    alignSelf: 'flex-start',
+    animation: `${popIn} 0.2s ease`,
+}))
+
 const ChatBuilder: React.FC = () => {
     const [state, setState] = React.useState<ChatBuilderState>({
         messages: [questions[0]],
@@ -71,22 +97,54 @@ const ChatBuilder: React.FC = () => {
             sx={{
                 display: 'flex',
                 flexDirection: 'column',
+                justifyContent: 'space-between',
+                height: '90vh',
                 alignItems: 'center',
+                overflowY: 'auto',
+                '&::-webkit-scrollbar': {
+                    width: '10px',
+                },
+                '&::-webkit-scrollbar-track': {
+                    background: '#f1f1f1',
+                    borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb': {
+                    background: '#888',
+                    borderRadius: '10px',
+                },
+                '&::-webkit-scrollbar-thumb:hover': {
+                    background: '#555',
+                },
             }}
         >
             <Box
                 sx={{
                     width: '80%',
-                    maxHeight: 400,
-                    overflowY: 'scroll',
                     marginBottom: 2,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    flexGrow: 1,
                 }}
             >
-                {state.messages.map((message, index) => (
-                    <Typography key={index} variant="body1">
-                        <strong>{message.sender}:</strong> {message.text}
-                    </Typography>
-                ))}
+                {state.messages.map((message, index) => {
+                    if (message) {
+                        return message.sender === 'user' ? (
+                            <UserMessageCard key={index}>
+                                <Typography variant="body1">
+                                    <strong>{message.sender}:</strong>{' '}
+                                    {message.text}
+                                </Typography>
+                            </UserMessageCard>
+                        ) : (
+                            <BotMessageCard key={index}>
+                                <Typography variant="body1">
+                                    <strong>{message.sender}:</strong>{' '}
+                                    {message.text}
+                                </Typography>
+                            </BotMessageCard>
+                        )
+                    }
+                })}
             </Box>
             <Box
                 component="form"
@@ -96,6 +154,8 @@ const ChatBuilder: React.FC = () => {
                     justifyContent: 'center',
                     gap: 1,
                     width: '80%',
+                    position: 'fixed',
+                    bottom: 0,
                 }}
             >
                 <TextField
