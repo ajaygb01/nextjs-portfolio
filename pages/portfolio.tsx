@@ -290,6 +290,9 @@ const Portfilo: React.FC = () => {
                                             setFormValues((prevState) => ({
                                                 ...prevState,
                                                 isBadge: e.target.checked,
+                                                profileImage: e.target.checked
+                                                    ? prevState.profileImage
+                                                    : '',
                                             }))
                                         }
                                     />
@@ -312,11 +315,17 @@ const Portfilo: React.FC = () => {
                                 color="primary"
                                 onClick={handleClickOpen}
                             >
-                                View Badge
+                                {formValues.isBadge
+                                    ? 'View Badge'
+                                    : 'View Resume'}
                             </Button>
 
                             <Dialog open={open} onClose={handleClose}>
-                                <DialogTitle>{'Your Badge'}</DialogTitle>
+                                <DialogTitle>
+                                    {formValues.isBadge
+                                        ? 'Your Badge'
+                                        : 'Your Resume'}
+                                </DialogTitle>
                                 <DialogContent>
                                     <Badge formProps={formValues} />
                                 </DialogContent>

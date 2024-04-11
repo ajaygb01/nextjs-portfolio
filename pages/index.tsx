@@ -104,6 +104,8 @@ export default function Index() {
             },
         ],
         isUseUserInfo: true,
+        isBadge: false,
+        profileImage: '',
         footer: { year: new Date().getFullYear(), companyName: 'Ajay GB' },
     }
 
