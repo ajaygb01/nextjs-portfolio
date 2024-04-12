@@ -39,8 +39,10 @@ const ResumeChat: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        handleLogin()
-    }, [])
+        if (!user) {
+            handleLogin()
+        }
+    }, [user])
 
     const handleLogin = async () => {
         try {

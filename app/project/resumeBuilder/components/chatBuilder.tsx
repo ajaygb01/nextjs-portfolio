@@ -3,42 +3,14 @@ import { TextField, Button, Box, Typography, Card } from '@mui/material'
 import { styled, keyframes } from '@mui/system'
 
 interface Message {
-    sender: 'user' | 'bot'
-    text: string
+    role: 'user' | 'assistant' | 'system'
+    content: string
 }
 
 interface ChatBuilderState {
     messages: Message[]
     currentInput: string
 }
-
-const questions: Message[] = [
-    { sender: 'bot', text: 'What is your full name?' },
-    { sender: 'bot', text: 'What is your email?' },
-    { sender: 'bot', text: 'What is your phone number?' },
-    { sender: 'bot', text: 'What is your address?' },
-    { sender: 'bot', text: 'What is your LinkedIn profile URL?' },
-    { sender: 'bot', text: 'What is your personal website URL?' },
-    { sender: 'bot', text: 'What is the name of your school?' },
-    { sender: 'bot', text: 'What degree did you obtain?' },
-    { sender: 'bot', text: 'What was your field of study?' },
-    { sender: 'bot', text: 'What year did you graduate?' },
-    { sender: 'bot', text: 'What was your GPA?' },
-    { sender: 'bot', text: 'What is your job title?' },
-    { sender: 'bot', text: 'What is the name of your company?' },
-    { sender: 'bot', text: 'Where is your job located?' },
-    { sender: 'bot', text: 'When did you start your job?' },
-    { sender: 'bot', text: 'When did you end your job?' },
-    { sender: 'bot', text: 'What was your job description?' },
-    { sender: 'bot', text: 'What achievements did you have at your job?' },
-    { sender: 'bot', text: 'What skills do you have?' },
-    { sender: 'bot', text: 'What is your proficiency level for these skills?' },
-    { sender: 'bot', text: 'What achievements do you have?' },
-    { sender: 'bot', text: 'Who issued these achievements?' },
-    { sender: 'bot', text: 'When did you receive these achievements?' },
-    { sender: 'bot', text: 'Can you describe these achievements?' },
-    // ...add more questions here...
-]
 
 const popIn = keyframes`
   0% {
@@ -67,7 +39,7 @@ const BotMessageCard = styled(Card)(({ theme }) => ({
 
 const ChatBuilder: React.FC = () => {
     const [state, setState] = React.useState<ChatBuilderState>({
-        messages: [questions[0]],
+        messages: [{ role: 'system', content: 'You are a helpful assistant.' }],
         currentInput: '',
     })
 
@@ -78,33 +50,51 @@ const ChatBuilder: React.FC = () => {
     const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
         const userMessage: Message = {
-            sender: 'user',
-            text: state.currentInput,
+            role: 'user',
+            content: state.currentInput,
         }
         let newMessages: Message[] = [...state.messages, userMessage]
-        const nextQuestion = questions[state.messages.length]
-        if (nextQuestion) {
-            newMessages.push(nextQuestion)
-        }
 
-        // Make a POST request to the /api/chat endpoint
+        setState({
+            messages: newMessages,
+            currentInput: '',
+        })
+
+        console.log('Sending message:', state.currentInput, state.messages)
+        // Make a POST request to the OpenAI API
         const response = await fetch('/api/chat', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                Authorization: 'Bearer ' + process.env.OPENAI_API_KEY,
             },
-            body: JSON.stringify({ messages: newMessages }),
+            body: JSON.stringify({
+                messages: state.messages,
+                model: 'gpt-3.5-turbo',
+            }),
         })
 
         // Parse the response
         const data = await response.json()
 
-        // Add the bot's response to the messages
-        newMessages.push({
-            sender: 'bot',
-            text: data.message,
-        })
+        // Check if data.choices exists and has at least one element
+        // Check if data.message exists
+        if (data.message) {
+            // Add the assistant's response to the messages
+            newMessages.push({
+                role: 'assistant',
+                content: data.message.trim(),
+            })
+        } else {
+            // Handle the error
+            console.error('No choices in response')
+            newMessages.push({
+                role: 'assistant',
+                content: 'Sorry, I could not generate a response.',
+            })
+        }
 
+        // Update the state with the new messages
         setState({
             messages: newMessages,
             currentInput: '',
@@ -120,50 +110,34 @@ const ChatBuilder: React.FC = () => {
                 height: '90vh',
                 alignItems: 'center',
                 overflowY: 'auto',
-                '&::-webkit-scrollbar': {
-                    width: '10px',
-                },
-                '&::-webkit-scrollbar-track': {
-                    background: '#f1f1f1',
-                    borderRadius: '10px',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                    background: '#888',
-                    borderRadius: '10px',
-                },
-                '&::-webkit-scrollbar-thumb:hover': {
-                    background: '#555',
-                },
             }}
         >
             <Box
                 sx={{
                     width: '80%',
-                    marginBottom: 2,
+                    marginassistanttom: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     flexGrow: 1,
                 }}
             >
-                {state.messages.map((message, index) => {
-                    if (message) {
-                        return message.sender === 'user' ? (
-                            <UserMessageCard key={index}>
-                                <Typography variant="body1">
-                                    <strong>{message.sender}:</strong>{' '}
-                                    {message.text}
-                                </Typography>
-                            </UserMessageCard>
-                        ) : (
-                            <BotMessageCard key={index}>
-                                <Typography variant="body1">
-                                    <strong>{message.sender}:</strong>{' '}
-                                    {message.text}
-                                </Typography>
-                            </BotMessageCard>
-                        )
-                    }
-                })}
+                {state.messages.map((message, index) =>
+                    message.role === 'user' ? (
+                        <UserMessageCard key={index}>
+                            <Typography variant="body1">
+                                <strong>{message.role}:</strong>{' '}
+                                {message.content}
+                            </Typography>
+                        </UserMessageCard>
+                    ) : (
+                        <BotMessageCard key={index}>
+                            <Typography variant="body1">
+                                <strong>{message.role}:</strong>{' '}
+                                {message.content}
+                            </Typography>
+                        </BotMessageCard>
+                    )
+                )}
             </Box>
             <Box
                 component="form"
