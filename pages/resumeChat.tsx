@@ -99,7 +99,9 @@ const ResumeChat: React.FC = () => {
             <Container>
                 {user ? (
                     <Box>
-                        <ChatBuilder />
+                        <ChatBuilder
+                            username={user ? user.displayName : null}
+                        />
                     </Box>
                 ) : (
                     <Button

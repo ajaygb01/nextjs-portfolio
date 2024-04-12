@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { TextField, Button, Box, Typography, Card } from '@mui/material'
+import { TextField, Button, Box, Typography, Card, Avatar } from '@mui/material'
 import { styled, keyframes } from '@mui/system'
 
 interface Message {
@@ -46,7 +46,11 @@ const SystemMessageCard = styled(Card)(({ theme }) => ({
     animation: `${popIn} 0.2s ease`,
 }))
 
-const ChatBuilder: React.FC = () => {
+interface ChatBuilderProps {
+    username?: string | null
+}
+
+const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
     const [state, setState] = React.useState<ChatBuilderState>({
         messages: [],
         currentInput: '',
@@ -140,7 +144,7 @@ const ChatBuilder: React.FC = () => {
         >
             <Box
                 sx={{
-                    width: '80%',
+                    width: '95%',
                     marginBottom: 2,
                     display: 'flex',
                     flexDirection: 'column',
@@ -149,16 +153,23 @@ const ChatBuilder: React.FC = () => {
             >
                 {state.messages.map((message, index) =>
                     message.role === 'user' ? (
-                        <UserMessageCard key={index}>
+                        <UserMessageCard
+                            key={index}
+                            sx={{
+                                borderRadius: '10px 0px 10px 10px',
+                            }}
+                        >
                             <Typography variant="body1">
-                                <strong>{message.role}:</strong>{' '}
+                                <Avatar>{username?.charAt(0)}</Avatar>
                                 {message.content}
                             </Typography>
                         </UserMessageCard>
                     ) : message.role === 'assistant' ? (
-                        <BotMessageCard key={index}>
+                        <BotMessageCard
+                            key={index}
+                            sx={{ borderRadius: '0px 10px 10px 10px' }}
+                        >
                             <Typography variant="body1">
-                                <strong>{message.role}:</strong>{' '}
                                 {message.content}
                             </Typography>
                         </BotMessageCard>
