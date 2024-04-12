@@ -75,7 +75,7 @@ const ChatBuilder: React.FC = () => {
         setState({ ...state, currentInput: event.target.value })
     }
 
-    const handleFormSubmit = (event: React.FormEvent) => {
+    const handleFormSubmit = async (event: React.FormEvent) => {
         event.preventDefault()
         const userMessage: Message = {
             sender: 'user',
@@ -86,6 +86,25 @@ const ChatBuilder: React.FC = () => {
         if (nextQuestion) {
             newMessages.push(nextQuestion)
         }
+
+        // Make a POST request to the /api/chat endpoint
+        const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ messages: newMessages }),
+        })
+
+        // Parse the response
+        const data = await response.json()
+
+        // Add the bot's response to the messages
+        newMessages.push({
+            sender: 'bot',
+            text: data.message,
+        })
+
         setState({
             messages: newMessages,
             currentInput: '',
