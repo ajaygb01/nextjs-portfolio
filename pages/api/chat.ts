@@ -9,7 +9,11 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     if (req.method === 'POST') {
         try {
-            const { messages } = req.body
+            let { messages } = req.body
+            messages.unshift({
+                role: 'system',
+                content: 'You are a helpful assistant.',
+            })
 
             // Call OpenAI's completion endpoint
             const completion = await openai.chat.completions.create({

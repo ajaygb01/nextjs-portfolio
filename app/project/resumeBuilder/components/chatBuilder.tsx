@@ -39,7 +39,7 @@ const BotMessageCard = styled(Card)(({ theme }) => ({
 
 const ChatBuilder: React.FC = () => {
     const [state, setState] = React.useState<ChatBuilderState>({
-        messages: [{ role: 'system', content: 'You are a helpful assistant.' }],
+        messages: [],
         currentInput: '',
     })
 
@@ -55,12 +55,6 @@ const ChatBuilder: React.FC = () => {
         }
         let newMessages: Message[] = [...state.messages, userMessage]
 
-        setState({
-            messages: newMessages,
-            currentInput: '',
-        })
-
-        console.log('Sending message:', state.currentInput, state.messages)
         // Make a POST request to the OpenAI API
         const response = await fetch('/api/chat', {
             method: 'POST',
@@ -69,7 +63,7 @@ const ChatBuilder: React.FC = () => {
                 Authorization: 'Bearer ' + process.env.OPENAI_API_KEY,
             },
             body: JSON.stringify({
-                messages: state.messages,
+                messages: newMessages,
                 model: 'gpt-3.5-turbo',
             }),
         })

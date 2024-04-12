@@ -39,10 +39,10 @@ const ResumeChat: React.FC = () => {
     }, [])
 
     useEffect(() => {
-        if (!user) {
+        if (!firebase.auth().currentUser) {
             handleLogin()
         }
-    }, [user])
+    }, [])
 
     const handleLogin = async () => {
         try {
