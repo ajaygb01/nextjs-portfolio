@@ -10,6 +10,7 @@ interface Message {
 interface ChatBuilderState {
     messages: Message[]
     currentInput: string
+    isLoading: boolean
 }
 
 const popIn = keyframes`
@@ -37,63 +38,94 @@ const BotMessageCard = styled(Card)(({ theme }) => ({
     animation: `${popIn} 0.2s ease`,
 }))
 
+const SystemMessageCard = styled(Card)(({ theme }) => ({
+    backgroundColor: '#D3D3D3', // Light gray background
+    margin: theme.spacing(1),
+    padding: theme.spacing(1),
+    alignSelf: 'center',
+    animation: `${popIn} 0.2s ease`,
+}))
+
 const ChatBuilder: React.FC = () => {
     const [state, setState] = React.useState<ChatBuilderState>({
         messages: [],
         currentInput: '',
+        isLoading: false,
     })
 
     const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setState({ ...state, currentInput: event.target.value })
     }
 
-    const handleFormSubmit = async (event: React.FormEvent) => {
+    const handleFormSubmit = (event: React.FormEvent) => {
         event.preventDefault()
         const userMessage: Message = {
             role: 'user',
             content: state.currentInput,
         }
-        let newMessages: Message[] = [...state.messages, userMessage]
+        const loadingMessage: Message = {
+            role: 'system',
+            content: 'Loading...',
+        }
+        setState((prevState) => ({
+            ...prevState,
+            messages: [...prevState.messages, userMessage, loadingMessage],
+            isLoading: true,
+            currentInput: '',
+        }))
+    }
 
-        // Make a POST request to the OpenAI API
-        const response = await fetch('/api/chat', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'Bearer ' + process.env.OPENAI_API_KEY,
-            },
-            body: JSON.stringify({
-                messages: newMessages,
-                model: 'gpt-3.5-turbo',
-            }),
-        })
-
-        // Parse the response
-        const data = await response.json()
-
-        // Check if data.choices exists and has at least one element
-        // Check if data.message exists
-        if (data.message) {
-            // Add the assistant's response to the messages
-            newMessages.push({
-                role: 'assistant',
-                content: data.message.trim(),
+    React.useEffect(() => {
+        const makeApiCall = async () => {
+            // Make a POST request to the OpenAI API
+            const response = await fetch('/api/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: 'Bearer ' + process.env.OPENAI_API_KEY,
+                },
+                body: JSON.stringify({
+                    messages: state.messages,
+                    model: 'gpt-3.5-turbo',
+                }),
             })
-        } else {
-            // Handle the error
-            console.error('No choices in response')
-            newMessages.push({
-                role: 'assistant',
-                content: 'Sorry, I could not generate a response.',
-            })
+
+            // Parse the response
+            const data = await response.json()
+
+            // Check if data.message exists
+            if (data.message) {
+                // Remove the loading message and add the assistant's response to the messages
+                const newMessages = state.messages.slice(0, -1)
+                newMessages.push({
+                    role: 'assistant',
+                    content: data.message.trim(),
+                })
+                setState((prevState) => ({
+                    ...prevState,
+                    messages: newMessages,
+                    isLoading: false,
+                }))
+            } else {
+                // Handle the error
+                console.error('No choices in response')
+                const newMessages = state.messages.slice(0, -1)
+                newMessages.push({
+                    role: 'assistant',
+                    content: 'Sorry, I could not generate a response.',
+                })
+                setState((prevState) => ({
+                    ...prevState,
+                    messages: newMessages,
+                    isLoading: false,
+                }))
+            }
         }
 
-        // Update the state with the new messages
-        setState({
-            messages: newMessages,
-            currentInput: '',
-        })
-    }
+        if (state.isLoading) {
+            makeApiCall()
+        }
+    }, [state.isLoading])
 
     return (
         <Box
@@ -109,7 +141,7 @@ const ChatBuilder: React.FC = () => {
             <Box
                 sx={{
                     width: '80%',
-                    marginassistanttom: 2,
+                    marginBottom: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     flexGrow: 1,
@@ -123,13 +155,20 @@ const ChatBuilder: React.FC = () => {
                                 {message.content}
                             </Typography>
                         </UserMessageCard>
-                    ) : (
+                    ) : message.role === 'assistant' ? (
                         <BotMessageCard key={index}>
                             <Typography variant="body1">
                                 <strong>{message.role}:</strong>{' '}
                                 {message.content}
                             </Typography>
                         </BotMessageCard>
+                    ) : (
+                        <SystemMessageCard key={index}>
+                            <Typography variant="body1">
+                                <strong>{message.role}:</strong>{' '}
+                                {message.content}
+                            </Typography>
+                        </SystemMessageCard>
                     )
                 )}
             </Box>
@@ -152,7 +191,11 @@ const ChatBuilder: React.FC = () => {
                     onChange={handleInputChange}
                     placeholder="Type your message here..."
                 />
-                <Button variant="contained" type="submit">
+                <Button
+                    variant="contained"
+                    type="submit"
+                    disabled={state.isLoading}
+                >
                     Send
                 </Button>
             </Box>
