@@ -163,8 +163,10 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
                                 variant="body1"
                                 sx={{ display: 'flex', alignItems: 'center' }}
                             >
-                                <Avatar>{username?.charAt(0)}</Avatar>
-                                <Box sx={{ ml: 1 }}>{message.content}</Box>
+                                <Box>{message.content}</Box>
+                                <Avatar sx={{ ml: 1 }}>
+                                    {username?.charAt(0)}
+                                </Avatar>
                             </Typography>
                         </UserMessageCard>
                     ) : message.role === 'assistant' ? (
@@ -172,8 +174,12 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
                             key={index}
                             sx={{ borderRadius: '0px 10px 10px 10px' }}
                         >
-                            <Typography variant="body1">
-                                {message.content}
+                            <Typography
+                                variant="body1"
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                            >
+                                <Avatar>AS</Avatar>
+                                <Box sx={{ ml: 1 }}>{message.content}</Box>
                             </Typography>
                         </BotMessageCard>
                     ) : (
