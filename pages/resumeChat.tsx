@@ -63,7 +63,13 @@ const ResumeChat: React.FC = () => {
     }
 
     return (
-        <Box sx={{ bgcolor: '#f5f5f5', height: '100vh' }}>
+        <Box
+            sx={{
+                bgcolor: '#f5f5f5',
+                height: '100vh',
+                backgroundColor: 'grey',
+            }}
+        >
             <Drawer open={drawerOpen} onClose={toggleDrawer}>
                 <List>
                     {['Template 1', 'Template 2', 'Template 3'].map(
@@ -78,7 +84,7 @@ const ResumeChat: React.FC = () => {
                     )}
                 </List>
             </Drawer>
-            <Toolbar>
+            <Toolbar sx={{ background: '#7FEFBD', borderRadius: 2 }}>
                 <IconButton
                     edge="start"
                     color="inherit"
@@ -96,7 +102,7 @@ const ResumeChat: React.FC = () => {
                     </Avatar>
                 )}
             </Toolbar>
-            <Container>
+            <Box sx={{ p: 0.1 }}>
                 {user ? (
                     <Box>
                         <ChatBuilder
@@ -112,7 +118,7 @@ const ResumeChat: React.FC = () => {
                         Login with Google
                     </Button>
                 )}
-            </Container>
+            </Box>
         </Box>
     )
 }

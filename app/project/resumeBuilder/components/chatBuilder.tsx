@@ -1,6 +1,15 @@
 import * as React from 'react'
-import { TextField, Button, Box, Typography, Card, Avatar } from '@mui/material'
+import {
+    TextField,
+    Button,
+    Box,
+    Typography,
+    Card,
+    Avatar,
+    Grid,
+} from '@mui/material'
 import { styled, keyframes } from '@mui/system'
+import ReactMarkdown from 'react-markdown'
 
 interface Message {
     role: 'user' | 'assistant' | 'system'
@@ -137,18 +146,18 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                height: '90vh',
-                alignItems: 'center',
-                overflowY: 'auto',
+                height: '100vh', // take up the full height of the viewport
+                backgroundColor: 'grey',
             }}
         >
             <Box
                 sx={{
-                    width: '95%',
+                    width: 'auto',
                     marginBottom: 2,
                     display: 'flex',
                     flexDirection: 'column',
                     flexGrow: 1,
+                    overflow: 'auto',
                 }}
             >
                 {state.messages.map((message, index) =>
@@ -174,13 +183,18 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
                             key={index}
                             sx={{ borderRadius: '0px 10px 10px 10px' }}
                         >
-                            <Typography
-                                variant="body1"
-                                sx={{ display: 'flex', alignItems: 'center' }}
-                            >
-                                <Avatar>AS</Avatar>
-                                <Box sx={{ ml: 1 }}>{message.content}</Box>
-                            </Typography>
+                            <Grid container>
+                                <Grid item sx={{ mr: 3 }}>
+                                    <Avatar>AS</Avatar>
+                                </Grid>
+                                <Grid item xs sx={{ mt: 1 }}>
+                                    <Typography variant="body1">
+                                        <ReactMarkdown>
+                                            {message.content}
+                                        </ReactMarkdown>
+                                    </Typography>
+                                </Grid>
+                            </Grid>
                         </BotMessageCard>
                     ) : (
                         <SystemMessageCard key={index}>
@@ -199,9 +213,11 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
                     display: 'flex',
                     justifyContent: 'center',
                     gap: 1,
-                    width: '80%',
+                    width: '100%',
                     position: 'fixed',
                     bottom: 0,
+                    padding: 1,
+                    backgroundColor: 'white',
                 }}
             >
                 <TextField

@@ -12,7 +12,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
             let { messages } = req.body
             messages.unshift({
                 role: 'system',
-                content: 'You are a helpful assistant.',
+                content:
+                    'You are an assistant, who can help me with my resume.',
             })
 
             // Call OpenAI's completion endpoint
