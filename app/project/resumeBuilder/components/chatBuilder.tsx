@@ -159,9 +159,12 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
                                 borderRadius: '10px 0px 10px 10px',
                             }}
                         >
-                            <Typography variant="body1">
+                            <Typography
+                                variant="body1"
+                                sx={{ display: 'flex', alignItems: 'center' }}
+                            >
                                 <Avatar>{username?.charAt(0)}</Avatar>
-                                {message.content}
+                                <Box sx={{ ml: 1 }}>{message.content}</Box>
                             </Typography>
                         </UserMessageCard>
                     ) : message.role === 'assistant' ? (
