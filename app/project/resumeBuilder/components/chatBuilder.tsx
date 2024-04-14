@@ -146,8 +146,9 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
                 display: 'flex',
                 flexDirection: 'column',
                 justifyContent: 'space-between',
-                height: '100vh', // take up the full height of the viewport
+                height: 'auto', // take up the full height of the viewport
                 backgroundColor: 'grey',
+                pb: 8,
             }}
         >
             <Box
