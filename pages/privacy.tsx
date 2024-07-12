@@ -22,17 +22,18 @@ const PrivacyPage: React.FC = () => {
             <Typography variant="body1" sx={{ marginBottom: '10px' }}>
                 We may also collect non-personal information such as your IP
                 address, browser type, and operating system to analyze trends,
-                administer the site, track user's movement, and gather broad
-                demographic information for aggregate use. This information is
-                not linked to any personally identifiable information.
+                administer the site, track user&apos;s movement, and gather
+                broad demographic information for aggregate use. This
+                information is not linked to any personally identifiable
+                information.
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: '10px' }}>
                 We use cookies to personalize content and ads, to provide social
                 media features, and to analyze our traffic. We also share
                 information about your use of our site with our social media,
                 advertising, and analytics partners who may combine it with
-                other information that you've provided to them or that they've
-                collected from your use of their services.
+                other information that you&apos;ve provided to them or that
+                they&apos;ve collected from your use of their services.
             </Typography>
             <Typography variant="body1" sx={{ marginBottom: '10px' }}>
                 Our website may contain links to other websites. Please be aware
