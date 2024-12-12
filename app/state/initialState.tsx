@@ -113,3 +113,13 @@ export const firebaseConfig = {
     messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
 }
+
+export const firebaseConfigCustomer = {
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY_CUSTOMER,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN_CUSTOMER,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID_CUSTOMER,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET_CUSTOMER,
+    messagingSenderId:
+        process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID_CUSTOMER,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID_CUSTOMER,
+}
