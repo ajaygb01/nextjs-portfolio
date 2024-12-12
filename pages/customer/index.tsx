@@ -49,7 +49,7 @@ const CustomerApp: React.FC = () => {
 
     const handleLogin = () => {
         const provider = new firebase.auth.GoogleAuthProvider()
-        firebaseCustomerApp.auth().signInWithPopup(provider)
+        firebaseCustomerApp.auth().signInWithRedirect(provider)
     }
 
     const handleLogout = () => {
