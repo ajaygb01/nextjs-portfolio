@@ -34,6 +34,14 @@ export default function handler(req: any, res: any) {
             rating: 4.3,
             imageUrl: `https://placehold.co/140/EEE/31343C?font=pt-sans&text=Taco%20Fiesta`,
         },
+        {
+            name: 'Taco Fiesta1',
+            address: '101 Pine St',
+            postalCode: 'M5A 1D6',
+            cuisineType: 'Mexican',
+            rating: 4.3,
+            imageUrl: `https://placehold.co/140/EEE/31343C?font=pt-sans&text=Taco%20Fiesta1`,
+        },
     ]
 
     // Simulate API response
