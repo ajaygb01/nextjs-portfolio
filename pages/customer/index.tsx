@@ -12,8 +12,8 @@ import 'firebase/compat/auth'
 import 'firebase/compat/firestore'
 import { firebaseConfigCustomer } from '@/app/state/initialState'
 import Authentication from './Authentication'
-import PostalCodeInput from './postalCodeInput'
-import RestaurantList from './restaurantList'
+import PostalCodeInput from './PostalCodeInput'
+import RestaurantList from './RestaurantList'
 
 const firebaseCustomerApp = !firebase.apps.some((app) => app.name === 'foodie')
     ? firebase.initializeApp(firebaseConfigCustomer, 'foodie')
