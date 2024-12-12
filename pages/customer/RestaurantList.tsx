@@ -13,6 +13,9 @@ interface RestaurantListProps {
 }
 
 const RestaurantList: React.FC<RestaurantListProps> = ({ restaurants }) => {
+    if (!restaurants || restaurants.length === 0) {
+        return <></>
+    }
     return (
         <>
             <Grid container spacing={3}>
