@@ -30,6 +30,7 @@ const CustomerApp: React.FC = () => {
         const unsubscribe = firebaseCustomerApp
             .auth()
             .onAuthStateChanged((user) => {
+                //console.log(user) // Log the user object to verify its properties
                 setUser(user)
             })
 
@@ -41,6 +42,19 @@ const CustomerApp: React.FC = () => {
         }
 
         fetchRestaurants()
+
+        // Handle the result of the redirect operation
+        firebaseCustomerApp
+            .auth()
+            .getRedirectResult()
+            .then((result) => {
+                if (result.user) {
+                    setUser(result.user)
+                }
+            })
+            .catch((error) => {
+                console.error('Error during redirect result handling:', error)
+            })
 
         return () => {
             unsubscribe()
