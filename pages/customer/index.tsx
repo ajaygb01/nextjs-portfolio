@@ -14,6 +14,7 @@ import { firebaseConfigCustomer } from '@/app/state/initialState'
 import Authentication from './Authentication'
 import PostalCodeInput from './PostalCodeInput'
 import RestaurantList from './RestaurantList'
+import { useRouter } from 'next/router'
 
 const firebaseCustomerApp = !firebase.apps.some((app) => app.name === 'foodie')
     ? firebase.initializeApp(firebaseConfigCustomer, 'foodie')
@@ -25,12 +26,13 @@ const CustomerApp: React.FC = () => {
     const [filteredRestaurants, setFilteredRestaurants] = useState<any[]>([])
     const [postalCode, setPostalCode] = useState<string>('') // User postal code input
     const [open, setOpen] = useState(true)
+    const router = useRouter()
 
     useEffect(() => {
         const unsubscribe = firebaseCustomerApp
             .auth()
             .onAuthStateChanged((user) => {
-                //console.log('Auth state changed user:', user) // Debugging line
+                console.log('Auth state changed user:', user) // Debugging line
                 setUser(user)
             })
 
@@ -54,7 +56,7 @@ const CustomerApp: React.FC = () => {
             .auth()
             .signInWithPopup(provider)
             .then((result) => {
-                //console.log('Popup result user:', result.user) // Debugging line
+                console.log('Popup result user:', result.user) // Debugging line
                 setUser(result.user)
             })
             .catch((error) => {
