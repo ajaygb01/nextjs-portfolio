@@ -1,4 +1,3 @@
-// Authentication.tsx
 import React from 'react'
 import { Button, Typography } from '@mui/material'
 import firebase from 'firebase/compat/app'
@@ -24,7 +23,7 @@ const Authentication: React.FC<AuthenticationProps> = ({
             ) : (
                 <>
                     <Typography variant="h6" component="div">
-                        Hello, {user.displayName}
+                        Hello, {user?.displayName || 'User'}
                     </Typography>
                     <Button color="inherit" onClick={onLogout}>
                         Logout

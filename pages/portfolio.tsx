@@ -144,7 +144,7 @@ const Portfilo: React.FC = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
-        console.log('Form values:', formValues)
+        //console.log('Form values:', formValues)
         // Perform form submission or further processing here
     }
 

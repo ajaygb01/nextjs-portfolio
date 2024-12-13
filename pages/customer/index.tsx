@@ -30,7 +30,7 @@ const CustomerApp: React.FC = () => {
         const unsubscribe = firebaseCustomerApp
             .auth()
             .onAuthStateChanged((user) => {
-                //console.log(user) // Log the user object to verify its properties
+                //console.log('Auth state changed user:', user) // Debugging line
                 setUser(user)
             })
 
@@ -43,19 +43,6 @@ const CustomerApp: React.FC = () => {
 
         fetchRestaurants()
 
-        // Handle the result of the redirect operation
-        firebaseCustomerApp
-            .auth()
-            .getRedirectResult()
-            .then((result) => {
-                if (result.user) {
-                    setUser(result.user)
-                }
-            })
-            .catch((error) => {
-                console.error('Error during redirect result handling:', error)
-            })
-
         return () => {
             unsubscribe()
         }
@@ -63,7 +50,16 @@ const CustomerApp: React.FC = () => {
 
     const handleLogin = () => {
         const provider = new firebase.auth.GoogleAuthProvider()
-        firebaseCustomerApp.auth().signInWithRedirect(provider)
+        firebaseCustomerApp
+            .auth()
+            .signInWithPopup(provider)
+            .then((result) => {
+                //console.log('Popup result user:', result.user) // Debugging line
+                setUser(result.user)
+            })
+            .catch((error) => {
+                console.error('Error during popup login:', error)
+            })
     }
 
     const handleLogout = () => {
