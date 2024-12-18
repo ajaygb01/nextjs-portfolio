@@ -93,7 +93,7 @@ const PostalCodeInput: React.FC<PostalCodeInputProps> = ({
                 map.current = null
             }
         }
-    }, [mapboxToken, onSearch])
+    }, [mapboxToken])
 
     useEffect(() => {
         if (map.current) {
