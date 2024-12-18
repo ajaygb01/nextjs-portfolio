@@ -1,9 +1,7 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Box, Typography } from '@mui/material'
 import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
-
-mapboxgl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_API_KEY || '' // Use NEXT_PUBLIC_ prefix for environment variables
 
 interface PostalCodeInputProps {
     onSearch: (location: { lat: number; lng: number }) => void
@@ -18,10 +16,26 @@ const PostalCodeInput: React.FC<PostalCodeInputProps> = ({
     const map = useRef<mapboxgl.Map | null>(null)
     const userMarker = useRef<mapboxgl.Marker | null>(null)
     const restaurantMarkers = useRef<mapboxgl.Marker[]>([])
+    const [mapboxToken, setMapboxToken] = useState<string | null>(null)
 
     useEffect(() => {
-        if (typeof window !== 'undefined' && mapContainer.current) {
+        const fetchMapboxToken = async () => {
+            const response = await fetch('/api/mapbox-token')
+            const data = await response.json()
+            setMapboxToken(data.token)
+        }
+
+        fetchMapboxToken()
+    }, [])
+
+    useEffect(() => {
+        if (
+            mapboxToken &&
+            typeof window !== 'undefined' &&
+            mapContainer.current
+        ) {
             if (map.current === null) {
+                mapboxgl.accessToken = mapboxToken
                 map.current = new mapboxgl.Map({
                     container: mapContainer.current,
                     style: 'mapbox://styles/mapbox/streets-v11',
@@ -79,7 +93,7 @@ const PostalCodeInput: React.FC<PostalCodeInputProps> = ({
                 map.current = null
             }
         }
-    }, []) // Ensure this useEffect runs only once
+    }, [mapboxToken, onSearch])
 
     useEffect(() => {
         if (map.current) {
