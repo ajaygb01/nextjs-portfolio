@@ -7,7 +7,7 @@ interface BreadcrumbsProps {
 }
 
 const CustomBreadcrumbs: React.FC<BreadcrumbsProps> = ({
-    path,
+    path = [],
     handleBreadcrumbClick,
 }) => {
     return (
