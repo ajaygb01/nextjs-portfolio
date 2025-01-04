@@ -1,10 +1,15 @@
-import '../styles/styles.css' // Adjust the path if needed
-import React from 'react'
+// pages/_app.tsx
+import { SessionProvider } from 'next-auth/react'
 import { AppProps } from 'next/app'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { CssBaseline } from '@mui/material'
 
 function MyApp({ Component, pageProps }: AppProps) {
-    return <Component {...pageProps} />
+    return (
+        <SessionProvider session={pageProps.session}>
+            <CssBaseline />
+            <Component {...pageProps} />
+        </SessionProvider>
+    )
 }
 
 export default MyApp
