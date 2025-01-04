@@ -51,7 +51,7 @@ const UploadPage: React.FC = () => {
                         )
                     setTaxFolder(taxFolder || null)
                 }
-                setFiles(data.files)
+                setFiles(data.files || [])
             } else {
                 console.error('Error listing files:', data.error)
             }

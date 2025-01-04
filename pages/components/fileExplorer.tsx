@@ -8,7 +8,7 @@ interface FileExplorerProps {
 }
 
 const FileExplorer: React.FC<FileExplorerProps> = ({
-    files,
+    files = [],
     handleFolderClick,
 }) => {
     return (
