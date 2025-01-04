@@ -3,7 +3,11 @@ import { Grid } from '@mui/material'
 import FileCard from './Filecard'
 
 interface FileExplorerProps {
-    files: any[]
+    files: {
+        id: string
+        name: string
+        mimeType: string
+    }[]
     handleFolderClick: (folderId: string, folderName: string) => void
 }
 
