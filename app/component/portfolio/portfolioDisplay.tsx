@@ -8,26 +8,14 @@ import {
     IconButton,
     Grid,
     Card,
-    CardContent,
     ThemeProvider,
-    useMediaQuery,
-    useTheme,
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    DialogContentText,
+    Avatar,
+    Link,
 } from '@mui/material'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
-import {
-    darkTheme,
-    getIcons,
-    icons,
-    lightTheme,
-} from '@/app/state/initialTheme'
+import { darkTheme, lightTheme } from '@/app/state/initialTheme'
 import { FormValues } from '@/app/state/initialState'
-import { get } from 'http'
-import { getSectionContent } from '../sectionGenerator/section'
 
 interface PortfolioDisplayProps {
     formProps: FormValues
@@ -43,23 +31,8 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
     handleClose,
 }) => {
     const [darkMode, setDarkMode] = useState(false)
-    const [prevMode, setPrevMode] = useState(true)
-
-    const [open, setOpen] = useState<{ [key: string]: boolean }>({
-        techstack: false,
-        experience: false,
-        contact: false,
-        about: false,
-        projects: false,
-    })
-
-    const handleToggle = (section: string) => {
-        setOpen((prevOpen) => ({ ...prevOpen, [section]: !prevOpen[section] }))
-    }
 
     const theme = darkMode ? darkTheme : lightTheme
-
-    const sectionContent = getSectionContent(formProps, theme)
 
     return (
         <ThemeProvider theme={theme}>
@@ -71,7 +44,7 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                     flexDirection: 'column',
                     minHeight: height + 'vh',
                     justifyContent: 'space-between',
-                    backgroundColor: theme.palette.primary.main,
+                    backgroundColor: theme.palette.background.default,
                     color: theme.palette.text.primary,
                 }}
             >
@@ -92,7 +65,7 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                                 alignItems: 'center',
                             }}
                         >
-                            <Typography variant="h6" component="div" sx={{}}>
+                            <Typography variant="h6" component="div">
                                 {formProps.userInfo.name}
                             </Typography>
                             <Typography
@@ -109,14 +82,7 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                         <IconButton
                             edge="end"
                             color="inherit"
-                            onClick={() => {
-                                const newPrevMode =
-                                    theme.palette.mode === 'light'
-                                        ? true
-                                        : false
-                                setPrevMode(newPrevMode)
-                                setDarkMode(newPrevMode)
-                            }}
+                            onClick={() => setDarkMode(!darkMode)}
                             aria-label="mode"
                         >
                             {theme.palette.mode === 'light' ? (
@@ -127,159 +93,146 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                         </IconButton>
                     </Toolbar>
                 </AppBar>
-                {formProps.userInfo.bio && (
-                    <Box
-                        sx={{
-                            display: 'flex',
-                            justifyContent: 'center',
-                            mt: 3,
-                        }}
-                    >
-                        <Box
-                            sx={{
-                                p: 2,
-                                textAlign: 'center',
-                                width: { xs: '100%', md: '50%' },
-                                bgcolor: theme.palette.secondary.main,
-                                boxShadow: 1,
-                                borderRadius: 2,
-                            }}
-                        >
-                            <Typography
-                                variant="h6"
-                                component="div"
-                                gutterBottom
-                            >
-                                About Me
-                            </Typography>
-                            <Typography
-                                variant="subtitle1"
-                                component="div"
-                                sx={{
-                                    lineHeight: 1.7,
-                                    fontWeight: 'medium',
-                                }}
-                            >
-                                {formProps.userInfo.bio}
-                            </Typography>
-                        </Box>
-                    </Box>
-                )}
-                <Box
-                    sx={{
-                        marginBottom: '5px',
-                    }}
-                >
-                    {formProps.isTechStack ||
-                    formProps.isExperience ||
-                    formProps.isContact ||
-                    formProps.isProject ? (
-                        <Grid container spacing={1}>
-                            {Object.keys(getIcons(formProps)).map((section) => (
-                                <Grid item xs={12} sm={6} md={3} key={section}>
+                <Box sx={{ textAlign: 'center', marginBottom: '20px' }}>
+                    <Avatar
+                        alt={formProps.userInfo.name}
+                        src={formProps.profileImage}
+                        sx={{ width: 100, height: 100, margin: '0 auto' }}
+                    />
+                    <Typography variant="h4" gutterBottom>
+                        {formProps.userInfo.name}
+                    </Typography>
+                    <Typography variant="h6" gutterBottom>
+                        {formProps.userInfo.title}
+                    </Typography>
+                    <Typography variant="body1" gutterBottom>
+                        {formProps.userInfo.bio}
+                    </Typography>
+                </Box>
+
+                {formProps.isTechStack && (
+                    <Box sx={{ marginBottom: '20px' }}>
+                        <Typography variant="h5" gutterBottom>
+                            Tech Stack
+                        </Typography>
+                        <Grid container spacing={2}>
+                            {formProps.techStack.map((tech, index) => (
+                                <Grid item xs={6} sm={4} md={3} key={index}>
                                     <Card
                                         sx={{
-                                            backgroundColor:
-                                                theme.palette.secondary.main,
+                                            padding: '10px',
+                                            textAlign: 'center',
+                                            backgroundColor: '#e0f7fa',
                                         }}
                                     >
-                                        <CardContent>
-                                            <Box
-                                                sx={{
-                                                    display: 'flex',
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                }}
-                                                onClick={() =>
-                                                    handleToggle(section)
-                                                }
-                                            >
-                                                <IconButton
-                                                    sx={{
-                                                        color: theme.palette
-                                                            .text.primary,
-                                                    }}
-                                                >
-                                                    {
-                                                        icons[
-                                                            section as keyof typeof icons
-                                                        ]
-                                                    }
-                                                </IconButton>
-                                                <Typography
-                                                    variant="h6"
-                                                    component="div"
-                                                >
-                                                    {section
-                                                        .charAt(0)
-                                                        .toUpperCase() +
-                                                        section.slice(1)}
-                                                </Typography>
-                                            </Box>
-                                            {open[section] && (
-                                                <Typography
-                                                    variant="body2"
-                                                    color="text.secondary"
-                                                    component="div"
-                                                >
-                                                    {
-                                                        sectionContent[
-                                                            section as keyof typeof sectionContent
-                                                        ]
-                                                    }
-                                                </Typography>
-                                            )}
-                                        </CardContent>
+                                        <Typography variant="h6">
+                                            {tech.language}
+                                        </Typography>
+                                        <Typography variant="body2">
+                                            {tech.year} years
+                                        </Typography>
                                     </Card>
                                 </Grid>
                             ))}
                         </Grid>
-                    ) : (
-                        <></>
-                    )}
-                </Box>
-                <Box
-                    component={'footer'}
-                    sx={{
-                        mt: 2,
-                        py: 2,
-                        borderRadius: 3,
-                        textAlign: 'center',
-                        position: 'relative',
-                    }}
-                >
-                    <Typography variant="body2" color="text.secondary">
-                        ©{' '}
-                        {formProps.footer.year === 0
-                            ? new Date().getFullYear()
-                            : formProps.footer.year}{' '}
-                        {formProps.isUseUserInfo
-                            ? formProps.userInfo.name
-                            : formProps.footer.companyName}
+                    </Box>
+                )}
+
+                {formProps.isExperience && (
+                    <Box sx={{ marginBottom: '20px' }}>
+                        <Typography variant="h5" gutterBottom>
+                            Experience
+                        </Typography>
+                        {formProps.experience.map((exp, index) => (
+                            <Card
+                                key={index}
+                                sx={{
+                                    padding: '10px',
+                                    marginBottom: '10px',
+                                    backgroundColor: '#fff3e0',
+                                }}
+                            >
+                                <Typography variant="h6">
+                                    {exp.position}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {exp.company} - {exp.location}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {exp.from} to {exp.to}
+                                </Typography>
+                                <Typography variant="body2">
+                                    Key Skills: {exp.keySkills.join(', ')}
+                                </Typography>
+                            </Card>
+                        ))}
+                    </Box>
+                )}
+
+                {formProps.isContact && (
+                    <Box sx={{ marginBottom: '20px' }}>
+                        <Typography variant="h5" gutterBottom>
+                            Contact
+                        </Typography>
+                        <Grid container spacing={2}>
+                            {formProps.contact.map((contact, index) => (
+                                <Grid item xs={4} key={index}>
+                                    <Link
+                                        href={contact.link}
+                                        target="_blank"
+                                        rel="noopener"
+                                    >
+                                        <IconButton>{contact.icon}</IconButton>
+                                        <Typography variant="body2">
+                                            {contact.app}
+                                        </Typography>
+                                    </Link>
+                                </Grid>
+                            ))}
+                        </Grid>
+                    </Box>
+                )}
+
+                {formProps.isProject && (
+                    <Box sx={{ marginBottom: '20px' }}>
+                        <Typography variant="h5" gutterBottom>
+                            Projects
+                        </Typography>
+                        {formProps.projects.map((project, index) => (
+                            <Card
+                                key={index}
+                                sx={{
+                                    padding: '10px',
+                                    marginBottom: '10px',
+                                    backgroundColor: '#e8f5e9',
+                                }}
+                            >
+                                <Typography variant="h6">
+                                    {project.name}
+                                </Typography>
+                                <Typography variant="body2">
+                                    {project.description}
+                                </Typography>
+                                <Link
+                                    href={project.link}
+                                    target="_blank"
+                                    rel="noopener"
+                                >
+                                    <Typography variant="body2" color="primary">
+                                        View Project
+                                    </Typography>
+                                </Link>
+                            </Card>
+                        ))}
+                    </Box>
+                )}
+
+                <Box sx={{ textAlign: 'center', marginTop: '20px' }}>
+                    <Typography variant="body2">
+                        &copy; {formProps.footer.year}{' '}
+                        {formProps.footer.companyName}
                     </Typography>
                 </Box>
-                {isModal && (
-                    <Dialog open={isModal} onClose={handleClose}>
-                        <DialogTitle>Under construction</DialogTitle>
-                        <DialogContent>
-                            <DialogContentText>
-                                The following features are working:
-                            </DialogContentText>
-                            <DialogContentText component="div">
-                                <ul>
-                                    <li>Forms</li>
-                                    <li>Display badge</li>
-                                    <li>Design builder view</li>
-                                    <li>Function inside design builder</li>
-                                    <li>Theme switch</li>
-                                </ul>
-                            </DialogContentText>
-                            <DialogContentText>
-                                Press outside the dialog to close it.
-                            </DialogContentText>
-                        </DialogContent>
-                    </Dialog>
-                )}
             </Box>
         </ThemeProvider>
     )
