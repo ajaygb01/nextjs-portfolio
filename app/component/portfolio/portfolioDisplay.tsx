@@ -11,6 +11,9 @@ import {
     ThemeProvider,
     Avatar,
     Link,
+    Slide,
+    Grow,
+    Zoom,
 } from '@mui/material'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
@@ -46,6 +49,12 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                     justifyContent: 'space-between',
                     backgroundColor: theme.palette.background.default,
                     color: theme.palette.text.primary,
+                    animation: 'backgroundAnimation 10s infinite alternate',
+                    '@keyframes backgroundAnimation': {
+                        '0%': { backgroundColor: '#ffeb3b' },
+                        '50%': { backgroundColor: '#ff5722' },
+                        '100%': { backgroundColor: '#4caf50' },
+                    },
                 }}
             >
                 <AppBar
@@ -94,20 +103,28 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                     </Toolbar>
                 </AppBar>
                 <Box sx={{ textAlign: 'center', marginBottom: '20px' }}>
-                    <Avatar
-                        alt={formProps.userInfo.name}
-                        src={formProps.profileImage}
-                        sx={{ width: 100, height: 100, margin: '0 auto' }}
-                    />
-                    <Typography variant="h4" gutterBottom>
-                        {formProps.userInfo.name}
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                        {formProps.userInfo.title}
-                    </Typography>
-                    <Typography variant="body1" gutterBottom>
-                        {formProps.userInfo.bio}
-                    </Typography>
+                    <Zoom in={true} style={{ transitionDelay: '500ms' }}>
+                        <Avatar
+                            alt={formProps.userInfo.name}
+                            src={formProps.profileImage}
+                            sx={{ width: 100, height: 100, margin: '0 auto' }}
+                        />
+                    </Zoom>
+                    <Slide direction="up" in={true} mountOnEnter unmountOnExit>
+                        <Typography variant="h4" gutterBottom>
+                            {formProps.userInfo.name}
+                        </Typography>
+                    </Slide>
+                    <Slide direction="up" in={true} mountOnEnter unmountOnExit>
+                        <Typography variant="h6" gutterBottom>
+                            {formProps.userInfo.title}
+                        </Typography>
+                    </Slide>
+                    <Slide direction="up" in={true} mountOnEnter unmountOnExit>
+                        <Typography variant="body1" gutterBottom>
+                            {formProps.userInfo.bio}
+                        </Typography>
+                    </Slide>
                 </Box>
 
                 {formProps.isTechStack && (
@@ -118,20 +135,39 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                         <Grid container spacing={2}>
                             {formProps.techStack.map((tech, index) => (
                                 <Grid item xs={6} sm={4} md={3} key={index}>
-                                    <Card
-                                        sx={{
-                                            padding: '10px',
-                                            textAlign: 'center',
-                                            backgroundColor: '#e0f7fa',
+                                    <Grow
+                                        in={true}
+                                        style={{
+                                            transitionDelay: `${index * 100}ms`,
                                         }}
                                     >
-                                        <Typography variant="h6">
-                                            {tech.language}
-                                        </Typography>
-                                        <Typography variant="body2">
-                                            {tech.year} years
-                                        </Typography>
-                                    </Card>
+                                        <Card
+                                            sx={{
+                                                padding: '10px',
+                                                textAlign: 'center',
+                                                backgroundColor: '#e0f7fa',
+                                                animation:
+                                                    'cardAnimation 5s infinite alternate',
+                                                '@keyframes cardAnimation': {
+                                                    '0%': {
+                                                        transform:
+                                                            'rotate(0deg)',
+                                                    },
+                                                    '100%': {
+                                                        transform:
+                                                            'rotate(360deg)',
+                                                    },
+                                                },
+                                            }}
+                                        >
+                                            <Typography variant="h6">
+                                                {tech.language}
+                                            </Typography>
+                                            <Typography variant="body2">
+                                                {tech.year} years
+                                            </Typography>
+                                        </Card>
+                                    </Grow>
                                 </Grid>
                             ))}
                         </Grid>
@@ -144,27 +180,40 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                             Experience
                         </Typography>
                         {formProps.experience.map((exp, index) => (
-                            <Card
+                            <Grow
+                                in={true}
+                                style={{ transitionDelay: `${index * 100}ms` }}
                                 key={index}
-                                sx={{
-                                    padding: '10px',
-                                    marginBottom: '10px',
-                                    backgroundColor: '#fff3e0',
-                                }}
                             >
-                                <Typography variant="h6">
-                                    {exp.position}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {exp.company} - {exp.location}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {exp.from} to {exp.to}
-                                </Typography>
-                                <Typography variant="body2">
-                                    Key Skills: {exp.keySkills.join(', ')}
-                                </Typography>
-                            </Card>
+                                <Card
+                                    sx={{
+                                        padding: '10px',
+                                        marginBottom: '10px',
+                                        backgroundColor: '#fff3e0',
+                                        animation:
+                                            'cardAnimation 5s infinite alternate',
+                                        '@keyframes cardAnimation': {
+                                            '0%': { transform: 'rotate(0deg)' },
+                                            '100%': {
+                                                transform: 'rotate(360deg)',
+                                            },
+                                        },
+                                    }}
+                                >
+                                    <Typography variant="h6">
+                                        {exp.position}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {exp.company} - {exp.location}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        {exp.from} to {exp.to}
+                                    </Typography>
+                                    <Typography variant="body2">
+                                        Key Skills: {exp.keySkills.join(', ')}
+                                    </Typography>
+                                </Card>
+                            </Grow>
                         ))}
                     </Box>
                 )}
@@ -199,30 +248,46 @@ const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
                             Projects
                         </Typography>
                         {formProps.projects.map((project, index) => (
-                            <Card
+                            <Grow
+                                in={true}
+                                style={{ transitionDelay: `${index * 100}ms` }}
                                 key={index}
-                                sx={{
-                                    padding: '10px',
-                                    marginBottom: '10px',
-                                    backgroundColor: '#e8f5e9',
-                                }}
                             >
-                                <Typography variant="h6">
-                                    {project.name}
-                                </Typography>
-                                <Typography variant="body2">
-                                    {project.description}
-                                </Typography>
-                                <Link
-                                    href={project.link}
-                                    target="_blank"
-                                    rel="noopener"
+                                <Card
+                                    sx={{
+                                        padding: '10px',
+                                        marginBottom: '10px',
+                                        backgroundColor: '#e8f5e9',
+                                        animation:
+                                            'cardAnimation 5s infinite alternate',
+                                        '@keyframes cardAnimation': {
+                                            '0%': { transform: 'rotate(0deg)' },
+                                            '100%': {
+                                                transform: 'rotate(360deg)',
+                                            },
+                                        },
+                                    }}
                                 >
-                                    <Typography variant="body2" color="primary">
-                                        View Project
+                                    <Typography variant="h6">
+                                        {project.name}
                                     </Typography>
-                                </Link>
-                            </Card>
+                                    <Typography variant="body2">
+                                        {project.description}
+                                    </Typography>
+                                    <Link
+                                        href={project.link}
+                                        target="_blank"
+                                        rel="noopener"
+                                    >
+                                        <Typography
+                                            variant="body2"
+                                            color="primary"
+                                        >
+                                            View Project
+                                        </Typography>
+                                    </Link>
+                                </Card>
+                            </Grow>
                         ))}
                     </Box>
                 )}
