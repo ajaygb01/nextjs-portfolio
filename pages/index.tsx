@@ -50,10 +50,7 @@ const formValues: FormValues = {
         },
         {
             from: '2021-Feb',
-            to: new Date().toLocaleString('default', {
-                year: 'numeric',
-                month: 'short',
-            }),
+            to: '',
             company: 'Lithia / Pfaff Motors Inc',
             location: 'Toronto',
             position: 'Software Developer',
@@ -90,10 +87,10 @@ const formValues: FormValues = {
             link: '/portfolio',
         },
         {
-            name: 'Movie Booking',
+            name: 'Loan Calculator App',
             description:
-                'Built using Next.js, Material-UI, and Firebase for authentication',
-            link: '/movieBooking',
+                'Built using Next.js, Material-UI, Chart.js / Calculate loan amortization',
+            link: '/snow',
         },
     ],
     isUseUserInfo: true,
