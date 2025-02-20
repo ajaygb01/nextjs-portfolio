@@ -82,6 +82,12 @@ const formValues: FormValues = {
     isProject: true,
     projects: [
         {
+            name: 'MediDash',
+            description:
+                'A comprehensive medical dashboard built using Next.js and Material-UI, featuring patient management, medical records, lab results, and appointment scheduling.',
+            link: '/medical',
+        },
+        {
             name: 'Portfolio Website',
             description:
                 'Built using Next.js and Material-UI / Randomize user info',
