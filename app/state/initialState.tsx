@@ -1,4 +1,6 @@
 import { StaticImageData } from 'next/image'
+import { ReactElement } from 'react'
+
 export interface TechStack {
     language: string
     year: number
@@ -16,7 +18,7 @@ export interface Experience {
 export interface Contact {
     app: string
     link: string
-    icon?: React.JSX.Element
+    icon?: ReactElement
 }
 
 export interface Project {
