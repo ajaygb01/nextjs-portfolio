@@ -1,3 +1,4 @@
+import { StaticImageData } from 'next/image'
 export interface TechStack {
     language: string
     year: number
@@ -46,7 +47,7 @@ export interface FormValues {
     projects: Project[]
     isUseUserInfo: boolean
     isBadge: boolean
-    profileImage: string
+    profileImage: StaticImageData
     footer: Footer
 }
 
@@ -71,7 +72,7 @@ export const initialFormValues: FormValues = {
     projects: [{ name: '', description: '', link: '' }],
     isUseUserInfo: false,
     isBadge: false,
-    profileImage: '',
+    profileImage: {} as StaticImageData,
     footer: { year: 0, companyName: '' },
 }
 

@@ -3,518 +3,210 @@ import React, { useState } from 'react'
 import {
     Box,
     Typography,
-    Grid,
-    Card,
-    ThemeProvider,
     Avatar,
     Link,
-    Paper,
-    Divider,
     Container,
     Chip,
-    useMediaQuery,
-    useTheme,
+    IconButton,
+    Card,
+    CardContent,
+    Tooltip,
+    Switch
 } from '@mui/material'
-import { darkTheme, lightTheme } from '@/app/state/initialTheme'
-import { FormValues } from '@/app/state/initialState'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import EmailIcon from '@mui/icons-material/Email'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
 
-interface PortfolioDisplayProps {
-    formProps: FormValues
-    height?: number
-    isModal?: boolean
-    handleClose?: () => void
+// Define Types
+interface Experience {
+    position: string;
+    company: string;
+    from: string;
+    to?: string;
 }
 
-const PortfolioDisplay: React.FC<PortfolioDisplayProps> = ({
-    formProps,
-    height = 100,
-    isModal,
-    handleClose,
-}) => {
+interface TechStack {
+    language: string;
+    year: number;
+}
+
+interface Project {
+    name: string;
+    link: string;
+}
+
+interface Contact {
+    linkedin: string;
+    whatsapp: string;
+    email: string;
+}
+
+interface UserInfo {
+    name: string;
+    title: string;
+    bio: string;
+}
+
+interface ProfileImage {
+    src: string;
+}
+
+interface FormProps {
+    experience: Experience[];
+    techStack: TechStack[];
+    projects: Project[];
+    contact: Contact;
+    userInfo: UserInfo;
+    profileImage: ProfileImage;
+}
+
+// Theme Configuration
+const themes = {
+    light: createTheme({
+        palette: {
+            primary: { main: '#1976d2' },
+            background: { default: '#f5f5f5', paper: '#ffffff' },
+            text: { primary: '#333' },
+        },
+    }),
+    dark: createTheme({
+        palette: {
+            primary: { main: '#ff9800' },
+            background: { default: '#121212', paper: '#1e1e1e' },
+            text: { primary: '#ffffff' },
+        },
+    }),
+}
+
+const PortfolioDisplay: React.FC<{ formProps: FormProps }> = ({ formProps }) => {
     const [darkMode, setDarkMode] = useState(false)
+    const [expandedSection, setExpandedSection] = useState<string | null>(null)
 
-    const theme = darkMode ? darkTheme : lightTheme
-    const muiTheme = useTheme()
-    const isMobile = useMediaQuery(muiTheme.breakpoints.down('sm'))
+    const toggleTheme = () => setDarkMode(!darkMode)
+    const currentTheme = darkMode ? themes.dark : themes.light
 
-    const getFormattedDate = (date: string, forDisplay = true) => {
-        if (date === 'Present' || date === '') {
-            if (forDisplay) {
-                return 'Present'
-            } else {
-                const currentDate = new Date()
-                const currentMonth = currentDate.toLocaleString('default', {
-                    month: 'short',
-                })
-                const currentYear = currentDate.getFullYear().toString()
-                return `${currentYear}-${currentMonth}`
-            }
-        }
+    const totalExperienceYears = formProps.experience.reduce((acc, exp) => {
+        const fromYear = new Date(exp.from).getFullYear()
+        const toYear = exp.to ? new Date(exp.to).getFullYear() : new Date().getFullYear()
+        return acc + (toYear - fromYear)
+    }, 0)
 
-        const [year, month] = date.split('-')
-        return `${month} ${year}`
-    }
-
-    const calculateYears = (from: string, to: string) => {
-        const fromDate = new Date(from)
-        const toDate = to === 'Present' ? new Date() : new Date(to)
-        const years = toDate.getFullYear() - fromDate.getFullYear()
-        const months = toDate.getMonth() - fromDate.getMonth()
-        return years + months / 12
-    }
-
-    const sortExperience = (a: { to: string }, b: { to: string }) => {
-        const dateA =
-            a.to === 'Present' || a.to === '' ? new Date() : new Date(a.to)
-        const dateB =
-            b.to === 'Present' || b.to === '' ? new Date() : new Date(b.to)
-        return dateB.getTime() - dateA.getTime()
+    const toggleSection = (section: string) => {
+        setExpandedSection(expandedSection === section ? null : section)
     }
 
     return (
-        <ThemeProvider theme={theme}>
-            <Box
-                component={'div'}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    minHeight: height + 'vh',
-                    backgroundColor: theme.palette.background.default,
-                    color: theme.palette.text.primary,
-                    padding: 4,
-                }}
-            >
-                {isMobile ? (
-                    <Box sx={{ mt: 4 }}>
-                        <Box
+        <ThemeProvider theme={currentTheme}>
+            <Box sx={{
+                minHeight: '100vh',
+                backgroundColor: currentTheme.palette.background.default,
+                color: currentTheme.palette.text.primary,
+                padding: 4,
+            }}>
+                {/* Theme Toggle Button */}
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
+                    <Tooltip title={darkMode ? 'Switch to Light Mode' : 'Switch to Dark Mode'}>
+                        <IconButton onClick={toggleTheme} color="primary">
+                            {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
+                        </IconButton>
+                    </Tooltip>
+                </Box>
+
+                {/* Profile Section */}
+                <Container maxWidth="sm" sx={{ textAlign: 'center', mt: 4 }}>
+                    <Avatar
+                        alt={formProps.userInfo.name}
+                        src={formProps.profileImage.src}
+                        sx={{ width: 120, height: 120, margin: 'auto', mb: 2 }}
+                    />
+                    <Typography variant="h4">{formProps.userInfo.name}</Typography>
+                    <Typography variant="h6">{formProps.userInfo.title}</Typography>
+                    <Typography variant="body1">{formProps.userInfo.bio}</Typography>
+                </Container>
+
+                {/* Stats with Clickable Expandable Sections */}
+                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4 }}>
+                    {[
+                        { label: 'Experience', value: totalExperienceYears },
+                        { label: 'Skills', value: formProps.techStack.length },
+                        { label: 'Projects', value: formProps.projects.length }
+                    ].map(({ label, value }) => (
+                        <Card 
+                            key={label} 
                             sx={{
-                                padding: 4,
-                                borderRadius: 2,
-                                backgroundColor:
-                                    theme.palette.background.default,
+                                width: 150, 
+                                textAlign: 'center', 
+                                backgroundColor: currentTheme.palette.background.paper, 
+                                cursor: 'pointer'
                             }}
+                            onClick={() => toggleSection(label)}
                         >
-                            <Box sx={{ textAlign: 'center', marginBottom: 4 }}>
-                                <Avatar
-                                    alt={formProps.userInfo.name}
-                                    src={formProps.profileImage}
-                                    sx={{
-                                        width: 100,
-                                        height: 100,
-                                        margin: '0 auto',
-                                    }}
-                                />
-                                <Typography variant="h4" gutterBottom>
-                                    {formProps.userInfo.name}
+                            <CardContent>
+                                <Typography variant="h5" color="primary">{value}</Typography>
+                                <Typography variant="body2">{label}</Typography>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </Box>
+
+                {/* Expanded Sections */}
+                {expandedSection === 'Experience' && (
+                    <Card sx={{ mt: 2, p: 3, backgroundColor: currentTheme.palette.background.paper }}>
+                        <CardContent>
+                            <Typography variant="h5" gutterBottom>Experience</Typography>
+                            {formProps.experience.map((exp, i) => (
+                                <Typography key={i} variant="body1">
+                                    {exp.position} at {exp.company} ({exp.from} - {exp.to || 'Present'})
                                 </Typography>
-                                <Typography variant="h6" gutterBottom>
-                                    {formProps.userInfo.title}
-                                </Typography>
-                                <Typography variant="body1" gutterBottom>
-                                    {formProps.userInfo.bio}
-                                </Typography>
-                            </Box>
-
-                            <Divider sx={{ marginBottom: 4 }} />
-
-                            {formProps.isTechStack && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Tech Stack
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexWrap: 'wrap',
-                                            gap: 1,
-                                        }}
-                                    >
-                                        {formProps.techStack.map(
-                                            (tech, index) => (
-                                                <Chip
-                                                    key={index}
-                                                    label={`${tech.language} (${tech.year} years)`}
-                                                    sx={{
-                                                        backgroundColor:
-                                                            theme.palette
-                                                                .background
-                                                                .paper,
-                                                    }}
-                                                />
-                                            )
-                                        )}
-                                    </Box>
-                                </Box>
-                            )}
-
-                            {formProps.isExperience && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Experience
-                                    </Typography>
-                                    {formProps.experience
-                                        .slice()
-                                        .sort(sortExperience)
-                                        .map((exp, index) => (
-                                            <Card
-                                                key={index}
-                                                sx={{
-                                                    padding: 2,
-                                                    marginBottom: 2,
-                                                    backgroundColor:
-                                                        theme.palette.background
-                                                            .paper,
-                                                }}
-                                            >
-                                                <Typography variant="h6">
-                                                    {exp.position}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    {exp.company} -{' '}
-                                                    {exp.location}
-                                                </Typography>
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: 1,
-                                                    }}
-                                                >
-                                                    <Typography variant="body2">
-                                                        {getFormattedDate(
-                                                            exp.from
-                                                        )}{' '}
-                                                        to{' '}
-                                                        {getFormattedDate(
-                                                            exp.to
-                                                        )}
-                                                    </Typography>
-                                                    <Chip
-                                                        label={`${calculateYears(
-                                                            exp.from,
-                                                            getFormattedDate(
-                                                                exp.to,
-                                                                false
-                                                            )
-                                                        ).toFixed(1)} years`}
-                                                        size="small"
-                                                        sx={{
-                                                            backgroundColor:
-                                                                theme.palette
-                                                                    .background
-                                                                    .paper,
-                                                        }}
-                                                    />
-                                                </Box>
-                                                <Typography variant="body2">
-                                                    Key Skills:{' '}
-                                                    {exp.keySkills.join(', ')}
-                                                </Typography>
-                                            </Card>
-                                        ))}
-                                </Box>
-                            )}
-
-                            {formProps.isContact && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Contact
-                                    </Typography>
-                                    <Grid container spacing={2}>
-                                        {formProps.contact.map(
-                                            (contact, index) => (
-                                                <Grid item xs={4} key={index}>
-                                                    <Link
-                                                        href={contact.link}
-                                                        target="_blank"
-                                                        rel="noopener"
-                                                    >
-                                                        <Box
-                                                            sx={{
-                                                                display: 'flex',
-                                                                alignItems:
-                                                                    'center',
-                                                                gap: 1,
-                                                            }}
-                                                        >
-                                                            {contact.icon}
-                                                            <Typography variant="body2">
-                                                                {contact.app}
-                                                            </Typography>
-                                                        </Box>
-                                                    </Link>
-                                                </Grid>
-                                            )
-                                        )}
-                                    </Grid>
-                                </Box>
-                            )}
-
-                            {formProps.isProject && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Projects
-                                    </Typography>
-                                    {formProps.projects.map(
-                                        (project, index) => (
-                                            <Card
-                                                key={index}
-                                                sx={{
-                                                    padding: 2,
-                                                    marginBottom: 2,
-                                                    backgroundColor:
-                                                        theme.palette.background
-                                                            .paper,
-                                                }}
-                                            >
-                                                <Typography variant="h6">
-                                                    {project.name}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    {project.description}
-                                                </Typography>
-                                                <Link
-                                                    href={project.link}
-                                                    target="_blank"
-                                                    rel="noopener"
-                                                >
-                                                    <Typography
-                                                        variant="body2"
-                                                        color="primary"
-                                                    >
-                                                        View Project
-                                                    </Typography>
-                                                </Link>
-                                            </Card>
-                                        )
-                                    )}
-                                </Box>
-                            )}
-
-                            <Box sx={{ textAlign: 'center', marginTop: 4 }}>
-                                <Typography variant="body2">
-                                    &copy; {formProps.footer.year}{' '}
-                                    {formProps.footer.companyName}
-                                </Typography>
-                            </Box>
-                        </Box>
-                    </Box>
-                ) : (
-                    <Container maxWidth="md" sx={{ mt: 4 }}>
-                        <Paper
-                            elevation={3}
-                            sx={{
-                                padding: 4,
-                                borderRadius: 2,
-                                backgroundColor: theme.palette.background.paper,
-                            }}
-                        >
-                            <Box sx={{ textAlign: 'center', marginBottom: 4 }}>
-                                <Avatar
-                                    alt={formProps.userInfo.name}
-                                    src={formProps.profileImage}
-                                    sx={{
-                                        width: 100,
-                                        height: 100,
-                                        margin: '0 auto',
-                                    }}
-                                />
-                                <Typography variant="h4" gutterBottom>
-                                    {formProps.userInfo.name}
-                                </Typography>
-                                <Typography variant="h6" gutterBottom>
-                                    {formProps.userInfo.title}
-                                </Typography>
-                                <Typography variant="body1" gutterBottom>
-                                    {formProps.userInfo.bio}
-                                </Typography>
-                            </Box>
-
-                            <Divider sx={{ marginBottom: 4 }} />
-
-                            {formProps.isTechStack && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Tech Stack
-                                    </Typography>
-                                    <Box
-                                        sx={{
-                                            display: 'flex',
-                                            flexWrap: 'wrap',
-                                            gap: 1,
-                                        }}
-                                    >
-                                        {formProps.techStack.map(
-                                            (tech, index) => (
-                                                <Chip
-                                                    key={index}
-                                                    label={`${tech.language} (${tech.year} years)`}
-                                                    sx={{
-                                                        backgroundColor:
-                                                            theme.palette
-                                                                .background
-                                                                .paper,
-                                                    }}
-                                                />
-                                            )
-                                        )}
-                                    </Box>
-                                </Box>
-                            )}
-
-                            {formProps.isExperience && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Experience
-                                    </Typography>
-                                    {formProps.experience
-                                        .slice()
-                                        .sort(sortExperience)
-                                        .map((exp, index) => (
-                                            <Card
-                                                key={index}
-                                                sx={{
-                                                    padding: 2,
-                                                    marginBottom: 2,
-                                                    backgroundColor:
-                                                        theme.palette.background
-                                                            .paper,
-                                                }}
-                                            >
-                                                <Typography variant="h6">
-                                                    {exp.position}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    {exp.company} -{' '}
-                                                    {exp.location}
-                                                </Typography>
-                                                <Box
-                                                    sx={{
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: 1,
-                                                    }}
-                                                >
-                                                    <Typography variant="body2">
-                                                        {getFormattedDate(
-                                                            exp.from
-                                                        )}{' '}
-                                                        to{' '}
-                                                        {getFormattedDate(
-                                                            exp.to
-                                                        )}
-                                                    </Typography>
-                                                    <Chip
-                                                        label={`${calculateYears(
-                                                            exp.from,
-                                                            getFormattedDate(
-                                                                exp.to,
-                                                                false
-                                                            )
-                                                        ).toFixed(1)} years`}
-                                                        size="small"
-                                                        sx={{
-                                                            backgroundColor:
-                                                                theme.palette
-                                                                    .background
-                                                                    .paper,
-                                                        }}
-                                                    />
-                                                </Box>
-                                                <Typography variant="body2">
-                                                    Key Skills:{' '}
-                                                    {exp.keySkills.join(', ')}
-                                                </Typography>
-                                            </Card>
-                                        ))}
-                                </Box>
-                            )}
-
-                            {formProps.isContact && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Contact
-                                    </Typography>
-                                    <Grid container spacing={2}>
-                                        {formProps.contact.map(
-                                            (contact, index) => (
-                                                <Grid item xs={4} key={index}>
-                                                    <Link
-                                                        href={contact.link}
-                                                        target="_blank"
-                                                        rel="noopener"
-                                                    >
-                                                        <Box
-                                                            sx={{
-                                                                display: 'flex',
-                                                                alignItems:
-                                                                    'center',
-                                                                gap: 1,
-                                                            }}
-                                                        >
-                                                            {contact.icon}
-                                                            <Typography variant="body2">
-                                                                {contact.app}
-                                                            </Typography>
-                                                        </Box>
-                                                    </Link>
-                                                </Grid>
-                                            )
-                                        )}
-                                    </Grid>
-                                </Box>
-                            )}
-
-                            {formProps.isProject && (
-                                <Box sx={{ marginBottom: 4 }}>
-                                    <Typography variant="h5" gutterBottom>
-                                        Projects
-                                    </Typography>
-                                    {formProps.projects.map(
-                                        (project, index) => (
-                                            <Card
-                                                key={index}
-                                                sx={{
-                                                    padding: 2,
-                                                    marginBottom: 2,
-                                                    backgroundColor:
-                                                        theme.palette.background
-                                                            .paper,
-                                                }}
-                                            >
-                                                <Typography variant="h6">
-                                                    {project.name}
-                                                </Typography>
-                                                <Typography variant="body2">
-                                                    {project.description}
-                                                </Typography>
-                                                <Link
-                                                    href={project.link}
-                                                    target="_blank"
-                                                    rel="noopener"
-                                                >
-                                                    <Typography
-                                                        variant="body2"
-                                                        color="primary"
-                                                    >
-                                                        View Project
-                                                    </Typography>
-                                                </Link>
-                                            </Card>
-                                        )
-                                    )}
-                                </Box>
-                            )}
-
-                            <Box sx={{ textAlign: 'center', marginTop: 4 }}>
-                                <Typography variant="body2">
-                                    &copy; {formProps.footer.year}{' '}
-                                    {formProps.footer.companyName}
-                                </Typography>
-                            </Box>
-                        </Paper>
-                    </Container>
+                            ))}
+                        </CardContent>
+                    </Card>
                 )}
+
+                {expandedSection === 'Skills' && (
+                    <Card sx={{ mt: 2, p: 3, backgroundColor: currentTheme.palette.background.paper }}>
+                        <CardContent>
+                            <Typography variant="h5" gutterBottom>Skills</Typography>
+                            {formProps.techStack.map((tech, i) => (
+                                <Chip key={i} label={`${tech.language} (${tech.year} yrs)`} sx={{ m: 1 }} />
+                            ))}
+                        </CardContent>
+                    </Card>
+                )}
+
+                {expandedSection === 'Projects' && (
+                    <Card sx={{ mt: 2, p: 3, backgroundColor: currentTheme.palette.background.paper }}>
+                        <CardContent>
+                            <Typography variant="h5" gutterBottom>Projects</Typography>
+                            {formProps.projects.map((project, i) => (
+                                <Typography key={i} variant="body1">
+                                    <Link href={project.link} target="_blank">{project.name}</Link>
+                                </Typography>
+                            ))}
+                        </CardContent>
+                    </Card>
+                )}
+
+                {/* Contact */}
+                <Box sx={{ textAlign: 'center', mt: 4 }}>
+                    <Typography variant="h5">Contact</Typography>
+                    <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 2 }}>
+                        {[
+                            { icon: <LinkedInIcon />, link: formProps.contact.linkedin },
+                            { icon: <WhatsAppIcon />, link: formProps.contact.whatsapp },
+                            { icon: <EmailIcon />, link: `mailto:${formProps.contact.email}` },
+                        ].map(({ icon, link }, i) => (
+                            <Tooltip key={i} title={link}>
+                                <IconButton component={Link} href={link} target="_blank" color="primary">
+                                    {icon}
+                                </IconButton>
+                            </Tooltip>
+                        ))}
+                    </Box>
+                </Box>
             </Box>
         </ThemeProvider>
     )

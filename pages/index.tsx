@@ -4,6 +4,7 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import ChatIcon from '@mui/icons-material/WhatsApp'
 import EmailIcon from '@mui/icons-material/Email'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
+import profileImage from '@/public/me.jpg' 
 
 import { FormValues } from '@/app/state/initialState'
 
@@ -33,22 +34,6 @@ const formValues: FormValues = {
     isExperience: true,
     experience: [
         {
-            from: '2016-Jan',
-            to: '2018-Feb',
-            company: 'Infosys Limited',
-            location: 'Chennai, India',
-            position: 'Intern + Systems Engineer',
-            keySkills: ['Java', 'Spring Boot', 'Microservices', 'Unix'],
-        },
-        {
-            from: '2019-May',
-            to: '2021-Feb',
-            company: 'Insyght AI',
-            location: 'Toronto, ON',
-            position: 'Intern + Full Stack Developer',
-            keySkills: ['Python', '.Net', 'Angular', 'Springboot', 'REST APIs'],
-        },
-        {
             from: '2021-Feb',
             to: '',
             company: 'Lithia / Pfaff Motors Inc',
@@ -62,6 +47,22 @@ const formValues: FormValues = {
                 'MySql',
                 'Azure Cloud/Devops',
             ],
+        },
+        {
+            from: '2019-May',
+            to: '2021-Feb',
+            company: 'Insyght AI',
+            location: 'Toronto, ON',
+            position: 'Intern + Full Stack Developer',
+            keySkills: ['Python', '.Net', 'Angular', 'Springboot', 'REST APIs'],
+        },
+        {
+            from: '2016-Jan',
+            to: '2018-Feb',
+            company: 'Infosys Limited',
+            location: 'Chennai, India',
+            position: 'Intern + Systems Engineer',
+            keySkills: ['Java', 'Spring Boot', 'Microservices', 'Unix'],
         },
     ],
     isContact: true,
@@ -95,7 +96,7 @@ const formValues: FormValues = {
     ],
     isUseUserInfo: true,
     isBadge: false,
-    profileImage: '',
+    profileImage: profileImage,
     footer: { year: new Date().getFullYear(), companyName: 'Ajay GB' },
 }
 
