@@ -11,11 +11,11 @@ import { FormValues } from '@/app/state/initialState'
 const formValues: FormValues = {
     userInfo: {
         name: 'Ajay GB',
-        title: 'Software Developer',
-        bio: `Experienced software developer specializing in MERN stack and full-stack practices. 
-        Proficient in building CI/CD pipelines and deploying applications to Microsoft Cloud. 
-        Passionate about microservices architecture and committed to continuous learning.
-        Eager to collaborate and contribute to team success.`,
+        title: 'Software Engineer',
+        bio: `> MERN stack & full-stack development
+> CI/CD pipelines & Microsoft Azure Cloud deployments
+> Passionate about microservices architecture / distributed architecture
+> Committed to continuous learning & collaboration `,
     },
     isTechStack: true,
     techStack: [

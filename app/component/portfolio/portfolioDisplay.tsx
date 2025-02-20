@@ -74,55 +74,87 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({ formProps }) =>
                 </Box>
 
                 {/* Profile Section */}
-                <Container maxWidth="sm" sx={{ textAlign: 'center', mt: 4 }}>
-                    <Avatar
-                        alt={formProps.userInfo.name}
-                        src={typeof formProps.profileImage === 'string' ? formProps.profileImage : formProps.profileImage.src}
-                        sx={{ width: 120, height: 120, margin: 'auto', mb: 2 }}
-                    />
-                    <Typography variant="h4">{formProps.userInfo.name}</Typography>
-                    <Typography variant="h6">{formProps.userInfo.title}</Typography>
-                    <Typography variant="body1">{formProps.userInfo.bio}</Typography>
-                </Container>
+<Container maxWidth="sm" sx={{ textAlign: 'center', mt: 4 }}>
+    <Avatar
+        alt={formProps.userInfo.name}
+        src={typeof formProps.profileImage === 'string' ? formProps.profileImage : formProps.profileImage.src}
+        sx={{ width: 120, height: 120, margin: 'auto', mb: 2 }}
+    />
+    <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
+        {formProps.userInfo.name}
+    </Typography>
+    <Typography variant="h6" sx={{ fontWeight: 'medium', mb: 2, color: 'text.secondary' }}>
+        {formProps.userInfo.title}
+    </Typography>
+    <Box sx={{ textAlign: 'left', display: 'inline-block', mt: 2 }}>
+        {formProps.userInfo.bio.split('\n').map((line, index) => (
+            <Typography key={index} variant="body1" sx={{ lineHeight: 1.75, mb: 1 }}>
+                 {line}
+            </Typography>
+        ))}
+    </Box>
+</Container>
 
-                {/* Stats with Clickable Expandable Sections */}
-                <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4 }}>
-                    {[
-                        { label: 'Experience', value: totalExperienceYears },
-                        { label: 'Skills', value: formProps.techStack.length },
-                        { label: 'Projects', value: formProps.projects.length }
-                    ].map(({ label, value }) => (
-                        <Card 
-                            key={label} 
-                            sx={{
-                                width: 150, 
-                                textAlign: 'center', 
-                                backgroundColor: currentTheme.palette.background.paper, 
-                                cursor: 'pointer'
-                            }}
-                            onClick={() => toggleSection(label)}
-                        >
-                            <CardContent>
-                                <Typography variant="h5" color="primary">{value}</Typography>
-                                <Typography variant="body2">{label}</Typography>
-                            </CardContent>
-                        </Card>
-                    ))}
-                </Box>
+{/* Stats with Clickable Expandable Sections */}
+<Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 4 }}>
+    {[
+        { label: 'Years of Experience', value: `${totalExperienceYears}+` },
+        { label: 'Skills', value: formProps.techStack.length },
+        { label: 'Projects', value: `${formProps.projects.length}+` }
+    ].map(({ label, value }) => (
+        <Card 
+            key={label} 
+            sx={{
+                width: 150, 
+                textAlign: 'center', 
+                backgroundColor: currentTheme.palette.background.paper, 
+                cursor: 'pointer',
+                padding: 2,
+                borderRadius: '16px',
+                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                transition: 'transform 0.2s',
+                '&:hover': {
+                    transform: 'scale(1.05)',
+                },
+            }}
+            onClick={() => toggleSection(label)}
+        >
+            <CardContent>
+                <Typography variant="h5" color="primary">{value}</Typography>
+                <Typography variant="body2">{label}</Typography>
+            </CardContent>
+        </Card>
+    ))}
+</Box>
 
                 {/* Expanded Sections */}
-                {expandedSection === 'Experience' && (
-                    <Card sx={{ mt: 2, p: 3, backgroundColor: currentTheme.palette.background.paper }}>
-                        <CardContent>
-                            <Typography variant="h5" gutterBottom>Experience</Typography>
-                            {formProps.experience.map((exp, i) => (
-                                <Typography key={i} variant="body1">
-                                    {exp.position} at {exp.company} ({exp.from} - {exp.to || 'Present'})
-                                </Typography>
-                            ))}
-                        </CardContent>
-                    </Card>
-                )}
+{/* Expanded Sections */}
+{expandedSection === 'Years of Experience' && (
+    <Card sx={{ mt: 2, p: 3, backgroundColor: currentTheme.palette.background.paper, borderRadius: '10px', boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)' }}>
+        <CardContent>
+            <Typography variant="h5" gutterBottom>Experience</Typography>
+            {formProps.experience.map((exp, i) => (
+                <Box key={i} sx={{ mb: 3, p: 2, backgroundColor: '#f8f8f8', borderRadius: '10px' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                        {exp.position}
+                    </Typography>
+                    <Typography variant="body1" sx={{ mb: 1 }}>
+                        🏢 {exp.company}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: '#888888', mb: 1 }}>
+                        📅 {exp.from} - {exp.to || 'Present'}
+                    </Typography>
+                    
+                    <Box component="ul" sx={{ pl: 2 }}>
+                        {exp.keySkills.map((skill, index) => (
+                            <Chip key={index} label={skill} sx={{ m: 0.5 }} />
+                        ))}
+                    </Box>
+                </Box>
+            ))}
+        </CardContent>
+    </Card>
+)}
 
                 {expandedSection === 'Skills' && (
                     <Card sx={{ mt: 2, p: 3, backgroundColor: currentTheme.palette.background.paper }}>
