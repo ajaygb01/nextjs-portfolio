@@ -1,10 +1,10 @@
 'use client'
-import React, { useState } from 'react'
+import React from 'react'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import ChatIcon from '@mui/icons-material/WhatsApp'
 import EmailIcon from '@mui/icons-material/Email'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
-import profileImage from '@/public/me.jpg' 
+import profileImage from '@/public/static/me.jpg'
 
 import { FormValues } from '@/app/state/initialState'
 
@@ -77,7 +77,7 @@ const formValues: FormValues = {
             icon: <ChatIcon />,
             link: 'https://wa.me/+12269758056',
         },
-        { app: 'Email', icon: <EmailIcon />, link: 'ajaygb7@gmail.com' },
+        { app: 'Email', icon: <EmailIcon />, link: 'mailto:ajaygb7@gmail.com' },
     ],
     isProject: true,
     projects: [

@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useState, ReactElement } from 'react'
 import {
     Box,
     Typography,
@@ -39,9 +39,9 @@ interface Project {
 }
 
 interface Contact {
-    linkedin: string;
-    whatsapp: string;
-    email: string;
+    app: string;
+    icon: ReactElement;
+    link: string;
 }
 
 interface UserInfo {
@@ -58,7 +58,7 @@ interface FormProps {
     experience: Experience[];
     techStack: TechStack[];
     projects: Project[];
-    contact: Contact;
+    contact: Contact[];
     userInfo: UserInfo;
     profileImage: ProfileImage;
 }
@@ -194,14 +194,10 @@ const PortfolioDisplay: React.FC<{ formProps: FormProps }> = ({ formProps }) => 
                 <Box sx={{ textAlign: 'center', mt: 4 }}>
                     <Typography variant="h5">Contact</Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'center', gap: 3, mt: 2 }}>
-                        {[
-                            { icon: <LinkedInIcon />, link: formProps.contact.linkedin },
-                            { icon: <WhatsAppIcon />, link: formProps.contact.whatsapp },
-                            { icon: <EmailIcon />, link: `mailto:${formProps.contact.email}` },
-                        ].map(({ icon, link }, i) => (
-                            <Tooltip key={i} title={link}>
-                                <IconButton component={Link} href={link} target="_blank" color="primary">
-                                    {icon}
+                        {formProps.contact.map((contact, i) => (
+                            <Tooltip key={i} title={contact.link}>
+                                <IconButton component={Link} href={contact.link} target="_blank" color="primary">
+                                    {contact.icon}
                                 </IconButton>
                             </Tooltip>
                         ))}
