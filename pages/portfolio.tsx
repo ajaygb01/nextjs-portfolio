@@ -305,7 +305,7 @@ const Portfilo: React.FC = () => {
                                         type="file"
                                         onChange={handleFileChange}
                                     />
-                                    <Avatar src={formValues.profileImage} />
+                                    <Avatar src={typeof formValues.profileImage === 'string' ? formValues.profileImage : undefined} />
                                 </>
                             )}
 
@@ -337,9 +337,6 @@ const Portfilo: React.FC = () => {
                     <Box sx={styles.displayBlock}>
                         <PortfolioDisplay
                             formProps={formValues}
-                            height={90}
-                            isModal={isModal}
-                            handleClose={handleClose}
                         />
                     </Box>
                 </Grid>

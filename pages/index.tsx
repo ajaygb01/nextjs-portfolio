@@ -96,7 +96,7 @@ const formValues: FormValues = {
     ],
     isUseUserInfo: true,
     isBadge: false,
-    profileImage: profileImage,
+    profileImage: profileImage.src, // Convert to string URL
     footer: { year: new Date().getFullYear(), companyName: 'Ajay GB' },
 }
 

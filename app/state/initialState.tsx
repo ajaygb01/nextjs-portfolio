@@ -49,7 +49,7 @@ export interface FormValues {
     projects: Project[]
     isUseUserInfo: boolean
     isBadge: boolean
-    profileImage: StaticImageData
+    profileImage: string | StaticImageData
     footer: Footer
 }
 

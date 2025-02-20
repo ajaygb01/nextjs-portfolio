@@ -19,49 +19,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
-
-// Define Types
-interface Experience {
-    position: string;
-    company: string;
-    from: string;
-    to?: string;
-}
-
-interface TechStack {
-    language: string;
-    year: number;
-}
-
-interface Project {
-    name: string;
-    link: string;
-}
-
-interface Contact {
-    app: string;
-    icon: ReactElement;
-    link: string;
-}
-
-interface UserInfo {
-    name: string;
-    title: string;
-    bio: string;
-}
-
-interface ProfileImage {
-    src: string;
-}
-
-interface FormProps {
-    experience: Experience[];
-    techStack: TechStack[];
-    projects: Project[];
-    contact: Contact[];
-    userInfo: UserInfo;
-    profileImage: ProfileImage;
-}
+import { FormValues } from '@/app/state/initialState'
 
 // Theme Configuration
 const themes = {
@@ -81,7 +39,7 @@ const themes = {
     }),
 }
 
-const PortfolioDisplay: React.FC<{ formProps: FormProps }> = ({ formProps }) => {
+const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({ formProps }) => {
     const [darkMode, setDarkMode] = useState(false)
     const [expandedSection, setExpandedSection] = useState<string | null>(null)
 
@@ -119,7 +77,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormProps }> = ({ formProps }) => 
                 <Container maxWidth="sm" sx={{ textAlign: 'center', mt: 4 }}>
                     <Avatar
                         alt={formProps.userInfo.name}
-                        src={formProps.profileImage.src}
+                        src={typeof formProps.profileImage === 'string' ? formProps.profileImage : formProps.profileImage.src}
                         sx={{ width: 120, height: 120, margin: 'auto', mb: 2 }}
                     />
                     <Typography variant="h4">{formProps.userInfo.name}</Typography>

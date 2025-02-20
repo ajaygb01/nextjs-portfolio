@@ -40,7 +40,7 @@ const Badge: React.FC<BadgeProps> = ({ formProps }) => {
                         {userInfo.title}
                     </Typography>
                     <Avatar
-                        src={profileImage} // Use profileImage directly
+                        src={typeof profileImage === 'string' ? profileImage : profileImage.src} // Ensure profileImage is a string
                         sx={{
                             width: 100,
                             height: 100,
