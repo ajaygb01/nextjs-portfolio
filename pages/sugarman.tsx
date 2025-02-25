@@ -4,7 +4,7 @@ import { Button } from '@mui/material'
 import { TextField } from '@mui/material'
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
 
-const API_URL = process.env.NEXT_SUGAR_PUBLIC_API_URL
+const API_URL = process.env.NEXT_PUBLIC_MODEL_API_URL
 
 interface PredictionData {
     prediction: number
