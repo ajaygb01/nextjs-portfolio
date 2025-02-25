@@ -1,5 +1,12 @@
 import { useState } from 'react'
-import { Card, CardContent, CardHeader } from '@mui/material'
+import {
+    Card,
+    CardContent,
+    CardHeader,
+    Modal,
+    Box,
+    Typography,
+} from '@mui/material'
 import { Button } from '@mui/material'
 import { TextField } from '@mui/material'
 import { LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid } from 'recharts'
@@ -18,6 +25,7 @@ export default function DiabetesPrediction() {
     const [dataPoints, setDataPoints] = useState<
         { name: string; probability: number }[]
     >([])
+    const [open, setOpen] = useState(false)
 
     const handleChange = (index: number, value: string) => {
         const newFeatures = [...features]
@@ -31,6 +39,7 @@ export default function DiabetesPrediction() {
         const data = await response.json()
         alert(data.message)
         setTraining(false)
+        setOpen(true)
     }
 
     const predict = async () => {
@@ -48,6 +57,22 @@ export default function DiabetesPrediction() {
                 probability: data.probability,
             },
         ])
+    }
+
+    const handleClose = () => setOpen(false)
+
+    const randomizeFeatures = () => {
+        const randomFeatures = [
+            Math.floor(Math.random() * 10), // Pregnancies
+            Math.floor(Math.random() * (200 - 70 + 1)) + 70, // Glucose
+            Math.floor(Math.random() * (122 - 40 + 1)) + 40, // BloodPressure
+            Math.floor(Math.random() * (99 - 10 + 1)) + 10, // SkinThickness
+            Math.floor(Math.random() * (846 - 15 + 1)) + 15, // Insulin
+            (Math.random() * (67.1 - 18.2) + 18.2).toFixed(1), // BMI
+            (Math.random() * (2.42 - 0.078) + 0.078).toFixed(3), // DiabetesPedigreeFunction
+            Math.floor(Math.random() * (81 - 21 + 1)) + 21, // Age
+        ]
+        setFeatures(randomFeatures.map(String))
     }
 
     return (
@@ -96,10 +121,20 @@ export default function DiabetesPrediction() {
                         />
                     ))}
                     <Button
+                        onClick={randomizeFeatures}
+                        variant="contained"
+                        color="secondary"
+                        fullWidth
+                        sx={{ mt: 2 }}
+                    >
+                        Randomize
+                    </Button>
+                    <Button
                         onClick={predict}
                         variant="contained"
                         color="secondary"
                         fullWidth
+                        sx={{ mt: 2 }}
                     >
                         Predict
                     </Button>
@@ -140,6 +175,41 @@ export default function DiabetesPrediction() {
                     </CardContent>
                 </Card>
             )}
+            <Modal
+                open={open}
+                onClose={handleClose}
+                aria-labelledby="modal-title"
+                aria-describedby="modal-description"
+            >
+                <Box
+                    sx={{
+                        position: 'absolute',
+                        top: '50%',
+                        left: '50%',
+                        transform: 'translate(-50%, -50%)',
+                        width: 400,
+                        bgcolor: 'background.paper',
+                        border: '2px solid #000',
+                        boxShadow: 24,
+                        p: 4,
+                    }}
+                >
+                    <Typography id="modal-title" variant="h6" component="h2">
+                        Model Training
+                    </Typography>
+                    <Typography id="modal-description" sx={{ mt: 2 }}>
+                        The model has been trained successfully!
+                    </Typography>
+                    <Button
+                        onClick={handleClose}
+                        variant="contained"
+                        color="primary"
+                        sx={{ mt: 2 }}
+                    >
+                        Close
+                    </Button>
+                </Box>
+            </Modal>
         </div>
     )
 }
