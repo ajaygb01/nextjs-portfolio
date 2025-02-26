@@ -17,7 +17,7 @@ interface Props {
 }
 
 const Form: React.FC<Props> = ({ onSubmit }) => {
-    const { control, handleSubmit } = useForm<PredictionRequest>({
+    const { control, handleSubmit, setValue } = useForm<PredictionRequest>({
         defaultValues: {
             age: 65,
             gender: 'Male',
@@ -35,6 +35,29 @@ const Form: React.FC<Props> = ({ onSubmit }) => {
             alcoholConsumption: 'Yes',
         },
     })
+
+    const randomizeValues = () => {
+        setValue('age', Math.floor(Math.random() * 60) + 20)
+        setValue('gender', Math.random() > 0.5 ? 'Male' : 'Female')
+        setValue('sugarLevel', Math.floor(Math.random() * 100) + 70)
+        setValue('bmi', Math.floor(Math.random() * 15) + 18)
+        setValue('waterIntake', Math.floor(Math.random() * 4) + 1)
+        setValue('physicalActivity', Math.floor(Math.random() * 10) + 1)
+        setValue('bloodPressure', Math.floor(Math.random() * 80) + 90)
+        setValue(
+            'familyHistoryHypertension',
+            Math.random() > 0.5 ? 'Yes' : 'No'
+        )
+        setValue(
+            'familyHistoryKidneyStones',
+            Math.random() > 0.5 ? 'Yes' : 'No'
+        )
+        setValue('previousKidneyStone', Math.random() > 0.5 ? 'Yes' : 'No')
+        setValue('sodiumIntake', Math.floor(Math.random() * 4) + 1)
+        setValue('proteinIntake', Math.floor(Math.random() * 3) + 1)
+        setValue('smoking', Math.random() > 0.5 ? 'Yes' : 'No')
+        setValue('alcoholConsumption', Math.random() > 0.5 ? 'Yes' : 'No')
+    }
 
     return (
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>
@@ -253,15 +276,31 @@ const Form: React.FC<Props> = ({ onSubmit }) => {
                     />
                 </FormControl>
 
-                <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    fullWidth
-                    sx={{ mt: 2 }}
+                <Box
+                    sx={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        mt: 2,
+                    }}
                 >
-                    Predict
-                </Button>
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        sx={{ flex: 1, mr: 1 }}
+                    >
+                        Predict
+                    </Button>
+                    <Button
+                        type="button"
+                        variant="outlined"
+                        color="secondary"
+                        onClick={randomizeValues}
+                        sx={{ flex: 1, ml: 1 }}
+                    >
+                        Randomize
+                    </Button>
+                </Box>
             </form>
         </Paper>
     )

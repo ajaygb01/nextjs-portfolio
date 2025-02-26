@@ -7,6 +7,7 @@ import {
     Box,
     Container,
     Typography,
+    Button,
     useMediaQuery,
     useTheme,
 } from '@mui/material'
@@ -21,6 +22,10 @@ export default function Home() {
     const handleFormSubmit = async (data: PredictionRequest) => {
         const result = await predictHealth(data)
         setPrediction(result)
+    }
+
+    const handleBack = () => {
+        setPrediction(null)
     }
 
     return (
@@ -47,6 +52,14 @@ export default function Home() {
             </Typography>
             {prediction ? (
                 <Box sx={{ width: '100%' }}>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleBack}
+                        sx={{ mb: 2 }}
+                    >
+                        Back
+                    </Button>
                     <Results data={prediction} />
                 </Box>
             ) : (
