@@ -1,31 +1,41 @@
 import { useState } from 'react'
-import { predictHealth } from '@/utils/hp'
 import { PredictionRequest, PredictionResponse } from '@/utils/types'
 import Form from './components/Form'
 import Results from './components/Results'
-import {
-    Box,
-    Container,
-    Typography,
-    Button,
-    useMediaQuery,
-    useTheme,
-} from '@mui/material'
+import { Container, Typography, Grid } from '@mui/material'
+
+// Mock implementation of predictHealth function
+const predictHealth = async (
+    data: PredictionRequest
+): Promise<PredictionResponse> => {
+    // Simulate a network request
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve({
+                highBloodPressureProbability: '0.8',
+                kidneyStonesProbability: '0.6',
+                predictionConfidence: '0.9',
+                highBloodPressure: true,
+                kidneyStones: true,
+                diabetes: false,
+                recommendations: ['Drink more water', 'Exercise regularly'],
+                modelInfo: { type: 'Random Forest', featuresUsed: ['a', 'n'] },
+            })
+        }, 2000)
+    })
+}
 
 export default function Home() {
     const [prediction, setPrediction] = useState<PredictionResponse | null>(
         null
     )
-    const theme = useTheme()
-    const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+    const [formData, setFormData] = useState<PredictionRequest | null>(null)
 
     const handleFormSubmit = async (data: PredictionRequest) => {
+        setPrediction(null) // Reset prediction to show loading in Results
+        setFormData(data) // Save form data
         const result = await predictHealth(data)
         setPrediction(result)
-    }
-
-    const handleBack = () => {
-        setPrediction(null)
     }
 
     return (
@@ -50,32 +60,14 @@ export default function Home() {
             >
                 HealthPredict
             </Typography>
-            {prediction ? (
-                <Box sx={{ width: '100%' }}>
-                    <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={handleBack}
-                        sx={{ mb: 2 }}
-                    >
-                        Back
-                    </Button>
-                    <Results data={prediction} />
-                </Box>
-            ) : (
-                <Box
-                    sx={{
-                        display: 'flex',
-                        flexDirection: isMobile ? 'column' : 'row',
-                        width: '100%',
-                        gap: 4,
-                    }}
-                >
-                    <Box sx={{ flex: 1 }}>
-                        <Form onSubmit={handleFormSubmit} />
-                    </Box>
-                </Box>
-            )}
+            <Grid container spacing={4} sx={{ width: '100%' }}>
+                <Grid item xs={12} md={6}>
+                    <Form onSubmit={handleFormSubmit} />
+                </Grid>
+                <Grid item xs={12} md={6}>
+                    <Results data={prediction} formData={formData} />
+                </Grid>
+            </Grid>
         </Container>
     )
 }

@@ -1,3 +1,4 @@
+import { useEffect } from 'react'
 import { useForm, Controller } from 'react-hook-form'
 import { PredictionRequest } from '@/utils/types'
 import {
@@ -17,24 +18,25 @@ interface Props {
 }
 
 const Form: React.FC<Props> = ({ onSubmit }) => {
-    const { control, handleSubmit, setValue } = useForm<PredictionRequest>({
-        defaultValues: {
-            age: 65,
-            gender: 'Male',
-            sugarLevel: 110,
-            bmi: 31,
-            waterIntake: 1,
-            physicalActivity: 3,
-            bloodPressure: 130,
-            familyHistoryHypertension: 'Yes',
-            familyHistoryKidneyStones: 'Yes',
-            previousKidneyStone: 'No',
-            sodiumIntake: 2.5,
-            proteinIntake: 1.5,
-            smoking: 'No',
-            alcoholConsumption: 'Yes',
-        },
-    })
+    const { control, handleSubmit, setValue, getValues } =
+        useForm<PredictionRequest>({
+            defaultValues: {
+                age: 65,
+                gender: 'Male',
+                sugarLevel: 110,
+                bmi: 31,
+                waterIntake: 1,
+                physicalActivity: 3,
+                bloodPressure: 130,
+                familyHistoryHypertension: 'Yes',
+                familyHistoryKidneyStones: 'Yes',
+                previousKidneyStone: 'No',
+                sodiumIntake: 2.5,
+                proteinIntake: 1.5,
+                smoking: 'No',
+                alcoholConsumption: 'Yes',
+            },
+        })
 
     const randomizeValues = () => {
         setValue('age', Math.floor(Math.random() * 60) + 20)
@@ -58,6 +60,10 @@ const Form: React.FC<Props> = ({ onSubmit }) => {
         setValue('smoking', Math.random() > 0.5 ? 'Yes' : 'No')
         setValue('alcoholConsumption', Math.random() > 0.5 ? 'Yes' : 'No')
     }
+
+    useEffect(() => {
+        randomizeValues()
+    }, [])
 
     return (
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>

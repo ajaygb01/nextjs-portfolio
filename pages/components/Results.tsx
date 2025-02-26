@@ -1,4 +1,4 @@
-import { PredictionResponse } from '@/utils/types'
+import { PredictionRequest, PredictionResponse } from '@/utils/types'
 import {
     Box,
     Card,
@@ -7,6 +7,7 @@ import {
     List,
     ListItem,
     ListItemText,
+    CircularProgress,
 } from '@mui/material'
 import { Bar } from 'react-chartjs-2'
 import {
@@ -23,10 +24,25 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 interface Props {
     data: PredictionResponse | null
+    formData: PredictionRequest | null
 }
 
-const Results: React.FC<Props> = ({ data }) => {
-    if (!data) return null
+const Results: React.FC<Props> = ({ data, formData }) => {
+    if (!data) {
+        return (
+            <Card elevation={3} sx={{ mt: 4, p: 2 }}>
+                <CardContent>
+                    <Typography variant="h5" component="h2" gutterBottom>
+                        Prediction Results
+                    </Typography>
+                    <Typography variant="body1" sx={{ mt: 2 }}>
+                        Please enter your information in the form and hit
+                        "Predict" to see the results.
+                    </Typography>
+                </CardContent>
+            </Card>
+        )
+    }
 
     const chartData = {
         labels: [
@@ -76,6 +92,26 @@ const Results: React.FC<Props> = ({ data }) => {
                 <Typography variant="h5" component="h2" gutterBottom>
                     Prediction Results
                 </Typography>
+
+                <Typography variant="h6" component="h3" sx={{ mt: 4 }}>
+                    Form Data:
+                </Typography>
+                <List>
+                    {formData && (
+                        <>
+                            <ListItem>
+                                <ListItemText
+                                    primary={`Age: ${formData.age}`}
+                                />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText
+                                    primary={`Gender: ${formData.gender}`}
+                                />
+                            </ListItem>
+                        </>
+                    )}
+                </List>
 
                 <Typography
                     variant="body1"
