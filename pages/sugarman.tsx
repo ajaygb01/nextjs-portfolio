@@ -76,105 +76,123 @@ export default function DiabetesPrediction() {
     }
 
     return (
-        <div className="p-6 max-w-lg mx-auto">
-            <h1 className="text-2xl font-bold text-center mb-4">
-                Diabetes Prediction
-            </h1>
-            <Card className="mb-4 p-4">
-                <CardHeader title="Train the Model" />
-                <CardContent>
-                    <Button
-                        onClick={trainModel}
-                        disabled={training}
-                        variant="contained"
-                        color="primary"
-                    >
-                        {training ? 'Training...' : 'Train Model'}
-                    </Button>
-                </CardContent>
-            </Card>
-            <Card className="mb-4 p-4">
-                <CardHeader title="Enter Features" />
-                <CardContent>
-                    {[
-                        'Pregnancies',
-                        'Glucose',
-                        'BloodPressure',
-                        'SkinThickness',
-                        'Insulin',
-                        'BMI',
-                        'DiabetesPedigreeFunction',
-                        'Age',
-                    ].map((label, index) => (
-                        <TextField
-                            key={index}
-                            type={
-                                index === 5 || index === 6 ? 'number' : 'number'
-                            }
-                            label={label}
-                            value={features[index]}
-                            onChange={(e) =>
-                                handleChange(index, e.target.value)
-                            }
-                            fullWidth
-                            margin="normal"
-                        />
-                    ))}
-                    <Button
-                        onClick={randomizeFeatures}
-                        variant="contained"
-                        color="secondary"
-                        fullWidth
-                        sx={{ mt: 2 }}
-                    >
-                        Randomize
-                    </Button>
-                    <Button
-                        onClick={predict}
-                        variant="contained"
-                        color="secondary"
-                        fullWidth
-                        sx={{ mt: 2 }}
-                    >
-                        Predict
-                    </Button>
-                </CardContent>
-            </Card>
-            {prediction && (
-                <Card className="p-4">
-                    <CardHeader title="Prediction Result" />
+        <Box sx={{ display: 'flex', height: '100vh' }}>
+            <Box sx={{ flex: 1, p: 6 }}>
+                <h1 className="text-2xl font-bold text-center mb-4">
+                    Diabetes Prediction
+                </h1>
+                <Card className="mb-4 p-4">
+                    <CardHeader title="Train the Model" />
                     <CardContent>
-                        <p>
-                            Prediction:{' '}
-                            {prediction.prediction === 1
-                                ? 'Diabetic'
-                                : 'Non-Diabetic'}
-                        </p>
-                        <p>
-                            Probability:{' '}
-                            {(prediction.probability * 100).toFixed(2)}%
-                        </p>
+                        <Button
+                            onClick={trainModel}
+                            disabled={training}
+                            variant="contained"
+                            color="primary"
+                        >
+                            {training ? 'Training...' : 'Train Model'}
+                        </Button>
                     </CardContent>
                 </Card>
-            )}
-            {dataPoints.length > 0 && (
-                <Card className="p-4 mt-4">
-                    <CardHeader title="Prediction Trends" />
+                <Card className="mb-4 p-4">
+                    <CardHeader title="Enter Features" />
                     <CardContent>
-                        <LineChart width={400} height={200} data={dataPoints}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip />
-                            <Line
-                                type="monotone"
-                                dataKey="probability"
-                                stroke="#8884d8"
+                        {[
+                            'Pregnancies',
+                            'Glucose',
+                            'BloodPressure',
+                            'SkinThickness',
+                            'Insulin',
+                            'BMI',
+                            'DiabetesPedigreeFunction',
+                            'Age',
+                        ].map((label, index) => (
+                            <TextField
+                                key={index}
+                                type={
+                                    index === 5 || index === 6
+                                        ? 'number'
+                                        : 'number'
+                                }
+                                label={label}
+                                value={features[index]}
+                                onChange={(e) =>
+                                    handleChange(index, e.target.value)
+                                }
+                                fullWidth
+                                margin="normal"
                             />
-                        </LineChart>
+                        ))}
+                        <Button
+                            onClick={randomizeFeatures}
+                            variant="contained"
+                            color="secondary"
+                            fullWidth
+                            sx={{ mt: 2 }}
+                        >
+                            Randomize
+                        </Button>
+                        <Button
+                            onClick={predict}
+                            variant="contained"
+                            color="secondary"
+                            fullWidth
+                            sx={{ mt: 2 }}
+                        >
+                            Predict
+                        </Button>
                     </CardContent>
                 </Card>
-            )}
+            </Box>
+            <Box
+                sx={{
+                    flex: 1,
+                    p: 6,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                }}
+            >
+                {prediction && (
+                    <Card className="p-4 mb-4">
+                        <CardHeader title="Prediction Result" />
+                        <CardContent>
+                            <p>
+                                Prediction:{' '}
+                                {prediction.prediction === 1
+                                    ? 'Diabetic'
+                                    : 'Non-Diabetic'}
+                            </p>
+                            <p>
+                                Probability:{' '}
+                                {(prediction.probability * 100).toFixed(2)}%
+                            </p>
+                        </CardContent>
+                    </Card>
+                )}
+                {dataPoints.length > 0 && (
+                    <Card className="p-4">
+                        <CardHeader title="Prediction Trends" />
+                        <CardContent>
+                            <LineChart
+                                width={400}
+                                height={200}
+                                data={dataPoints}
+                            >
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip />
+                                <Line
+                                    type="monotone"
+                                    dataKey="probability"
+                                    stroke="#8884d8"
+                                />
+                            </LineChart>
+                        </CardContent>
+                    </Card>
+                )}
+            </Box>
             <Modal
                 open={open}
                 onClose={handleClose}
@@ -210,6 +228,6 @@ export default function DiabetesPrediction() {
                     </Button>
                 </Box>
             </Modal>
-        </div>
+        </Box>
     )
 }
