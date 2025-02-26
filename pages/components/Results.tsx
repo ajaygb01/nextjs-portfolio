@@ -37,7 +37,7 @@ const Results: React.FC<Props> = ({ data, formData }) => {
                     </Typography>
                     <Typography variant="body1" sx={{ mt: 2 }}>
                         Please enter your information in the form and hit
-                        "Predict" to see the results.
+                        &quot;Predict&quot; to see the results.
                     </Typography>
                 </CardContent>
             </Card>
