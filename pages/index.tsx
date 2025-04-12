@@ -86,18 +86,21 @@ const formValues: FormValues = {
             description:
                 'A comprehensive medical dashboard built using Next.js and Material-UI, featuring patient management, medical records, lab results, and appointment scheduling.',
             link: '/medical',
+            public: false,
         },
         {
             name: 'Portfolio Website',
             description:
                 'Built using Next.js and Material-UI / Randomize user info',
             link: '/portfolio',
+            public: false,
         },
         {
             name: 'Loan Calculator App',
             description:
                 'Built using Next.js, Material-UI, Chart.js / Calculate loan amortization',
             link: '/snow',
+            public: false,
         },
         {
             name: 'Pdf Tool',

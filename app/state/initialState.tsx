@@ -25,7 +25,7 @@ export interface Project {
     name: string
     description: string
     link: string
-    public?: boolean
+    public: boolean
 }
 export interface UserInfo {
     name: string
@@ -72,7 +72,7 @@ export const initialFormValues: FormValues = {
     isContact: false,
     contact: [{ app: '', link: '' }],
     isProject: false,
-    projects: [{ name: '', description: '', link: '' }],
+    projects: [{ name: '', description: '', link: '', public: false }],
     isUseUserInfo: false,
     isBadge: false,
     profileImage: {} as StaticImageData,

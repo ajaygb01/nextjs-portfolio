@@ -22,6 +22,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
             name: '',
             description: '',
             link: '',
+            public: false,
         },
     ]
     useEffect(() => {
@@ -34,7 +35,10 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
         value: string
     ) => {
         const newProjects = [...projects]
-        newProjects[index][key] = value
+        newProjects[index] = {
+            ...newProjects[index],
+            [key]: value,
+        }
         setProjects(newProjects)
         handleChange('projects', newProjects)
     }
@@ -56,6 +60,7 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
                 name: '',
                 description: '',
                 link: '',
+                public: false,
             },
         ])
     }
