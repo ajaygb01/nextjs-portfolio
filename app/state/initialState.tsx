@@ -25,6 +25,7 @@ export interface Project {
     name: string
     description: string
     link: string
+    public?: boolean
 }
 export interface UserInfo {
     name: string

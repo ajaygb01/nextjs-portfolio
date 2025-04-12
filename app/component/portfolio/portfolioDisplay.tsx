@@ -11,6 +11,7 @@ import {
     CardContent,
     Tooltip,
     Switch,
+    Paper,
 } from '@mui/material'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import WhatsAppIcon from '@mui/icons-material/WhatsApp'
@@ -110,11 +111,19 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     <Avatar
                         alt={formProps.userInfo.name}
                         src={
-                            typeof formProps.profileImage === 'string'
-                                ? formProps.profileImage
-                                : formProps.profileImage.src
+                            formProps.profileImage
+                                ? typeof formProps.profileImage === 'string'
+                                    ? formProps.profileImage
+                                    : formProps.profileImage.src
+                                : '/static/default-avatar.png' // Fallback image
                         }
-                        sx={{ width: 120, height: 120, margin: 'auto', mb: 2 }}
+                        sx={{
+                            width: 120,
+                            height: 120,
+                            margin: 'auto',
+                            mb: 2,
+                            borderLeft: `4px solid ${currentTheme.palette.primary.main}`,
+                        }}
                     />
                     <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
                         {formProps.userInfo.name}
@@ -129,24 +138,32 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     >
                         {formProps.userInfo.title}
                     </Typography>
-                    <Box
-                        sx={{
-                            textAlign: 'left',
-                            display: 'inline-block',
-                            mt: 2,
-                        }}
-                    >
-                        {formProps.userInfo.bio
-                            .split('\n')
-                            .map((line, index) => (
-                                <Typography
-                                    key={index}
-                                    variant="body1"
-                                    sx={{ lineHeight: 1.75, mb: 1 }}
-                                >
-                                    {line}
-                                </Typography>
-                            ))}
+                    <Box sx={{ mt: 4 }}>
+                        <Typography variant="h5" fontWeight="bold" gutterBottom>
+                            About Me
+                        </Typography>
+                        <Paper
+                            elevation={1}
+                            sx={{
+                                p: 3,
+                                borderLeft: `4px solid ${currentTheme.palette.primary.main}`,
+                                backgroundColor:
+                                    currentTheme.palette.background.paper,
+                                borderRadius: '16px',
+                            }}
+                        >
+                            {formProps.userInfo.bio
+                                .split('\n')
+                                .map((line, index) => (
+                                    <Typography
+                                        key={index}
+                                        variant="body1"
+                                        sx={{ lineHeight: 1.75, mb: 1 }}
+                                    >
+                                        {line.replace(/^>\s*/, '')}
+                                    </Typography>
+                                ))}
+                        </Paper>
                     </Box>
                 </Container>
 
@@ -176,8 +193,10 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             sx={{
                                 width: { xs: '100%', sm: 150 },
                                 textAlign: 'center',
+                                borderLeft: `4px solid ${currentTheme.palette.primary.main}`,
                                 backgroundColor:
                                     currentTheme.palette.background.paper,
+
                                 cursor: 'pointer',
                                 padding: 2,
                                 borderRadius: '16px',
@@ -308,11 +327,30 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     >
                         <CardContent>
                             {formProps.projects.map((project, i) => (
-                                <Typography key={i} variant="body1">
-                                    <Link href={project.link} target="_blank">
-                                        {project.name}
-                                    </Link>
-                                </Typography>
+                                <Box key={i} sx={{ mb: 2 }}>
+                                    <Typography variant="body1">
+                                        <Link
+                                            href={project.link}
+                                            target="_blank"
+                                        >
+                                            {project.name}
+                                        </Link>
+                                    </Typography>
+                                    <Typography
+                                        variant="body2"
+                                        sx={{ color: 'gray', mb: 1 }}
+                                    >
+                                        {project.description}
+                                    </Typography>
+                                    {project.public && (
+                                        <Chip
+                                            label="Public"
+                                            color="success"
+                                            size="small"
+                                            sx={{ mt: 1 }}
+                                        />
+                                    )}
+                                </Box>
                             ))}
                         </CardContent>
                     </Card>
@@ -320,7 +358,9 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
 
                 {/* Contact */}
                 <Box sx={{ textAlign: 'center', mt: 4 }}>
-                    <Typography variant="h5">Contact</Typography>
+                    <Typography variant="h5" fontWeight="bold">
+                        Contact
+                    </Typography>
                     <Box
                         sx={{
                             display: 'flex',

@@ -23,7 +23,6 @@ import {
     FormValues,
     Project,
     TechStack,
-    initialFormValues,
 } from '@/app/state/initialState'
 import TechStackForm from '@/app/component/techStack/techStackForm'
 import ExperienceForm from '@/app/component/experience/experienceForm'
@@ -33,12 +32,61 @@ import ContactForm from '@/app/component/contact/contactForm'
 import ProjectForm from '@/app/component/projects/projectsForm'
 import Badge from '@/app/component/badge/badge'
 import Avatar from '@mui/material/Avatar'
+import { GetServerSideProps } from 'next'
 
-interface UserInfo {
-    name: string
-    email: string
-    phone: string
-    // Add other fields as needed
+export const getServerSideProps: GetServerSideProps = async () => {
+    const initialFormValues = {
+        userInfo: {
+            name: 'Default User',
+            title: 'Software Developer',
+            bio: 'Default bio',
+        },
+        isTechStack: true,
+        techStack: [
+            { language: 'JavaScript', year: 3 },
+            { language: 'React', year: 2 },
+        ],
+        isExperience: true,
+        experience: [
+            {
+                from: '2020-Jan',
+                to: '2023-Dec',
+                company: 'Default Company',
+                location: 'Default Location',
+                position: 'Developer',
+                keySkills: ['JavaScript', 'React'],
+            },
+        ],
+        isContact: true,
+        contact: [
+            {
+                app: 'LinkedIn',
+                icon: null,
+                link: 'https://linkedin.com',
+            },
+        ],
+        isProject: true,
+        projects: [
+            {
+                name: 'Default Project',
+                description: 'Default project description',
+                link: 'https://example.com',
+            },
+        ],
+        isUseUserInfo: true,
+        isBadge: false,
+        profileImage: '/static/default-avatar.png',
+        footer: {
+            year: new Date().getFullYear(),
+            companyName: 'Default Company',
+        },
+    }
+
+    return {
+        props: {
+            initialFormValues,
+        },
+    }
 }
 
 const styles = {
@@ -72,9 +120,17 @@ const styles = {
     },
 }
 
-const Portfilo: React.FC = () => {
+const Portfilo: React.FC<{ initialFormValues: FormValues }> = ({
+    initialFormValues,
+}) => {
     const [openModal, setOpenModal] = useState<boolean>(false)
     const [isModal, setIsModal] = useState(true)
+    interface UserInfo {
+        name: string
+        title: string
+        bio: string
+    }
+
     const [userInfo, setUserInfo] = useState<UserInfo | null>(null)
 
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
@@ -305,7 +361,14 @@ const Portfilo: React.FC = () => {
                                         type="file"
                                         onChange={handleFileChange}
                                     />
-                                    <Avatar src={typeof formValues.profileImage === 'string' ? formValues.profileImage : undefined} />
+                                    <Avatar
+                                        src={
+                                            typeof formValues.profileImage ===
+                                            'string'
+                                                ? formValues.profileImage
+                                                : undefined
+                                        }
+                                    />
                                 </>
                             )}
 
@@ -335,9 +398,7 @@ const Portfilo: React.FC = () => {
                 </Grid>
                 <Grid item xs={12} md={6}>
                     <Box sx={styles.displayBlock}>
-                        <PortfolioDisplay
-                            formProps={formValues}
-                        />
+                        <PortfolioDisplay formProps={formValues} />
                     </Box>
                 </Grid>
             </Grid>

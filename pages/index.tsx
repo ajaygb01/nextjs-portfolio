@@ -99,10 +99,17 @@ const formValues: FormValues = {
                 'Built using Next.js, Material-UI, Chart.js / Calculate loan amortization',
             link: '/snow',
         },
+        {
+            name: 'Pdf Tool',
+            description:
+                'Built using Next.js, Material-UI, pdf-lib / Merge, split, and edit PDF files',
+            link: 'https://pdfbuddy.org',
+            public: true,
+        },
     ],
     isUseUserInfo: true,
     isBadge: false,
-    profileImage: profileImage.src, // Convert to string URL
+    profileImage: profileImage?.src || '/static/default-avatar.png', // Ensure fallback image
     footer: { year: new Date().getFullYear(), companyName: 'Ajay GB' },
 }
 
