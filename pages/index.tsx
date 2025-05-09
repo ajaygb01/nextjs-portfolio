@@ -106,7 +106,7 @@ const formValues: FormValues = {
             name: 'Pdf Tool',
             description:
                 'Built using Next.js, Material-UI, pdf-lib / Merge, split, and edit PDF files',
-            link: 'https://pdfbuddy.org',
+            link: 'https://pdflab.app',
             public: true,
         },
     ],

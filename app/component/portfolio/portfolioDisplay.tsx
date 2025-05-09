@@ -182,7 +182,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             label: 'Years of Experience',
                             value: `${totalExperienceYears}+`,
                         },
-                        { label: 'Skills', value: formProps.techStack.length },
+                        // { label: 'PL', value: formProps.techStack.length },
                         {
                             label: 'Projects',
                             value: `${formProps.projects.length}+`,
@@ -280,7 +280,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     </Card>
                 )}
 
-                {expandedSection === 'Skills' && (
+                {expandedSection === 'PL' && (
                     <Card
                         ref={skillsRef}
                         sx={{
