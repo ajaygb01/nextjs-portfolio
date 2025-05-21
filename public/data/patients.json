@@ -1,0 +1,94 @@
+[
+  {
+    "id": "PT001",
+    "name": "John Doe",
+    "age": 45,
+    "diagnosis": "Hypertension",
+    "vitals": {
+      "heartRate": 75,
+      "bloodPressure": "120/80 mmHg",
+      "temperature": 36.5
+    },
+    "bloodSugar": [
+      { "timestamp": "2023-05-01T08:00:00Z", "value": 90 },
+      { "timestamp": "2023-05-01T12:00:00Z", "value": 95 },
+      { "timestamp": "2023-05-01T16:00:00Z", "value": 100 },
+      { "timestamp": "2023-05-02T08:00:00Z", "value": 85 },
+      { "timestamp": "2023-05-02T12:00:00Z", "value": 110 }
+    ],
+    "status": "stable",
+    "appointmentHistory": [
+      { "date": "2023-04-15", "reason": "Routine Checkup", "notes": "Patient progressing well." }
+    ],
+    "notes": "Generally healthy, requires regular monitoring for blood pressure."
+  },
+  {
+    "id": "PT002",
+    "name": "Jane Smith",
+    "age": 60,
+    "diagnosis": "Diabetes Type 2",
+    "vitals": {
+      "heartRate": 80,
+      "bloodPressure": "130/85 mmHg",
+      "temperature": 36.8
+    },
+    "bloodSugar": [
+      { "timestamp": "2023-05-01T09:00:00Z", "value": 150 },
+      { "timestamp": "2023-05-01T13:00:00Z", "value": 160 },
+      { "timestamp": "2023-05-01T17:00:00Z", "value": 140 },
+      { "timestamp": "2023-05-02T09:00:00Z", "value": 155 },
+      { "timestamp": "2023-05-02T13:00:00Z", "value": 165 }
+    ],
+    "status": "warning",
+    "appointmentHistory": [
+      { "date": "2023-03-20", "reason": "Diabetes Management", "notes": "Adjusted medication." }
+    ],
+    "notes": "Needs careful monitoring of blood sugar levels and diet."
+  },
+  {
+    "id": "PT003",
+    "name": "Robert Jones",
+    "age": 72,
+    "diagnosis": "Coronary Artery Disease",
+    "vitals": {
+      "heartRate": 65,
+      "bloodPressure": "140/90 mmHg",
+      "temperature": 36.2
+    },
+    "bloodSugar": [
+      { "timestamp": "2023-05-01T07:00:00Z", "value": 100 },
+      { "timestamp": "2023-05-01T11:00:00Z", "value": 105 },
+      { "timestamp": "2023-05-01T15:00:00Z", "value": 98 },
+      { "timestamp": "2023-05-02T07:00:00Z", "value": 110 },
+      { "timestamp": "2023-05-02T11:00:00Z", "value": 102 }
+    ],
+    "status": "critical",
+    "appointmentHistory": [
+      { "date": "2023-04-10", "reason": "Cardiac Follow-up", "notes": "Experiencing occasional chest pain." }
+    ],
+    "notes": "High risk patient, requires close observation and immediate attention to symptoms."
+  },
+  {
+    "id": "PT004",
+    "name": "Emily Brown",
+    "age": 30,
+    "diagnosis": "Asthma",
+    "vitals": {
+      "heartRate": 70,
+      "bloodPressure": "110/70 mmHg",
+      "temperature": 37.0
+    },
+    "bloodSugar": [
+      { "timestamp": "2023-05-01T08:30:00Z", "value": 88 },
+      { "timestamp": "2023-05-01T12:30:00Z", "value": 92 },
+      { "timestamp": "2023-05-01T16:30:00Z", "value": 85 },
+      { "timestamp": "2023-05-02T08:30:00Z", "value": 90 },
+      { "timestamp": "2023-05-02T12:30:00Z", "value": 95 }
+    ],
+    "status": "stable",
+    "appointmentHistory": [
+      { "date": "2023-04-25", "reason": "Annual Physical", "notes": "Asthma well-controlled." }
+    ],
+    "notes": "Manages asthma with inhaler, generally in good health."
+  }
+]

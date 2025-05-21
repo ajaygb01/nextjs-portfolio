@@ -1,15 +1,20 @@
-import { AppBar, Toolbar, Button, Typography } from '@mui/material'
-import { useSession, signIn, signOut } from 'next-auth/react'
+import { AppBar, Toolbar, Button, Typography } from '@mui/material';
+import { useSession, signIn, signOut } from 'next-auth/react';
+import Link from 'next/link';
 
 const Navbar: React.FC = () => {
-    const { data: session } = useSession()
+    const { data: session } = useSession();
 
     return (
         <AppBar position="static">
             <Toolbar>
-                <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" sx={{ marginRight: 2 }}> {/* Removed flexGrow to allow link to be next to title */}
                     TaxEase
                 </Typography>
+                <Link href="/medidash" passHref>
+                    <Button color="inherit">MediDash</Button>
+                </Link>
+                <div style={{ flexGrow: 1 }} /> {/* Add a spacer to push subsequent items to the right */}
                 {session ? (
                     <>
                         <Typography variant="body1" sx={{ marginRight: 2 }}>
@@ -26,7 +31,7 @@ const Navbar: React.FC = () => {
                 )}
             </Toolbar>
         </AppBar>
-    )
-}
+    );
+};
 
-export default Navbar
+export default Navbar;
