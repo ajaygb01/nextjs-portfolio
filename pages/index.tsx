@@ -122,11 +122,19 @@ export default function Index() {
     return (
         <>
             <Box sx={{ textAlign: 'center', my: 2 }}>
-                <Link href="/modern-portfolio" passHref>
-                    <Button variant="contained" color="secondary">
+                <a href="/modern-portfolio" style={{ textDecoration: 'none' }}>
+                    <button
+                        style={{
+                            padding: '10px 20px',
+                            backgroundColor: '#f50057',
+                            color: '#fff',
+                            border: 'none',
+                            borderRadius: '4px',
+                        }}
+                    >
                         View New Modern Design
-                    </Button>
-                </Link>
+                    </button>
+                </a>
             </Box>
             <PortfolioDisplay formProps={formValues} />
         </>

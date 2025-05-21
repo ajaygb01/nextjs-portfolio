@@ -54,7 +54,14 @@ const formValues: FormValues = {
             company: 'Lithia / Pfaff Motors Inc',
             location: 'Toronto',
             position: 'Software Developer',
-            keySkills: ['Python', 'React', 'CI/CD', 'ExpressJs', 'MySql', 'Azure Cloud/Devops'],
+            keySkills: [
+                'Python',
+                'React',
+                'CI/CD',
+                'ExpressJs',
+                'MySql',
+                'Azure Cloud/Devops',
+            ],
         },
         {
             from: '2019-May',
@@ -75,16 +82,48 @@ const formValues: FormValues = {
     ],
     isContact: true,
     contact: [
-        { app: 'LinkedIn', icon: <LinkedInIcon />, link: 'https://www.linkedin.com/in/ajay-vigneshwar-gb-b3b665179/' },
-        { app: 'Whatsapp', icon: <ChatIcon />, link: 'https://wa.me/+12269758056' },
+        {
+            app: 'LinkedIn',
+            icon: <LinkedInIcon />,
+            link: 'https://www.linkedin.com/in/ajay-vigneshwar-gb-b3b665179/',
+        },
+        {
+            app: 'Whatsapp',
+            icon: <ChatIcon />,
+            link: 'https://wa.me/+12269758056',
+        },
         { app: 'Email', icon: <EmailIcon />, link: 'mailto:ajaygb7@gmail.com' },
     ],
     isProject: true,
     projects: [
-        { name: 'MediDash', description: 'A comprehensive medical dashboard built using Next.js and Material-UI, featuring patient management, medical records, lab results, and appointment scheduling.', link: '/medical', public: false },
-        { name: 'Portfolio Website', description: 'Built using Next.js and Material-UI / Randomize user info', link: '/portfolio', public: false },
-        { name: 'Loan Calculator App', description: 'Built using Next.js, Material-UI, Chart.js / Calculate loan amortization', link: '/snow', public: false },
-        { name: 'Pdf Tool', description: 'Built using Next.js, Material-UI, pdf-lib / Merge, split, and edit PDF files', link: 'https://pdflab.app', public: true },
+        {
+            name: 'MediDash',
+            description:
+                'A comprehensive medical dashboard built using Next.js and Material-UI, featuring patient management, medical records, lab results, and appointment scheduling.',
+            link: '/medical',
+            public: false,
+        },
+        {
+            name: 'Portfolio Website',
+            description:
+                'Built using Next.js and Material-UI / Randomize user info',
+            link: '/portfolio',
+            public: false,
+        },
+        {
+            name: 'Loan Calculator App',
+            description:
+                'Built using Next.js, Material-UI, Chart.js / Calculate loan amortization',
+            link: '/snow',
+            public: false,
+        },
+        {
+            name: 'Pdf Tool',
+            description:
+                'Built using Next.js, Material-UI, pdf-lib / Merge, split, and edit PDF files',
+            link: 'https://pdflab.app',
+            public: true,
+        },
     ],
     isUseUserInfo: true,
     isBadge: false,
@@ -130,7 +169,7 @@ const darkTheme = createTheme({
 const sectionAnimation = {
     initial: { opacity: 0, y: 30 },
     animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.7, ease: "easeOut" },
+    transition: { duration: 0.7, ease: 'easeOut' },
 }
 
 export default function ModernPortfolioPage() {
@@ -174,8 +213,8 @@ export default function ModernPortfolioPage() {
                         zIndex: 1300, // Ensure it's above other content
                         backgroundColor: currentTheme.palette.background.paper,
                         '&:hover': {
-                             backgroundColor: currentTheme.palette.action.hover,
-                        }
+                            backgroundColor: currentTheme.palette.action.hover,
+                        },
                     }}
                 >
                     {darkMode ? <Brightness7Icon /> : <Brightness4Icon />}
@@ -198,14 +237,17 @@ export default function ModernPortfolioPage() {
                     </motion.div>
                 )}
 
-                {formValues.isExperience && formValues.experience.length > 0 && (
-                    <motion.div {...sectionAnimation}>
-                        <ExperienceTimeline experience={formValues.experience} />
-                    </motion.div>
-                )}
+                {formValues.isExperience &&
+                    formValues.experience.length > 0 && (
+                        <motion.div {...sectionAnimation}>
+                            <ExperienceTimeline
+                                experience={formValues.experience}
+                            />
+                        </motion.div>
+                    )}
 
                 {formValues.isProject && formValues.projects.length > 0 && (
-                     <motion.div {...sectionAnimation} id="projects-section">
+                    <motion.div {...sectionAnimation} id="projects-section">
                         <ProjectsGrid projects={formValues.projects} />
                     </motion.div>
                 )}
@@ -215,7 +257,7 @@ export default function ModernPortfolioPage() {
                         <ContactBar contact={formValues.contact} />
                     </motion.div>
                 )}
-                
+
                 {/* Footer should not be animated like other sections and should be outside the main flow of animated divs if it's meant to be always visible or transition differently */}
                 <Footer footer={formValues.footer} />
             </Box>
