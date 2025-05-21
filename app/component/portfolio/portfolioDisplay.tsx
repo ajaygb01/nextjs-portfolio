@@ -18,6 +18,8 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp'
 import EmailIcon from '@mui/icons-material/Email'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
+import BusinessIcon from '@mui/icons-material/Business';
+import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { FormValues } from '@/app/state/initialState'
 
@@ -82,7 +84,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     minHeight: '100vh',
                     backgroundColor: currentTheme.palette.background.default,
                     color: currentTheme.palette.text.primary,
-                    padding: 4,
+                    padding: { xs: 2, sm: 3, md: 4 },
                 }}
             >
                 {/* Theme Toggle Button */}
@@ -118,11 +120,12 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                 : '/static/default-avatar.png' // Fallback image
                         }
                         sx={{
-                            width: 120,
-                            height: 120,
+                            width: { xs: 90, sm: 100, md: 120 }, 
+                            height: { xs: 90, sm: 100, md: 120 },
                             margin: 'auto',
                             mb: 2,
                             borderLeft: `4px solid ${currentTheme.palette.primary.main}`,
+                            boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
                         }}
                     />
                     <Typography variant="h4" sx={{ fontWeight: 'bold', mb: 1 }}>
@@ -182,7 +185,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             label: 'Years of Experience',
                             value: `${totalExperienceYears}+`,
                         },
-                        // { label: 'PL', value: formProps.techStack.length },
+                        { label: 'Skills', value: formProps.techStack.length },
                         {
                             label: 'Projects',
                             value: `${formProps.projects.length}+`,
@@ -190,6 +193,15 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     ].map(({ label, value }) => (
                         <Card
                             key={label}
+                            role="button"
+                            tabIndex={0}
+                            aria-expanded={expandedSection === label}
+                            onKeyDown={(e: React.KeyboardEvent) => {
+                                if (e.key === 'Enter' || e.key === ' ') {
+                                    e.preventDefault();
+                                    toggleSection(label);
+                                }
+                            }}
                             sx={{
                                 width: { xs: '100%', sm: 150 },
                                 textAlign: 'center',
@@ -198,7 +210,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     currentTheme.palette.background.paper,
 
                                 cursor: 'pointer',
-                                padding: 2,
+                                // padding: 2, // Changed as per instruction
                                 borderRadius: '16px',
                                 boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                                 transition: 'transform 0.2s',
@@ -206,8 +218,9 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     transform: 'scale(1.05)',
                                 },
                                 mb: { xs: 2, sm: 0 },
+                                p: 2.5 // Added as per instruction
                             }}
-                            onClick={() => toggleSection(label)}
+                            onClick={() => toggleSection(label)} // label should be correct now after previous changes
                         >
                             <CardContent>
                                 <Typography variant="h5" color="primary">
@@ -228,11 +241,12 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             p: 3,
                             backgroundColor:
                                 currentTheme.palette.background.paper,
-                            borderRadius: '10px',
+                            borderRadius: '16px',
                             boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                         }}
                     >
                         <CardContent>
+                           <Container maxWidth="md">
                             {formProps.experience.map((exp, i) => (
                                 <Box
                                     key={i}
@@ -252,10 +266,10 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                         {exp.position}
                                     </Typography>
                                     <Typography variant="body1" sx={{ mb: 1 }}>
-                                        🏢 {exp.company}
+                                        <BusinessIcon sx={{ mr: 1, verticalAlign: 'bottom' }} /> {exp.company}
                                     </Typography>
                                     <Typography variant="body2" sx={{ mb: 1 }}>
-                                        📅 {exp.from} - {exp.to || 'Present'}
+                                        <CalendarTodayIcon sx={{ mr: 1, verticalAlign: 'bottom' }} /> {exp.from} - {exp.to || 'Present'}
                                     </Typography>
                                     <Box
                                         component="ul"
@@ -276,11 +290,12 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     </Box>
                                 </Box>
                             ))}
+                           </Container>
                         </CardContent>
                     </Card>
                 )}
 
-                {expandedSection === 'PL' && (
+                {expandedSection === 'Skills' && (
                     <Card
                         ref={skillsRef}
                         sx={{
@@ -288,9 +303,11 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             p: 3,
                             backgroundColor:
                                 currentTheme.palette.background.paper,
+                            borderRadius: '16px',
                         }}
                     >
                         <CardContent>
+                           <Container maxWidth="md">
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -311,6 +328,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     </Tooltip>
                                 ))}
                             </Box>
+                           </Container>
                         </CardContent>
                     </Card>
                 )}
@@ -323,9 +341,11 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             p: 3,
                             backgroundColor:
                                 currentTheme.palette.background.paper,
+                            borderRadius: '16px',
                         }}
                     >
                         <CardContent>
+                           <Container maxWidth="md">
                             {formProps.projects.map((project, i) => (
                                 <Box key={i} sx={{ mb: 2 }}>
                                     <Typography variant="body1">
@@ -338,7 +358,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     </Typography>
                                     <Typography
                                         variant="body2"
-                                        sx={{ color: 'gray', mb: 1 }}
+                                        sx={{ color: currentTheme.palette.text.secondary, mb: 1 }}
                                     >
                                         {project.description}
                                     </Typography>
@@ -352,6 +372,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     )}
                                 </Box>
                             ))}
+                           </Container>
                         </CardContent>
                     </Card>
                 )}
@@ -367,6 +388,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             justifyContent: 'center',
                             gap: 3,
                             mt: 2,
+                            flexWrap: 'wrap',
                         }}
                     >
                         {formProps.contact.map((contact, i) => (
