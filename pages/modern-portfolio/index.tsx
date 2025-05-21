@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { motion } from 'framer-motion'
+import { Analytics } from '@vercel/analytics/next'
 
 // Import newly created components
 import HeroSection from '@/app/component/modern-portfolio/heroSection'
@@ -193,6 +194,7 @@ export default function ModernPortfolioPage() {
 
     return (
         <ThemeProvider theme={currentTheme}>
+            <Analytics />
             <CssBaseline /> {/* Ensures consistent baseline styling */}
             <Box
                 sx={{
