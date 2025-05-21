@@ -5,6 +5,8 @@ import ChatIcon from '@mui/icons-material/WhatsApp'
 import EmailIcon from '@mui/icons-material/Email'
 import PortfolioDisplay from '@/app/component/portfolio/portfolioDisplay'
 import profileImage from '@/public/static/me.jpg'
+import Link from 'next/link'
+import { Box, Button } from '@mui/material'
 
 import { FormValues } from '@/app/state/initialState'
 
@@ -117,5 +119,16 @@ const formValues: FormValues = {
 }
 
 export default function Index() {
-    return <PortfolioDisplay formProps={formValues} />
+    return (
+        <>
+            <Box sx={{ textAlign: 'center', my: 2 }}>
+                <Link href="/modern-portfolio" passHref>
+                    <Button variant="contained" color="secondary">
+                        View New Modern Design
+                    </Button>
+                </Link>
+            </Box>
+            <PortfolioDisplay formProps={formValues} />
+        </>
+    )
 }
