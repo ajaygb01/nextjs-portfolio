@@ -7,10 +7,16 @@ import { ThreeEvent, useFrame } from '@react-three/fiber'; // Removed ComponentP
 interface ExperienceNodeProps extends ComponentProps<'mesh'> { // Changed SphereProps to ComponentProps<'mesh'>
   experience: Experience;
   nodePosition: THREE.Vector3;
-  onClick: (event: ThreeEvent<MouseEvent>, experience: Experience, position: THREE.Vector3) => void;
+  // onClick prop removed from here to avoid conflict with MeshProps' onClick
+  // The actual click handling logic will be passed via a differently named prop
+  // or handled by a wrapper if direct mesh onClick is needed.
+  // For this specific case, the parent `ThreeDExperience` passes `handleNodeClick`
+  // which will be assigned to a prop like `onNodeClick` in this component.
 }
 
-const ExperienceNode: React.FC<ExperienceNodeProps> = ({ experience, nodePosition, onClick, ...sphereProps }) => {
+// Renamed the incoming 'onClick' prop to 'onNodeClick' to avoid conflict and make its purpose clearer
+const ExperienceNode: React.FC<ExperienceNodeProps & { onNodeClick: (event: ThreeEvent<MouseEvent>, experience: Experience, position: THREE.Vector3) => void }> = 
+  ({ experience, nodePosition, onNodeClick, ...sphereProps }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const [hovered, setHovered] = useState(false);
   const initialColor = useRef(new THREE.Color('purple'));
@@ -33,7 +39,8 @@ const ExperienceNode: React.FC<ExperienceNodeProps> = ({ experience, nodePositio
       ref={meshRef}
       // args prop removed as sphereGeometry child is present
       position={nodePosition}
-      onClick={(event) => onClick(event, experience, nodePosition)}
+      // The mesh's onClick now correctly calls the passed onNodeClick with the captured experience and nodePosition
+      onClick={(event) => onNodeClick(event, experience, nodePosition)}
       onPointerOver={(event) => { event.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer';}}
       onPointerOut={(event) => { event.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto';}}
       {...sphereProps} // Spread other sphere props
@@ -84,7 +91,7 @@ const ThreeDExperience: React.FC<ThreeDExperienceProps> = ({
           key={`exp-node-${i}`}
           experience={exp}
           nodePosition={nodePositions[i]}
-          onClick={handleNodeClick}
+          onNodeClick={handleNodeClick} // Prop renamed from onClick to onNodeClick
           // No explicit args here, as they are defined within ExperienceNode
         />
       ))}
