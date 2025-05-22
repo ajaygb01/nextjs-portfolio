@@ -1,7 +1,7 @@
 // pages/api/chat.ts
 
 import { NextApiRequest, NextApiResponse } from 'next'
-import { createApiHandler } from '../../app/project/resumeBuilder/utils/createApiHandler'
+import { createApiHandler } from '@/app/project/resumeBuilder/utils/createApiHandler'
 import OpenAI from 'openai'
 
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })

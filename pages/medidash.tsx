@@ -152,7 +152,37 @@ const MediDashPage: React.FC<MediDashPageProps> = ({ patients, error }) => {
       </>
     );
   }
+  // <<< THIS BLOCK WAS THE CULPRIT >>>
+  // return (
+  //   <>
+  //     <Head>
+  //       <title>MediDash | Patient Dashboard</title>
+  //       <meta name="description" content="View and manage patient information, health metrics, and medical history on the MediDash dashboard." />
+  //     </Head>
+  //     <div className="p-4 md:p-8 bg-gray-50 min-h-screen">
+  //       <header className="mb-6">
+  //         <h1 className="text-3xl font-bold text-gray-800 mb-4">MediDash - Patient Dashboard</h1>
+  //         <input
+  //         type="text"
+  //         placeholder="Search patients by name, ID, or diagnosis..."
+  //         className="p-3 border border-gray-300 rounded-lg shadow-sm w-full md:w-1/2 lg:w-1/3 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none"
+  //         value={searchTerm}
+  //         onChange={(e) => setSearchTerm(e.target.value)}
+  //       />
+  //     </header>
 
+  //     {filteredPatients.length > 0 ? (
+  //       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+  //         {filteredPatients.map(patient => (
+  //           <PatientCard key={patient.id} patient={patient} />
+  //         ))}
+  //       </div>
+  //     ) : (
+  //       <p className="text-gray-500">No patients found matching your search criteria.</p>
+  //     )}
+  //   </div>
+  // ); THIS IS THE EXTRA BRACKET
+  // Corrected block, the extra '}' was removed from the end of this functional component.
   return (
     <>
       <Head>
@@ -181,6 +211,7 @@ const MediDashPage: React.FC<MediDashPageProps> = ({ patients, error }) => {
         <p className="text-gray-500">No patients found matching your search criteria.</p>
       )}
     </div>
+    </> // Added missing closing fragment tag
   );
 };
 

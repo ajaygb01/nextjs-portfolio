@@ -1,8 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react'; // Added useEffect here
 import { useFrame, ThreeEvent } from '@react-three/fiber'; // MeshProps can be inferred
 import * as THREE from 'three';
 
-interface OrbitingPlanetProps extends Omit<JSX.IntrinsicElements['mesh'], 'args'> { // More precise props
+interface OrbitingPlanetProps extends Omit<React.JSX.IntrinsicElements['mesh'], 'args'> { // Changed to React.JSX
   size?: number;
   color?: string;
   orbitRadius?: number;
@@ -87,5 +87,4 @@ const OrbitingPlanet: React.FC<OrbitingPlanetProps> = ({
 };
 
 export default OrbitingPlanet;
-// useEffect import from React
-import { useEffect } from 'react';
+// Removed stray useEffect import from here

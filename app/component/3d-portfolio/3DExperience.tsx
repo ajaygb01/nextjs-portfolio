@@ -1,10 +1,10 @@
-import React, { useMemo, useRef, useState } from 'react';
-import { SphereProps, Line } from '@react-three/drei'; // SphereProps for individual nodes
+import React, { useMemo, useRef, useState, ComponentProps } from 'react'; // Added ComponentProps here
+import { Line } from '@react-three/drei'; // SphereProps removed
 import * as THREE from 'three';
-import { Experience } from '../../state/initialState';
-import { ThreeEvent, useFrame } from '@react-three/fiber';
+import { Experience } from '../../state/initialState'; // TODO: This path might need alias update later
+import { ThreeEvent, useFrame } from '@react-three/fiber'; // Removed ComponentProps from here
 
-interface ExperienceNodeProps extends SphereProps {
+interface ExperienceNodeProps extends ComponentProps<'mesh'> { // Changed SphereProps to ComponentProps<'mesh'>
   experience: Experience;
   nodePosition: THREE.Vector3;
   onClick: (event: ThreeEvent<MouseEvent>, experience: Experience, position: THREE.Vector3) => void;
@@ -31,7 +31,7 @@ const ExperienceNode: React.FC<ExperienceNodeProps> = ({ experience, nodePositio
   return (
     <mesh
       ref={meshRef}
-      args={[0.2, 16, 16]} // Default args for Sphere, or pass via sphereProps
+      // args prop removed as sphereGeometry child is present
       position={nodePosition}
       onClick={(event) => onClick(event, experience, nodePosition)}
       onPointerOver={(event) => { event.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer';}}
