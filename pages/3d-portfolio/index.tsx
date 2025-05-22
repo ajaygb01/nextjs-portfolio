@@ -20,13 +20,13 @@ import ContactMailIcon from '@mui/icons-material/ContactMail';
 import BusinessIcon from '@mui/icons-material/Business'; // For Experience section title
 
 
-import { FormValues, TechStack, Project, Experience, Contact, initialFormValues } from '../../state/initialState';
-import GalaxyBackground from '../../component/3d-portfolio/GalaxyBackground';
-import AstronautModel from '../../component/3d-portfolio/AstronautModel';
-import OrbitingPlanet from '../../component/3d-portfolio/OrbitingPlanet';
-import ThreeDExperience from '../../component/3d-portfolio/3DExperience';
-import FloatingTextPanel from '../../component/3d-portfolio/FloatingTextPanel';
-import ThemeToggleButton from '../../component/3d-portfolio/ThemeToggleButton';
+import { FormValues, TechStack, Project, Experience, Contact, initialFormValues } from '@/app/state/initialState';
+import GalaxyBackground from '@/app/component/3d-portfolio/GalaxyBackground';
+import AstronautModel from '@/app/component/3d-portfolio/AstronautModel';
+import OrbitingPlanet from '@/app/component/3d-portfolio/OrbitingPlanet';
+import ThreeDExperience from '@/app/component/3d-portfolio/3DExperience';
+import FloatingTextPanel from '@/app/component/3d-portfolio/FloatingTextPanel';
+import ThemeToggleButton from '@/app/component/3d-portfolio/ThemeToggleButton';
 import * as THREE from 'three';
 
 // CommuComet Component
@@ -141,7 +141,7 @@ const darkTheme = createTheme({
 
 
 const ThreeDPortfolioPage: React.FC = () => {
-  const orbitControlsRef = useRef<any>();
+  const orbitControlsRef = useRef<any>(null); // Added null as initial value
   const [darkMode, setDarkMode] = useState(true); 
   const audioRef = useRef<HTMLAudioElement>(null); 
   const [isMusicPlaying, setIsMusicPlaying] = useState(false); 
@@ -194,6 +194,13 @@ const ThreeDPortfolioPage: React.FC = () => {
     setDarkMode(!darkMode);
   };
 
+  // Memoize clearAllSelections with useCallback
+  const clearAllSelections = React.useCallback(() => {
+    setActivePanel(null);
+    setCameraTargetPositionState(defaultCameraTarget.clone());
+    setCameraFocusPositionState(defaultCameraPosition.clone());
+  }, [setActivePanel, setCameraTargetPositionState, setCameraFocusPositionState]); // Add setters to deps, though they are stable
+
   useEffect(() => {
     if (audioRef.current) {
       if (isMusicPlaying) {
@@ -210,13 +217,7 @@ const ThreeDPortfolioPage: React.FC = () => {
     };
     document.addEventListener('keydown', handleKeyDown);
     return () => document.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  const clearAllSelections = () => {
-    setActivePanel(null);
-    setCameraTargetPositionState(defaultCameraTarget.clone());
-    setCameraFocusPositionState(defaultCameraPosition.clone());
-  };
+  }, [clearAllSelections]); // Added clearAllSelections to dependency array
 
   const handleSelection = (targetPosition: THREE.Vector3, focusOffset: THREE.Vector3 = new THREE.Vector3(0, 1, 3)) => {
     setCameraTargetPositionState(targetPosition.clone());
@@ -327,7 +328,7 @@ const ThreeDPortfolioPage: React.FC = () => {
   const renderMobileView = () => (
     <Box sx={{ p: 2, height: '100vh', overflowY: 'auto', bgcolor: currentTheme.palette.background.default, color: currentTheme.palette.text.primary }}>
       <Typography variant="h4" gutterBottom align="center">
-        Ajay GB's Portfolio Universe (2D Map)
+        Ajay GB&apos;s Portfolio Universe (2D Map)
       </Typography>
 
       <Accordion>

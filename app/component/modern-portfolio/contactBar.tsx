@@ -2,6 +2,7 @@
 
 import React from 'react'
 import { Box, Typography, IconButton, Tooltip } from '@mui/material'
+import { SvgIconProps } from '@mui/material/SvgIcon'; // Import SvgIconProps
 
 interface ContactItem {
     app: string
@@ -38,7 +39,7 @@ const ContactBar: React.FC<ContactBarProps> = ({ contact }) => {
                             }}
                         >
                             {/* Ensure the icon itself has appropriate sizing if it's an SVG component */}
-                            {React.isValidElement(item.icon) ? React.cloneElement(item.icon as React.ReactElement, { sx: { fontSize: '2rem' }}) : null}
+                            {React.isValidElement(item.icon) ? React.cloneElement(item.icon as React.ReactElement<SvgIconProps>, { sx: { fontSize: '2rem' }}) : null}
                         </IconButton>
                     </Tooltip>
                 ))}
