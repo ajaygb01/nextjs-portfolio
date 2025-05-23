@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Text } from '@react-three/drei';
 import { Modal, Paper, Typography, Button } from '@mui/material';
+import NameGlowEffect from './NameGlowEffect'; // Import the glow effect
 import { useFrame, ThreeEvent } from '@react-three/fiber';
 import * as THREE from 'three';
 
@@ -65,7 +66,7 @@ const AstronautModel: React.FC<AstronautModelProps> = ({ name, onToggleBio }) =>
   };
 
   return (
-    <group>
+    <group> {/* Main group for astronaut and related elements */}
       <mesh 
         ref={meshRef} 
         onClick={handleAstronautClick} 
@@ -73,20 +74,29 @@ const AstronautModel: React.FC<AstronautModelProps> = ({ name, onToggleBio }) =>
         onPointerOut={handlePointerOut}
         castShadow 
         receiveShadow
+        // Astronaut mesh is at the origin of this main group
       >
         <sphereGeometry args={[0.5, 32, 32]} />
         {/* Ensure material is MeshStandardMaterial for emissive property */}
         <meshStandardMaterial color={initialColor.current} /> 
       </mesh>
-      <Text
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-        fontSize={0.2}
-        position={[0, 0.8, 0]}
-      >
-        {name}
-      </Text>
+      
+      {/* Group for Text and Glow Effect, positioned together above the astronaut */}
+      <group position={[0, 0.8, 0]}> 
+        <Text
+          color="white"
+          anchorX="center"
+          anchorY="middle"
+          fontSize={0.2}
+          position={[0, 0, 0]} // Positioned at the origin of this parent group
+        >
+          {name}
+        </Text>
+        {/* Glow effect positioned slightly behind the text within this group */}
+        <group position={[0, 0, -0.05]}>
+          <NameGlowEffect />
+        </group>
+      </group>
 
       <Modal
         open={showEasterEggModal}

@@ -1,11 +1,11 @@
 import React, { useRef, useEffect, Suspense, useState } from 'react';
 import { Canvas, ThreeEvent, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Text, Sphere, Sphere as DreiSphere } from '@react-three/drei';
+import { OrbitControls, Text, Sphere, Sphere as DreiSphere } from '@react-three/drei'; // Removed OrbitControlsImpl type import
 import { 
     Box, Typography, Button, Chip, Link as MuiLink, ThemeProvider, createTheme, CssBaseline, IconButton,
     Accordion, AccordionSummary, AccordionDetails, Paper, useMediaQuery // Added MUI components for mobile
 } from '@mui/material';
-import { useTheme as useMuiTheme } from '@mui/material/styles'; // Renamed to avoid conflict with R3F useTheme
+// import { useTheme as useMuiTheme } from '@mui/material/styles'; // Renamed to avoid conflict with R3F useTheme - NO LONGER NEEDED
 // Example Icons & Fallback Icons
 import EmailIcon from '@mui/icons-material/Email'; 
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
@@ -19,136 +19,89 @@ import CodeIcon from '@mui/icons-material/Code';
 import ContactMailIcon from '@mui/icons-material/ContactMail';
 import BusinessIcon from '@mui/icons-material/Business'; // For Experience section title
 
-
+// Import formValues from modern-portfolio
+import { formValues } from '../modern-portfolio'; 
 import { FormValues, TechStack, Project, Experience, Contact, initialFormValues } from '@/app/state/initialState';
 import GalaxyBackground from '@/app/component/3d-portfolio/GalaxyBackground';
 import AstronautModel from '@/app/component/3d-portfolio/AstronautModel';
 import OrbitingPlanet from '@/app/component/3d-portfolio/OrbitingPlanet';
 import ThreeDExperience from '@/app/component/3d-portfolio/3DExperience';
 import FloatingTextPanel from '@/app/component/3d-portfolio/FloatingTextPanel';
-import ThemeToggleButton from '@/app/component/3d-portfolio/ThemeToggleButton';
+// ThemeToggleButton import removed
+import ShootingStars from '@/app/component/3d-portfolio/ShootingStars'; // Import ShootingStars
+import CommuComet from '@/app/component/3d-portfolio/CommuComet'; // Import CommuComet
+import MoonSphere from '@/app/component/3d-portfolio/MoonSphere'; // Import MoonSphere
 import * as THREE from 'three';
 
-// CommuComet Component
-const CommuComet: React.FC<{ onClick: (event: ThreeEvent<MouseEvent>) => void, position: [number, number, number] }> = ({ onClick, position }) => {
-  const meshRef = useRef<THREE.Mesh>(null!);
-  const [hovered, setHovered] = useState(false);
-  const initialEmissiveIntensity = 0.7;
-
-  useFrame(({ clock }) => {
-    if(meshRef.current) {
-      meshRef.current.position.y = position[1] + Math.sin(clock.getElapsedTime() * 2) * 0.2; // Bobbing
-      
-      // Scale and emissive hover effect
-      const targetScale = hovered ? 1.2 : 1;
-      meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
-      
-      if (meshRef.current.material instanceof THREE.MeshStandardMaterial) {
-        const material = meshRef.current.material as THREE.MeshStandardMaterial;
-        const targetIntensity = hovered ? initialEmissiveIntensity * 2 : initialEmissiveIntensity; // Brighter on hover
-        material.emissiveIntensity = THREE.MathUtils.lerp(material.emissiveIntensity, targetIntensity, 0.1);
-      }
-    }
-  });
-
-  return (
-    <DreiSphere 
-      ref={meshRef} 
-      args={[0.4, 32, 32]} 
-      position={position} 
-      onClick={onClick}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-      onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto'; }}
-    >
-      <meshStandardMaterial color="yellow" emissive="yellow" emissiveIntensity={initialEmissiveIntensity} />
-    </DreiSphere>
-  );
-};
-
-// MoonSphere Component (New component for the Dad Joke Moon with hover effects)
-const MoonSphere: React.FC<{ onClick: (event: ThreeEvent<MouseEvent>) => void, position: [number, number, number] }> = ({ onClick, position }) => {
-  const meshRef = useRef<THREE.Mesh>(null!);
-  const [hovered, setHovered] = useState(false);
-  const initialColor = useRef(new THREE.Color('lightgray'));
-
-  useFrame(() => {
-    if (meshRef.current) {
-      const targetScale = hovered ? 1.2 : 1;
-      meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
-      
-      if (meshRef.current.material instanceof THREE.MeshStandardMaterial) {
-        const material = meshRef.current.material as THREE.MeshStandardMaterial;
-        const targetEmissive = hovered ? initialColor.current.clone().multiplyScalar(0.2) : new THREE.Color(0x000000); // Slight glow on hover
-        material.emissive.lerp(targetEmissive, 0.1);
-      }
-    }
-  });
-
-  return (
-    <DreiSphere // Using DreiSphere alias for consistency if preferred, or just Sphere
-      ref={meshRef}
-      args={[0.3, 32, 32]}
-      position={position}
-      onClick={onClick}
-      onPointerOver={(e) => { e.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer'; }}
-      onPointerOut={(e) => { e.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto'; }}
-    >
-      <meshStandardMaterial color={initialColor.current} />
-    </DreiSphere>
-  );
-};
+// CommuComet Component - REMOVED (now imported)
+// MoonSphere Component - REMOVED (now imported)
 
 const defaultCameraPosition = new THREE.Vector3(0, 2, 12);
 const defaultCameraTarget = new THREE.Vector3(0, 0, 0);
 
-const formValues: FormValues = { 
-  ...initialFormValues,
-  userInfo: { name: 'Space Explorer', title: 'Frontend Astronaut', bio: 'Loves to explore the web.\nBuilds amazing user experiences.\nAcross the digital galaxy.' },
-  isTechStack: true, techStack: [{ language: 'JS', year: 5 }, {language: 'Java', year: 1}],
-  isProject: true, projects: [{ name: 'P1', description: 'A very cool project that does a lot of things. It is built with modern technologies and aims to solve a real-world problem effectively.', link: 'https://example.com', public: true }, { name: 'P2', description: 'Another interesting project.', link: '/internal-page', public: false }],
-  isExperience: true, experience: [{ from: '2022', to: 'Now', company: 'Stark Industries', position: 'Lead Developer', location: 'New York, NY', keySkills: ['React', 'Next.js', 'TypeScript'] }, { from: '2020', to: '2022', company: 'Wayne Enterprises', position: 'Software Engineer', location: 'Gotham City', keySkills: ['Python', 'Django', 'REST APIs'] }],
-  isContact: true, contact: [
-    { app: 'LinkedIn', link: 'https://www.linkedin.com/in/johndoe', icon: <LinkedInIcon /> },
-    { app: 'Email', link: 'mailto:john.doe@example.com', icon: <EmailIcon /> },
-    { app: 'GitHub', link: 'https://github.com/johndoe', icon: <GitHubIcon /> },
-  ],
-};
-
-// Define themes
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-    background: {
-      paper: '#ffffff', 
-    },
-    text: {
-      primary: '#000000', 
-    },
-  },
-});
-
-const darkTheme = createTheme({
+// Define a single, permanent dark theme for the space aesthetic
+const spaceDarkTheme = createTheme({
   palette: {
     mode: 'dark',
+    primary: {
+      main: '#00bcd4', // A spacey cyan/blue
+    },
+    secondary: {
+      main: '#ff4081', // A vibrant pink for contrast
+    },
     background: {
-      paper: '#424242', 
+      default: '#00001a', // Very dark blue, almost black for space
+      paper: '#1a1a2e', // Darker paper background for UI elements
     },
     text: {
-      primary: '#ffffff',
+      primary: '#e0e0e0', // Light grey for primary text, good readability
+      secondary: '#b0b0b0', // Slightly darker grey for secondary text
     },
   },
+  components: {
+    MuiAccordion: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#1a1a2e', // Match paper for accordion background
+          color: '#e0e0e0', // Ensure text is light
+        },
+      },
+    },
+    MuiChip: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#2c2c44', // Slightly lighter than paper for chips
+          color: '#e0e0e0',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        contained: { // Example for contained buttons
+          backgroundColor: '#00bcd4',
+          color: '#000000', // Dark text on light cyan button
+          '&:hover': {
+            backgroundColor: '#00acc1',
+          }
+        },
+        outlined: { // Example for outlined buttons
+          borderColor: '#00bcd4',
+          color: '#00bcd4',
+        }
+      }
+    }
+  }
 });
 
-
 const ThreeDPortfolioPage: React.FC = () => {
-  const orbitControlsRef = useRef<any>(null); // Added null as initial value
-  const [darkMode, setDarkMode] = useState(true); 
+  const orbitControlsRef = useRef<React.ComponentRef<typeof OrbitControls>>(null!); // Used React.ComponentRef
+  // darkMode state and toggle removed
   const audioRef = useRef<HTMLAudioElement>(null); 
   const [isMusicPlaying, setIsMusicPlaying] = useState(false); 
   const [isMobile, setIsMobile] = useState(false);
 
-  const muiTheme = useMuiTheme(); // For breakpoints
-  const mobileQuery = useMediaQuery(muiTheme.breakpoints.down('sm'));
+  // useMuiTheme and muiTheme removed, useMediaQuery will use theme from ThemeProvider context
+  const mobileQuery = useMediaQuery(spaceDarkTheme.breakpoints.down('sm')); 
 
   useEffect(() => {
     setIsMobile(mobileQuery);
@@ -188,11 +141,7 @@ const ThreeDPortfolioPage: React.FC = () => {
   const [cameraTargetPosition, setCameraTargetPositionState] = useState<THREE.Vector3>(defaultCameraTarget.clone());
   const [cameraFocusPosition, setCameraFocusPositionState] = useState<THREE.Vector3>(defaultCameraPosition.clone());
   
-  const currentTheme = darkMode ? darkTheme : lightTheme;
-
-  const toggleDarkMode = () => {
-    setDarkMode(!darkMode);
-  };
+  // currentTheme and toggleDarkMode removed
 
   // Memoize clearAllSelections with useCallback
   const clearAllSelections = React.useCallback(() => {
@@ -257,7 +206,7 @@ const ThreeDPortfolioPage: React.FC = () => {
     );
     setPanelPosition(currentTargetPos.clone().add(new THREE.Vector3(0, 0.7, 0))); 
     setActivePanel("project");
-    handleSelection(currentTargetPos);
+    handleSelection(currentTargetPos, new THREE.Vector3(0, 0.75, 3)); // Standardized offset
   };
 
   const handleExperienceNodeClick = (experienceData: Experience, position: THREE.Vector3) => {
@@ -295,7 +244,7 @@ const ThreeDPortfolioPage: React.FC = () => {
     );
     setPanelPosition(cometPos.clone().add(new THREE.Vector3(0, 0.6, 0)));
     setActivePanel("contact");
-    handleSelection(cometPos); 
+    handleSelection(cometPos, new THREE.Vector3(0, 0.75, 3)); // Standardized offset
   };
   
   const contactCometFixedPosition = new THREE.Vector3(0, 2.5, 0);
@@ -326,12 +275,13 @@ const ThreeDPortfolioPage: React.FC = () => {
   };
 
   const renderMobileView = () => (
-    <Box sx={{ p: 2, height: '100vh', overflowY: 'auto', bgcolor: currentTheme.palette.background.default, color: currentTheme.palette.text.primary }}>
+    // sx props will now use spaceDarkTheme from ThemeProvider context
+    <Box sx={{ p: 2, height: '100vh', overflowY: 'auto', bgcolor: 'background.default', color: 'text.primary' }}>
       <Typography variant="h4" gutterBottom align="center">
-        Ajay GB&apos;s Portfolio Universe (2D Map)
+        {formValues.userInfo.name || "User"}&apos;s Portfolio Universe (2D Map)
       </Typography>
 
-      <Accordion>
+      <Accordion> {/* Accordion styles will be picked from theme components if defined, or default dark */}
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
           <AccountCircleIcon sx={{ mr: 1 }} /> <Typography>About Me</Typography>
         </AccordionSummary>
@@ -347,7 +297,7 @@ const ThreeDPortfolioPage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             {formValues.techStack.map((tech, i) => (
-              <Chip key={i} label={`${tech.language} (${tech.year} yrs)`} sx={{ m: 0.5 }} />
+              <Chip key={i} label={`${tech.language} (${tech.year} yrs)`} sx={{ m: 0.5 }} /> // Chip styles from theme
             ))}
           </AccordionDetails>
         </Accordion>
@@ -360,7 +310,7 @@ const ThreeDPortfolioPage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             {formValues.projects.map((project, i) => (
-              <Paper key={i} sx={{ p: 1.5, mb: 1.5, bgcolor: currentTheme.palette.background.paper }}>
+              <Paper key={i} sx={{ p: 1.5, mb: 1.5, bgcolor: 'background.paper' }}> {/* Uses theme's paper bg */}
                 <Typography variant="h6">{project.name}</Typography>
                 <Typography variant="body2" paragraph>{project.description}</Typography>
                 {project.link && <Button variant="outlined" size="small" href={project.link} target={project.link.startsWith('http') ? '_blank' : undefined}>View</Button>}
@@ -377,7 +327,7 @@ const ThreeDPortfolioPage: React.FC = () => {
           </AccordionSummary>
           <AccordionDetails>
             {formValues.experience.map((exp, i) => (
-              <Paper key={i} sx={{ p: 1.5, mb: 1.5, bgcolor: currentTheme.palette.background.paper }}>
+              <Paper key={i} sx={{ p: 1.5, mb: 1.5, bgcolor: 'background.paper' }}> {/* Uses theme's paper bg */}
                 <Typography variant="h6">{exp.position} at {exp.company}</Typography>
                 <Typography variant="subtitle2">{exp.location} ({exp.from} - {exp.to})</Typography>
                 <Box sx={{ mt: 1 }}>{exp.keySkills.map(skill => <Chip key={skill} label={skill} size="small" sx={{ m: 0.5 }} />)}</Box>
@@ -406,28 +356,29 @@ const ThreeDPortfolioPage: React.FC = () => {
   );
 
   return (
-    <ThemeProvider theme={currentTheme}>
+    <ThemeProvider theme={spaceDarkTheme}> {/* Always use spaceDarkTheme */}
       <CssBaseline />
-      {/* Render UI controls outside the conditional rendering of Canvas vs Mobile view if they should be shared */}
-      <ThemeToggleButton darkMode={darkMode} toggleDarkMode={toggleDarkMode} />
+      {/* ThemeToggleButton removed */}
       <IconButton
         onClick={() => setIsMusicPlaying(!isMusicPlaying)}
         sx={{
           position: 'fixed',
           top: 16,
-          right: 16 + 48, 
+          right: 16, // Adjusted as ThemeToggleButton is removed
           zIndex: 1500, 
-          color: currentTheme.palette.text.primary,
-          backgroundColor: currentTheme.palette.background.paper,
+          // Colors will be inherited from spaceDarkTheme or can be explicitly set if needed
+          // For example, using primary text color and paper background from the theme:
+          color: 'text.primary', 
+          backgroundColor: 'background.paper',
           '&:hover': {
-            backgroundColor: currentTheme.palette.action.hover,
+            backgroundColor: 'action.hover', // This uses theme's action color
           },
         }}
         aria-label="toggle music"
       >
         {isMusicPlaying ? <MusicOffIcon /> : <MusicNoteIcon />}
       </IconButton>
-      <audio ref={audioRef} src="https_files.freemusicarchive.org/storage-freemusicarchive-org/music/no_curator/Scott_Buckley/Ambient_Volume_1/Scott_Buckley_-_Machina.mp3" loop style={{ display: 'none' }} />
+      <audio ref={audioRef} src="https://www.soundjay.com/ambient/sounds/dream-journey-01.mp3" loop style={{ display: 'none' }} />
       
       {isMobile ? renderMobileView() : (
         <Canvas style={{ height: '100vh', width: '100vw', background: 'black' }} camera={{ fov: 75 }}>
@@ -435,6 +386,7 @@ const ThreeDPortfolioPage: React.FC = () => {
           <ambientLight intensity={0.7} />
           <directionalLight position={[10, 10, 10]} intensity={1.5} castShadow />
           <GalaxyBackground />
+          <ShootingStars /> {/* Add ShootingStars component here */}
           <OrbitControls ref={orbitControlsRef} enableDamping dampingFactor={0.05} />
           <Suspense fallback={null}>
             <AstronautModel 

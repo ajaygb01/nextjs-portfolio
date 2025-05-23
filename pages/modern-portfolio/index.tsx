@@ -24,7 +24,7 @@ import profileImage from '@/public/static/me.jpg'
 import { FormValues } from '@/app/state/initialState'
 
 // Copied formValues object from pages/index.tsx (or the original version in this file)
-const formValues: FormValues = {
+export const formValues: FormValues = { // Added export keyword
     userInfo: {
         name: 'Ajay GB',
         title: 'Software Engineer',
