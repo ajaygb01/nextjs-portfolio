@@ -8,6 +8,7 @@ import * as THREE from 'three'; // Import THREE for Vector3 type
 interface FloatingTextPanelProps {
   title: string;
   content: ReactNode;
+  icon?: React.ReactElement; // New icon prop
   position: THREE.Vector3 | [number, number, number];
   onClose: () => void;
   isVisible: boolean;
@@ -23,29 +24,18 @@ const headerBoxStyles: SxProps<Theme> = {
   mb: 1.5,
 };
 
-// Define the function that generates the Paper's sx object
-// Removed explicit : SxProps<Theme> return type annotation to allow inference
-const getPaperSx = (theme: Theme, panelMaxWidth: string | number, panelMaxHeight: string | number) => ({
-  padding: theme.spacing(2),
-  maxWidth: panelMaxWidth,
-  maxHeight: panelMaxHeight,
-  width: 'auto',
-  ...(panelMaxHeight !== 'auto' && { overflowY: 'auto' as const }), // Conditionally spread 'overflowY'
-  backgroundColor: theme.palette.background.paper,
-  color: theme.palette.text.primary,
-  backdropFilter: 'blur(5px)',
-  borderRadius: theme.shape.borderRadius,
-  boxShadow: theme.shadows[6],
-});
+// Removed getPaperSx as styles will be directly applied or simplified
 
 const FloatingTextPanel: React.FC<FloatingTextPanelProps> = ({
   title,
   content,
+  icon, // Destructure new icon prop
   position,
   onClose,
   isVisible,
-  panelMaxWidth = 350,
-  panelMaxHeight = 'auto',
+  // Update defaults for better responsiveness
+  panelMaxWidth = 'min(90vw, 450px)', // Responsive max width: 90% of viewport width, capped at 450px
+  panelMaxHeight = '75vh', // Responsive max height: 75% of viewport height
 }) => {
   if (!isVisible) {
     return null;
@@ -59,20 +49,60 @@ const FloatingTextPanel: React.FC<FloatingTextPanelProps> = ({
   return (
     <Html position={htmlPosition} center>
       <Paper
-        elevation={6} // Add elevation for better depth
-        sx={(theme) => getPaperSx(theme, panelMaxWidth, panelMaxHeight)} // Correctly use the factory with the theme callback
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* @ts-ignore - Attempting to suppress stubborn type complexity error */}
-        <Box sx={{ // Inlining the styles directly
+        elevation={6}
+        sx={(theme) => ({ // Using theme callback to access theme values for boxShadow and colors
+          padding: 0, // Padding will be handled by inner boxes
+          width: panelMaxWidth, 
+          maxWidth: '100%', 
+          maxHeight: panelMaxHeight,
+          overflow: 'hidden', // Important: Paper itself should not scroll, inner content box will
+          backgroundColor: 'rgba(25, 25, 40, 0.85)', // Semi-transparent dark background
+          color: theme.palette.text.primary, // Ensure text is light
+          backdropFilter: 'blur(10px)', // Slightly more blur for holographic feel
+          borderRadius: theme.shape.borderRadius * 2, // More rounded corners
+          border: `1px solid ${theme.palette.primary.light}33`, // Subtle border with primary color tint
+          boxShadow: `0 0 20px 8px ${theme.palette.primary.main}4D`, // Glow effect using primary color
           display: 'flex',
+          flexDirection: 'column',
+          // Scanline animation (attempt with sx, might need pseudo-element with styled-components/css for better control)
+          position: 'relative', // Needed for pseudo-elements if used
+          '&::before': { // Scanline effect
+            content: '""',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            pointerEvents: 'none',
+            background: `repeating-linear-gradient(
+              transparent,
+              transparent 2px,
+              ${theme.palette.primary.dark}22 2.5px, 
+              ${theme.palette.primary.dark}22 3px
+            )`,
+            animation: 'scanlineAnim 12s linear infinite', // Slower, more subtle animation
+          },
+          '@keyframes scanlineAnim': {
+            '0%': { backgroundPosition: '0 0' },
+            '100%': { backgroundPosition: '0 100%' }, // Animate background position vertically
+          },
+        })}
+        onClick={(e) => e.stopPropagation()} 
+      >
+        <Box sx={{ // Header Box
+          display: 'flex',
+          alignItems: 'center', // Align icon and title
           justifyContent: 'space-between',
-          alignItems: 'center',
-          mb: 1.5,
+          p: '12px 16px', // Adjusted padding
+          borderBottom: 1, 
+          borderColor: (theme) => `${theme.palette.primary.main}55`, // Border with primary color tint
         }}>
-          <Typography variant="h6" component="div" sx={{ fontWeight: 'bold' }}>
-            {title}
-          </Typography>
+          <Box sx={{display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            {icon && React.cloneElement(icon, { sx: { color: 'primary.light', fontSize: '1.5rem' } })}
+            <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', fontSize: '1.1rem', color: 'primary.light' }}>
+              {title}
+            </Typography>
+          </Box>
           <IconButton
             aria-label="close"
             onClick={(e) => {
@@ -80,17 +110,31 @@ const FloatingTextPanel: React.FC<FloatingTextPanelProps> = ({
               onClose();
             }}
             size="small"
-            sx={{ color: (theme) => theme.palette.text.secondary }} // Use secondary text color for icon
+            sx={{ color: 'primary.light', '&:hover': { backgroundColor: (theme) => `${theme.palette.primary.main}22`} }} 
           >
-            <CloseIcon fontSize="small" /> {/* Explicitly smaller icon */}
+            <CloseIcon fontSize="medium" />
           </IconButton>
         </Box>
-        <Box sx={(theme) => ({ /* Ensure theme is accessed via callback */
-            maxHeight: panelMaxHeight === 'auto' 
-              ? undefined 
-              : `calc(${typeof panelMaxHeight === 'string' ? panelMaxHeight : panelMaxHeight + 'px'} - ${theme.spacing(8)})`, 
-            overflowY: 'auto' 
-          })}>
+        <Box sx={{ // Content Box
+          p: 2, 
+          flexGrow: 1, 
+          minHeight: 0, 
+          overflowY: 'auto', 
+          // Custom scrollbar for holographic feel (WebKit browsers)
+          '&::-webkit-scrollbar': {
+            width: '8px',
+          },
+          '&::-webkit-scrollbar-track': {
+            background: 'transparent', // Or a very dark, semi-transparent color
+          },
+          '&::-webkit-scrollbar-thumb': {
+            backgroundColor: (theme) => `${theme.palette.primary.main}99`, // Semi-transparent primary color
+            borderRadius: '4px',
+          },
+          '&::-webkit-scrollbar-thumb:hover': {
+            backgroundColor: (theme) => theme.palette.primary.main,
+          }
+        }}>
           {content}
         </Box>
       </Paper>

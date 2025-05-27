@@ -15,18 +15,31 @@ const AstronautModel: React.FC<AstronautModelProps> = ({ name, onToggleBio }) =>
   const [clickCount, setClickCount] = useState(0);
   const [showEasterEggModal, setShowEasterEggModal] = useState(false);
   const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false); // State for click feedback
   const initialColor = useRef(new THREE.Color('red')); // Store initial color
+  const baseScale = useRef(new THREE.Vector3(1, 1, 1)); // Base scale
 
-  // Waving Animation & Hover Effect
+  // Waving Animation & Hover/Click Effect
   useFrame(({ clock }) => {
     if (meshRef.current) {
+      // Waving
       meshRef.current.rotation.y = Math.sin(clock.getElapsedTime() * 2) * 0.3;
 
-      // Lerp scale for smooth hover effect
-      const targetScale = hovered ? 1.1 : 1;
-      meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+      // Determine target scale based on hover and click state
+      let targetScaleVec = baseScale.current.clone();
+      if (clicked) {
+        targetScaleVec = baseScale.current.clone().multiplyScalar(0.9); // Briefly shrink on click
+      } else if (hovered) {
+        targetScaleVec = baseScale.current.clone().multiplyScalar(1.1); // Enlarge on hover
+      }
+      meshRef.current.scale.lerp(targetScaleVec, 0.1); // Smoothly lerp to target scale
       
-      // Lerp emissive color for glow effect
+      // Reset clicked state after a short duration for the shrink effect
+      if (clicked) {
+        setTimeout(() => setClicked(false), 100); // Duration of the shrink effect
+      }
+
+      // Lerp emissive color for glow effect on hover
       const targetEmissive = hovered ? initialColor.current.clone().multiplyScalar(0.3) : new THREE.Color(0x000000);
       if (meshRef.current.material instanceof THREE.MeshStandardMaterial) {
         (meshRef.current.material as THREE.MeshStandardMaterial).emissive.lerp(targetEmissive, 0.1);
@@ -36,13 +49,24 @@ const AstronautModel: React.FC<AstronautModelProps> = ({ name, onToggleBio }) =>
 
   const handleAstronautClick = (event: ThreeEvent<MouseEvent>) => {
     event.stopPropagation();
-    const position = new THREE.Vector3();
-    meshRef.current.getWorldPosition(position);
-    position.y += 1.2;
-    onToggleBio(position);
+    setClicked(true); // Trigger click feedback
+    // Delay the main action slightly to let the click feedback play
+    setTimeout(() => {
+      const position = new THREE.Vector3();
+      meshRef.current.getWorldPosition(position);
+      position.y += 1.2; // Adjust panel position relative to astronaut
+      onToggleBio(position);
 
-    const newClickCount = clickCount + 1;
-    setClickCount(newClickCount);
+      const newClickCount = clickCount + 1;
+      setClickCount(newClickCount);
+      if (newClickCount === 3) {
+        setShowEasterEggModal(true);
+        setClickCount(0); // Reset for next round
+      }
+    }, 50); // Small delay
+  };
+  
+  const handleCloseEasterEggModal = () => {
     if (newClickCount === 3) {
       setShowEasterEggModal(true);
       setClickCount(0);
