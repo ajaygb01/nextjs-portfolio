@@ -19,35 +19,60 @@ const ExperienceNode: React.FC<ExperienceNodeProps & { onNodeClick: (event: Thre
   ({ experience, nodePosition, onNodeClick, ...sphereProps }) => {
   const meshRef = useRef<THREE.Mesh>(null!);
   const [hovered, setHovered] = useState(false);
+  const [clicked, setClicked] = useState(false); // For click feedback
   const initialColor = useRef(new THREE.Color('purple'));
+  const baseScale = useRef(new THREE.Vector3(1, 1, 1)); // Base scale
 
   useFrame(() => {
     if (meshRef.current) {
-      const targetScale = hovered ? 1.3 : 1; // Slightly larger hover scale for nodes
-      meshRef.current.scale.lerp(new THREE.Vector3(targetScale, targetScale, targetScale), 0.1);
+      // Determine target scale for hover and click effects
+      let targetScaleVec = baseScale.current.clone();
+      if (clicked) {
+        targetScaleVec = baseScale.current.clone().multiplyScalar(0.75); // Shrink on click
+      } else if (hovered) {
+        targetScaleVec = baseScale.current.clone().multiplyScalar(1.3); // Enlarge on hover
+      }
+      meshRef.current.scale.lerp(targetScaleVec, 0.1);
 
+      // Emissive effect
       if (meshRef.current.material instanceof THREE.MeshStandardMaterial) {
         const material = meshRef.current.material as THREE.MeshStandardMaterial;
-        const targetEmissive = hovered ? initialColor.current.clone().multiplyScalar(0.4) : new THREE.Color(0x000000);
-        material.emissive.lerp(targetEmissive, 0.1);
+        let targetEmissive = new THREE.Color(0x000000);
+        if (clicked) {
+          targetEmissive = initialColor.current.clone().multiplyScalar(0.9); // Bright flash on click
+        } else if (hovered) {
+          targetEmissive = initialColor.current.clone().multiplyScalar(0.5); // More noticeable glow on hover
+        }
+        material.emissive.lerp(targetEmissive, 0.15);
+      }
+
+      // Reset clicked state after a short duration
+      if (clicked) {
+        setTimeout(() => setClicked(false), 120); // Duration of the click effect
       }
     }
   });
+  
+  const handleLocalClick = (event: ThreeEvent<MouseEvent>) => {
+    event.stopPropagation();
+    setClicked(true);
+    // Call the passed onNodeClick after a short delay for visual feedback
+    setTimeout(() => onNodeClick(event, experience, nodePosition), 60);
+  };
 
   return (
     <mesh
       ref={meshRef}
-      // args prop removed as sphereGeometry child is present
       position={nodePosition}
-      // The mesh's onClick now correctly calls the passed onNodeClick with the captured experience and nodePosition
-      onClick={(event) => onNodeClick(event, experience, nodePosition)}
+      onClick={handleLocalClick} // Use internal handler
       onPointerOver={(event) => { event.stopPropagation(); setHovered(true); document.body.style.cursor = 'pointer';}}
       onPointerOut={(event) => { event.stopPropagation(); setHovered(false); document.body.style.cursor = 'auto';}}
-      {...sphereProps} // Spread other sphere props
+      {...sphereProps} 
+      scale={baseScale.current} // Set initial scale
       castShadow
       receiveShadow
     >
-      <sphereGeometry args={[0.2, 16, 16]} /> {/* Ensure geometry is defined */}
+      <sphereGeometry args={[0.2, 16, 16]} /> 
       <meshStandardMaterial color={initialColor.current} />
     </mesh>
   );
