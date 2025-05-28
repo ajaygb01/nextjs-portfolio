@@ -67,13 +67,6 @@ const AstronautModel: React.FC<AstronautModelProps> = ({ name, onToggleBio }) =>
   };
   
   const handleCloseEasterEggModal = () => {
-    if (newClickCount === 3) {
-      setShowEasterEggModal(true);
-      setClickCount(0);
-    }
-  };
-  
-  const handleCloseEasterEggModal = () => {
     setShowEasterEggModal(false);
   };
 
