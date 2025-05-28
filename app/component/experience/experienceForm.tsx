@@ -46,7 +46,7 @@ const ExperienceForm: React.FC<ExperienceFormProps> = ({ handleChange }) => {
 
     useEffect(() => {
         handleChange('experience', experiences)
-    }, [experiences])
+    }, [experiences, handleChange]) // Added handleChange to dependency array
 
     return (
         <>

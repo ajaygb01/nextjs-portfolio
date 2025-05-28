@@ -8,13 +8,16 @@ interface FooterFormProps {
 
 const FooterForm: React.FC<FooterFormProps> = ({ handleChange }) => {
     const [footer, setFooter] = useState<Footer>(initialFormValues.footer)
-    const data = {
+
+    // Memoize the 'data' object
+    const data = React.useMemo(() => ({
         year: new Date().getFullYear(),
         companyName: '',
-    }
+    }), []); // Empty dependency array means it's created once
+
     useEffect(() => {
         setFooter(data)
-    }, [])
+    }, [data]) // Add 'data' to the dependency array
 
     const handleFooterChange = (key: keyof Footer, value: string) => {
         const newFooter = { ...footer, [key]: value }

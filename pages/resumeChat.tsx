@@ -42,9 +42,9 @@ const ResumeChat: React.FC = () => {
         if (!firebase.auth().currentUser) {
             handleLogin()
         }
-    }, [])
+    }, [handleLogin]) // Added handleLogin to dependency array
 
-    const handleLogin = async () => {
+    const handleLogin = React.useCallback(async () => {
         try {
             const provider = new firebase.auth.GoogleAuthProvider()
             await firebase.auth().signInWithPopup(provider)
@@ -52,7 +52,7 @@ const ResumeChat: React.FC = () => {
         } catch (error) {
             console.error('Error logging in:', error)
         }
-    }
+    }, [router]) // Added router as a dependency for useCallback
 
     const handleLogout = () => {
         firebase.auth().signOut()

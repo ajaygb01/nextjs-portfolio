@@ -38,7 +38,7 @@ const Form: React.FC<Props> = ({ onSubmit }) => {
             },
         })
 
-    const randomizeValues = () => {
+    const randomizeValues = React.useCallback(() => {
         setValue('age', Math.floor(Math.random() * 60) + 20)
         setValue('gender', Math.random() > 0.5 ? 'Male' : 'Female')
         setValue('sugarLevel', Math.floor(Math.random() * 100) + 70)
@@ -59,11 +59,11 @@ const Form: React.FC<Props> = ({ onSubmit }) => {
         setValue('proteinIntake', Math.floor(Math.random() * 3) + 1)
         setValue('smoking', Math.random() > 0.5 ? 'Yes' : 'No')
         setValue('alcoholConsumption', Math.random() > 0.5 ? 'Yes' : 'No')
-    }
+    }, [setValue]) // Added setValue as a dependency for useCallback
 
     useEffect(() => {
         randomizeValues()
-    }, [])
+    }, [randomizeValues]) // Added randomizeValues to dependency array
 
     return (
         <Paper elevation={3} sx={{ p: 4, borderRadius: 2 }}>

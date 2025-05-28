@@ -30,6 +30,16 @@ const WormholeEffect: React.FC<WormholeEffectProps> = ({
 
   // Setup camera for wormhole & audio
   useEffect(() => {
+    // Capture the initial camera state from refs for cleanup
+    // These refs (originalCameraPosition, etc.) are initialized with camera's state at component mount.
+    // Their .current properties will not change during this effect's lifecycle unless explicitly done so.
+    // The lint rule is generally for refs that might be updated by other effects or props.
+    // However, to satisfy the rule and ensure stability if these refs *were* somehow changed,
+    // we capture their values at the beginning of the effect.
+    const capturedOriginalPos = originalCameraPosition.current;
+    const capturedOriginalQuat = originalCameraQuaternion.current;
+    const capturedOriginalFov = originalCameraFov.current;
+
     camera.position.set(0, 0, CAMERA_START_Z);
     camera.lookAt(0, 0, -WORMHOLE_LENGTH); 
     camera.fov = 90; 
@@ -46,10 +56,10 @@ const WormholeEffect: React.FC<WormholeEffectProps> = ({
     }
 
     return () => {
-      // Restore original camera settings
-      camera.position.copy(originalCameraPosition.current);
-      camera.quaternion.copy(originalCameraQuaternion.current);
-      camera.fov = originalCameraFov.current;
+      // Restore original camera settings using the captured values
+      camera.position.copy(capturedOriginalPos);
+      camera.quaternion.copy(capturedOriginalQuat);
+      camera.fov = capturedOriginalFov;
       camera.updateProjectionMatrix();
       document.body.style.overflow = 'auto';
 
@@ -58,8 +68,7 @@ const WormholeEffect: React.FC<WormholeEffectProps> = ({
         travelAudioRef.current = null;
       }
     };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [camera, isSoundEffectsEnabled]); // isSoundEffectsEnabled dependency added
+  }, [camera, isSoundEffectsEnabled]); // originalCamera... refs are stable, no need to add them.
 
   // Shader for the tunnel material
   const tunnelMaterial = new THREE.ShaderMaterial({

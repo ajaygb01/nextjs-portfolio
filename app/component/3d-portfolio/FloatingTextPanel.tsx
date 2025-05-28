@@ -16,6 +16,14 @@ interface FloatingTextPanelProps {
   panelMaxHeight?: number | string;
 }
 
+// Define Keyframes for scanline animation at the top level
+const scanlineAnimKeyframes = {
+  '@keyframes scanlineAnim': {
+    '0%': { backgroundPosition: '0 0' },
+    '100%': { backgroundPosition: '0 100%' },
+  },
+};
+
 // Define sx prop for the header Box
 const headerBoxStyles: SxProps<Theme> = {
   display: 'flex',
@@ -50,23 +58,23 @@ const FloatingTextPanel: React.FC<FloatingTextPanelProps> = ({
     <Html position={htmlPosition} center>
       <Paper
         elevation={6}
-        sx={(theme) => ({ // Using theme callback to access theme values for boxShadow and colors
-          padding: 0, // Padding will be handled by inner boxes
+        sx={(theme) => ({ 
+          ...scanlineAnimKeyframes, // Spread the keyframes here
+          padding: 0, 
           width: panelMaxWidth, 
           maxWidth: '100%', 
           maxHeight: panelMaxHeight,
-          overflow: 'hidden', // Important: Paper itself should not scroll, inner content box will
-          backgroundColor: 'rgba(25, 25, 40, 0.85)', // Semi-transparent dark background
-          color: theme.palette.text.primary, // Ensure text is light
-          backdropFilter: 'blur(10px)', // Slightly more blur for holographic feel
-          borderRadius: theme.shape.borderRadius * 2, // More rounded corners
-          border: `1px solid ${theme.palette.primary.light}33`, // Subtle border with primary color tint
-          boxShadow: `0 0 20px 8px ${theme.palette.primary.main}4D`, // Glow effect using primary color
+          overflow: 'hidden', 
+          backgroundColor: 'rgba(25, 25, 40, 0.85)', 
+          color: theme.palette.text.primary, 
+          backdropFilter: 'blur(10px)', 
+          borderRadius: theme.shape.borderRadius * 2, 
+          border: `1px solid ${theme.palette.primary.light}33`, 
+          boxShadow: `0 0 20px 8px ${theme.palette.primary.main}4D`, 
           display: 'flex',
           flexDirection: 'column',
-          // Scanline animation (attempt with sx, might need pseudo-element with styled-components/css for better control)
-          position: 'relative', // Needed for pseudo-elements if used
-          '&::before': { // Scanline effect
+          position: 'relative', 
+          '&::before': { 
             content: '""',
             position: 'absolute',
             top: 0,
@@ -80,22 +88,19 @@ const FloatingTextPanel: React.FC<FloatingTextPanelProps> = ({
               ${theme.palette.primary.dark}22 2.5px, 
               ${theme.palette.primary.dark}22 3px
             )`,
-            animation: 'scanlineAnim 12s linear infinite', // Slower, more subtle animation
+            animation: 'scanlineAnim 12s linear infinite', // Reference the animation name
           },
-          '@keyframes scanlineAnim': {
-            '0%': { backgroundPosition: '0 0' },
-            '100%': { backgroundPosition: '0 100%' }, // Animate background position vertically
-          },
+          // Keyframes are now defined via scanlineAnimKeyframes spread
         })}
         onClick={(e) => e.stopPropagation()} 
       >
         <Box sx={{ // Header Box
           display: 'flex',
-          alignItems: 'center', // Align icon and title
+          alignItems: 'center', 
           justifyContent: 'space-between',
-          p: '12px 16px', // Adjusted padding
+          p: '12px 16px', 
           borderBottom: 1, 
-          borderColor: (theme) => `${theme.palette.primary.main}55`, // Border with primary color tint
+          borderColor: (theme) => `${theme.palette.primary.main}55`, 
         }}>
           <Box sx={{display: 'flex', alignItems: 'center', gap: 1.5 }}>
             {icon && React.cloneElement(icon, { sx: { color: 'primary.light', fontSize: '1.5rem' } })}

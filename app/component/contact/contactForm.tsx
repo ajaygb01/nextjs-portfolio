@@ -19,7 +19,9 @@ const ContactForm: React.FC<ContactFormProps> = ({ handleChange }) => {
     const [contacts, setContacts] = useState<Contact[]>([
         initialFormValues.contact[0],
     ])
-    const data = [
+
+    // Memoize the 'data' array to prevent re-creation on every render
+    const data = React.useMemo(() => [
         {
             app: 'LinkedIn Link',
             icon: <LinkedInIcon />,
@@ -35,10 +37,11 @@ const ContactForm: React.FC<ContactFormProps> = ({ handleChange }) => {
             icon: <EmailIcon />,
             link: '',
         },
-    ]
+    ], []); // Empty dependency array means it's created once
+
     useEffect(() => {
         setContacts(data)
-    }, [])
+    }, [data]) // Add 'data' to the dependency array
 
     const [formValues, setFormValues] = useState<FormValues>(initialFormValues)
 

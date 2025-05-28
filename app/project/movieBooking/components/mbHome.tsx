@@ -40,7 +40,7 @@ const MbHome: React.FC = () => {
             .then((data) => {
                 setMovies(data.results)
             })
-    }, [])
+    }, [apiUrl]) // Added apiUrl to the dependency array
 
     return (
         <Box sx={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>

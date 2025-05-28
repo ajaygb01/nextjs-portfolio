@@ -24,9 +24,9 @@ const UploadPage: React.FC = () => {
         if (session?.accessToken) {
             listFiles(session.accessToken, currentFolder)
         }
-    }, [session, currentFolder])
+    }, [session, currentFolder, listFiles]) // Added listFiles to dependency array
 
-    const listFiles = async (accessToken: string, folderId: string | null) => {
+    const listFiles = React.useCallback(async (accessToken: string, folderId: string | null) => {
         try {
             const response = await fetch(
                 `https://www.googleapis.com/drive/v3/files?q='${folderId ?? 'root'}'+in+parents`,
@@ -58,7 +58,7 @@ const UploadPage: React.FC = () => {
         } catch (error) {
             console.error('Error listing files:', error)
         }
-    }
+    }, [session]); // Added session as a dependency for useCallback because of session?.user?.name
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         if (event.target.files) {

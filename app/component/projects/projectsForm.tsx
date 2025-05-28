@@ -17,17 +17,20 @@ const ProjectForm: React.FC<ProjectFormProps> = ({ handleChange }) => {
     const [projects, setProjects] = useState<Project[]>([
         initialFormValues.projects[0],
     ])
-    const data = [
+
+    // Memoize the 'data' array
+    const data = React.useMemo(() => [
         {
             name: '',
             description: '',
             link: '',
             public: false,
         },
-    ]
+    ], []); // Empty dependency array means it's created once
+
     useEffect(() => {
         setProjects(data)
-    }, [])
+    }, [data]) // Add 'data' to the dependency array
 
     const handleProjectChange = (
         index: number,

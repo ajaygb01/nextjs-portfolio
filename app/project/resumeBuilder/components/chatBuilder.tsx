@@ -138,7 +138,7 @@ const ChatBuilder: React.FC<ChatBuilderProps> = ({ username }) => {
         if (state.isLoading) {
             makeApiCall()
         }
-    }, [state.isLoading])
+    }, [state.isLoading, state.messages]) // Added state.messages to dependency array
 
     return (
         <Box
