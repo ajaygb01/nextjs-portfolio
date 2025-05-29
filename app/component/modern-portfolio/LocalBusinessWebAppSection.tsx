@@ -38,7 +38,7 @@ const LocalBusinessWebAppSection: React.FC<Props> = ({ currentTheme, onGetStarte
               backgroundColor: currentTheme.palette.background.paper,
               color: currentTheme.palette.text.primary,
               borderRadius: 2,
-              boxShadow: currentTheme.shadows[3],
+              boxShadow: currentTheme.shadows ? currentTheme.shadows[3] : '0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)',
             }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" component="h3" gutterBottom align="center" sx={{ color: currentTheme.palette.text.primary, fontWeight: 500 }}>
@@ -73,7 +73,7 @@ const LocalBusinessWebAppSection: React.FC<Props> = ({ currentTheme, onGetStarte
               backgroundColor: currentTheme.palette.background.paper,
               color: currentTheme.palette.text.primary,
               borderRadius: 2,
-              boxShadow: currentTheme.shadows[3],
+              boxShadow: currentTheme.shadows ? currentTheme.shadows[3] : '0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)',
             }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" component="h3" gutterBottom align="center" sx={{ color: currentTheme.palette.text.primary, fontWeight: 500 }}>
@@ -108,7 +108,7 @@ const LocalBusinessWebAppSection: React.FC<Props> = ({ currentTheme, onGetStarte
               backgroundColor: currentTheme.palette.background.paper,
               color: currentTheme.palette.text.primary,
               borderRadius: 2,
-              boxShadow: currentTheme.shadows[3],
+              boxShadow: currentTheme.shadows ? currentTheme.shadows[3] : '0px 3px 5px -1px rgba(0,0,0,0.2),0px 5px 8px 0px rgba(0,0,0,0.14),0px 1px 14px 0px rgba(0,0,0,0.12)',
             }}>
               <CardContent sx={{ flexGrow: 1 }}>
                 <Typography variant="h5" component="h3" gutterBottom align="center" sx={{ color: currentTheme.palette.text.primary, fontWeight: 500 }}>

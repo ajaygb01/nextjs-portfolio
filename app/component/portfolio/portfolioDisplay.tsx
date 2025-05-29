@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react'
 import {
     Box,
     Typography,
@@ -12,14 +12,14 @@ import {
     Tooltip,
     Switch,
     Paper,
-} from '@mui/material';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import WhatsAppIcon from '@mui/icons-material/WhatsApp';
-import EmailIcon from '@mui/icons-material/Email';
-import Brightness4Icon from '@mui/icons-material/Brightness4';
-import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { FormValues } from '@/app/state/initialState';
+} from '@mui/material'
+import LinkedInIcon from '@mui/icons-material/LinkedIn'
+import WhatsAppIcon from '@mui/icons-material/WhatsApp'
+import EmailIcon from '@mui/icons-material/Email'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { FormValues } from '@/app/state/initialState'
 import LocalBusinessWebAppSection from '../modern-portfolio/LocalBusinessWebAppSection'; // Added import
 
 const themes = {
@@ -32,7 +32,7 @@ const themes = {
     }),
     dark: createTheme({
         palette: {
-            primary: { main: '#ff9800' }, // Orange for dark mode primary
+            primary: { main: '#ff9800' },
             background: { default: '#121212', paper: '#1e1e1e' },
             text: { primary: '#ffffff' },
         },
@@ -51,7 +51,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
     const toggleTheme = () => setDarkMode(!darkMode)
     const currentTheme = darkMode ? themes.dark : themes.light
 
-    const handleScrollTo = (id: string) => {
+    const handleScrollTo = (id: string) => { // Added function
         const element = document.getElementById(id);
         if (element) {
             element.scrollIntoView({ behavior: 'smooth' });
@@ -141,7 +141,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                         sx={{
                             fontWeight: 'medium',
                             mb: 2,
-                            color: currentTheme.palette.text.secondary, // Uses theme
+                            color: currentTheme.palette.text.secondary,
                         }}
                     >
                         {formProps.userInfo.title}
@@ -208,7 +208,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                 cursor: 'pointer',
                                 padding: 2,
                                 borderRadius: '16px',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Consider using theme.shadows if defined
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                                 transition: 'transform 0.2s',
                                 '&:hover': {
                                     transform: 'scale(1.05)',
@@ -237,7 +237,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             backgroundColor:
                                 currentTheme.palette.background.paper,
                             borderRadius: '10px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Consider using theme.shadows
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
                         }}
                     >
                         <CardContent>
@@ -249,7 +249,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                         p: 2,
                                         backgroundColor:
                                             currentTheme.palette.background
-                                                .default, // Uses theme
+                                                .default,
                                         borderRadius: '10px',
                                     }}
                                 >
@@ -288,7 +288,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     </Card>
                 )}
 
-                {expandedSection === 'PL' && ( // Assuming 'PL' refers to Skills/Tech Stack
+                {expandedSection === 'PL' && (
                     <Card
                         ref={skillsRef}
                         sx={{
@@ -299,9 +299,6 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                         }}
                     >
                         <CardContent>
-                            <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                                Skills & Technologies
-                            </Typography>
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -317,7 +314,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     >
                                         <Chip
                                             label={tech.language}
-                                            sx={{ m: 1, backgroundColor: currentTheme.palette.action.hover }} // Theme aware chip
+                                            sx={{ m: 1 }}
                                         />
                                     </Tooltip>
                                 ))}
@@ -337,30 +334,26 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                         }}
                     >
                         <CardContent>
-                             <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
-                                Projects
-                            </Typography>
                             {formProps.projects.map((project, i) => (
-                                <Box key={i} sx={{ mb: 2, p: 1, borderLeft: `3px solid ${currentTheme.palette.primary.light}` }}>
-                                    <Typography variant="h6">
+                                <Box key={i} sx={{ mb: 2 }}>
+                                    <Typography variant="body1">
                                         <Link
                                             href={project.link}
                                             target="_blank"
-                                            sx = {{color: currentTheme.palette.text.primary}}
                                         >
                                             {project.name}
                                         </Link>
                                     </Typography>
                                     <Typography
                                         variant="body2"
-                                        sx={{ color: currentTheme.palette.text.secondary, mb: 1 }} // Theme aware
+                                        sx={{ color: 'gray', mb: 1 }}
                                     >
                                         {project.description}
                                     </Typography>
                                     {project.public && (
                                         <Chip
                                             label="Public"
-                                            color="success" // MUI system color
+                                            color="success"
                                             size="small"
                                             sx={{ mt: 1 }}
                                         />
@@ -378,7 +371,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                 />
 
                 {/* Contact */}
-                <Box sx={{ textAlign: 'center', mt: 4, py: 3, backgroundColor: currentTheme.palette.background.paper, borderRadius:'16px' }} id="contact-section-in-portfolio-display"> {/* Added ID and themed background */}
+                <Box sx={{ textAlign: 'center', mt: 4, py: 3, backgroundColor: currentTheme.palette.background.paper, borderRadius:'16px' }} id="contact-section-in-portfolio-display"> {/* Added ID and styling */}
                     <Typography variant="h5" fontWeight="bold">
                         Contact
                     </Typography>
@@ -396,7 +389,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     component={Link}
                                     href={contact.link}
                                     target="_blank"
-                                    color="primary" // Uses theme primary color
+                                    color="primary"
                                 >
                                     {contact.icon}
                                 </IconButton>
@@ -406,7 +399,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                 </Box>
             </Box>
         </ThemeProvider>
-    );
-};
+    )
+}
 
-export default PortfolioDisplay;
+export default PortfolioDisplay
