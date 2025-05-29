@@ -13,6 +13,7 @@ import HeroSection from '@/app/component/modern-portfolio/heroSection'
 import SkillsDisplay from '@/app/component/modern-portfolio/skillsDisplay'
 import ExperienceTimeline from '@/app/component/modern-portfolio/experienceTimeline'
 import ProjectsGrid from '@/app/component/modern-portfolio/projectsGrid'
+import LocalBusinessWebAppSection from '@/app/component/modern-portfolio/LocalBusinessWebAppSection' // Added import
 import ContactBar from '@/app/component/modern-portfolio/contactBar'
 import Footer from '@/app/component/modern-portfolio/footer'
 
@@ -253,6 +254,14 @@ export default function ModernPortfolioPage() {
                         <ProjectsGrid projects={formValues.projects} />
                     </motion.div>
                 )}
+
+                {/* New LocalBusinessWebAppSection */}
+                <motion.div {...sectionAnimation}>
+                    <LocalBusinessWebAppSection
+                        currentTheme={currentTheme}
+                        onGetStartedClick={() => handleScrollTo('contact-section')}
+                    />
+                </motion.div>
 
                 {formValues.isContact && formValues.contact.length > 0 && (
                     <motion.div {...sectionAnimation} id="contact-section">
