@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react';
 import {
     Box,
     Typography,
@@ -12,14 +12,15 @@ import {
     Tooltip,
     Switch,
     Paper,
-} from '@mui/material'
-import LinkedInIcon from '@mui/icons-material/LinkedIn'
-import WhatsAppIcon from '@mui/icons-material/WhatsApp'
-import EmailIcon from '@mui/icons-material/Email'
-import Brightness4Icon from '@mui/icons-material/Brightness4'
-import Brightness7Icon from '@mui/icons-material/Brightness7'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { FormValues } from '@/app/state/initialState'
+} from '@mui/material';
+import LinkedInIcon from '@mui/icons-material/LinkedIn';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import EmailIcon from '@mui/icons-material/Email';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { FormValues } from '@/app/state/initialState';
+import LocalBusinessWebAppSection from '../modern-portfolio/LocalBusinessWebAppSection'; // Added import
 
 const themes = {
     light: createTheme({
@@ -31,7 +32,7 @@ const themes = {
     }),
     dark: createTheme({
         palette: {
-            primary: { main: '#ff9800' },
+            primary: { main: '#ff9800' }, // Orange for dark mode primary
             background: { default: '#121212', paper: '#1e1e1e' },
             text: { primary: '#ffffff' },
         },
@@ -49,6 +50,13 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
 
     const toggleTheme = () => setDarkMode(!darkMode)
     const currentTheme = darkMode ? themes.dark : themes.light
+
+    const handleScrollTo = (id: string) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
 
     const totalExperienceYears = formProps.experience.reduce((acc, exp) => {
         const fromYear = new Date(exp.from).getFullYear()
@@ -133,7 +141,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                         sx={{
                             fontWeight: 'medium',
                             mb: 2,
-                            color: currentTheme.palette.text.secondary,
+                            color: currentTheme.palette.text.secondary, // Uses theme
                         }}
                     >
                         {formProps.userInfo.title}
@@ -200,7 +208,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                 cursor: 'pointer',
                                 padding: 2,
                                 borderRadius: '16px',
-                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Consider using theme.shadows if defined
                                 transition: 'transform 0.2s',
                                 '&:hover': {
                                     transform: 'scale(1.05)',
@@ -229,7 +237,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                             backgroundColor:
                                 currentTheme.palette.background.paper,
                             borderRadius: '10px',
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Consider using theme.shadows
                         }}
                     >
                         <CardContent>
@@ -241,7 +249,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                         p: 2,
                                         backgroundColor:
                                             currentTheme.palette.background
-                                                .default,
+                                                .default, // Uses theme
                                         borderRadius: '10px',
                                     }}
                                 >
@@ -280,7 +288,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     </Card>
                 )}
 
-                {expandedSection === 'PL' && (
+                {expandedSection === 'PL' && ( // Assuming 'PL' refers to Skills/Tech Stack
                     <Card
                         ref={skillsRef}
                         sx={{
@@ -291,6 +299,9 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                         }}
                     >
                         <CardContent>
+                            <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+                                Skills & Technologies
+                            </Typography>
                             <Box
                                 sx={{
                                     display: 'flex',
@@ -306,7 +317,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     >
                                         <Chip
                                             label={tech.language}
-                                            sx={{ m: 1 }}
+                                            sx={{ m: 1, backgroundColor: currentTheme.palette.action.hover }} // Theme aware chip
                                         />
                                     </Tooltip>
                                 ))}
@@ -326,26 +337,30 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                         }}
                     >
                         <CardContent>
+                             <Typography variant="h5" gutterBottom sx={{ fontWeight: 'bold' }}>
+                                Projects
+                            </Typography>
                             {formProps.projects.map((project, i) => (
-                                <Box key={i} sx={{ mb: 2 }}>
-                                    <Typography variant="body1">
+                                <Box key={i} sx={{ mb: 2, p: 1, borderLeft: `3px solid ${currentTheme.palette.primary.light}` }}>
+                                    <Typography variant="h6">
                                         <Link
                                             href={project.link}
                                             target="_blank"
+                                            sx = {{color: currentTheme.palette.text.primary}}
                                         >
                                             {project.name}
                                         </Link>
                                     </Typography>
                                     <Typography
                                         variant="body2"
-                                        sx={{ color: 'gray', mb: 1 }}
+                                        sx={{ color: currentTheme.palette.text.secondary, mb: 1 }} // Theme aware
                                     >
                                         {project.description}
                                     </Typography>
                                     {project.public && (
                                         <Chip
                                             label="Public"
-                                            color="success"
+                                            color="success" // MUI system color
                                             size="small"
                                             sx={{ mt: 1 }}
                                         />
@@ -356,8 +371,14 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     </Card>
                 )}
 
+                {/* Insert LocalBusinessWebAppSection here */}
+                <LocalBusinessWebAppSection
+                    currentTheme={currentTheme}
+                    onGetStartedClick={() => handleScrollTo('contact-section-in-portfolio-display')}
+                />
+
                 {/* Contact */}
-                <Box sx={{ textAlign: 'center', mt: 4 }}>
+                <Box sx={{ textAlign: 'center', mt: 4, py: 3, backgroundColor: currentTheme.palette.background.paper, borderRadius:'16px' }} id="contact-section-in-portfolio-display"> {/* Added ID and themed background */}
                     <Typography variant="h5" fontWeight="bold">
                         Contact
                     </Typography>
@@ -375,7 +396,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                                     component={Link}
                                     href={contact.link}
                                     target="_blank"
-                                    color="primary"
+                                    color="primary" // Uses theme primary color
                                 >
                                     {contact.icon}
                                 </IconButton>
@@ -385,7 +406,7 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                 </Box>
             </Box>
         </ThemeProvider>
-    )
-}
+    );
+};
 
-export default PortfolioDisplay
+export default PortfolioDisplay;
