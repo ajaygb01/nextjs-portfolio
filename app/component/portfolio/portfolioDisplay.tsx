@@ -20,7 +20,6 @@ import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { FormValues } from '@/app/state/initialState'
-import LocalBusinessWebAppSection from '../modern-portfolio/LocalBusinessWebAppSection'; // Added import
 
 const themes = {
     light: createTheme({
@@ -50,13 +49,6 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
 
     const toggleTheme = () => setDarkMode(!darkMode)
     const currentTheme = darkMode ? themes.dark : themes.light
-
-    const handleScrollTo = (id: string) => { // Added function
-        const element = document.getElementById(id);
-        if (element) {
-            element.scrollIntoView({ behavior: 'smooth' });
-        }
-    };
 
     const totalExperienceYears = formProps.experience.reduce((acc, exp) => {
         const fromYear = new Date(exp.from).getFullYear()
@@ -364,14 +356,8 @@ const PortfolioDisplay: React.FC<{ formProps: FormValues }> = ({
                     </Card>
                 )}
 
-                {/* Insert LocalBusinessWebAppSection here */}
-                <LocalBusinessWebAppSection
-                    currentTheme={currentTheme}
-                    onGetStartedClick={() => handleScrollTo('contact-section-in-portfolio-display')}
-                />
-
                 {/* Contact */}
-                <Box sx={{ textAlign: 'center', mt: 4, py: 3, backgroundColor: currentTheme.palette.background.paper, borderRadius:'16px' }} id="contact-section-in-portfolio-display"> {/* Added ID and styling */}
+                <Box sx={{ textAlign: 'center', mt: 4 }}>
                     <Typography variant="h5" fontWeight="bold">
                         Contact
                     </Typography>
