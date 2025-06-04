@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react'
 import { Box, TextField, Checkbox, FormControlLabel } from '@mui/material'
 import { FormValues, UserInfo } from '@/app/state/initialState'

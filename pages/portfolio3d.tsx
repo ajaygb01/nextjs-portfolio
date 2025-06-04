@@ -3,8 +3,8 @@ import { OrbitControls, Text, Box, Sphere, Plane, Cylinder, Stars } from '@react
 import * as THREE from 'three';
 import { useState, useRef, useMemo } from 'react'; // Added useRef, useMemo
 import { useSpring, animated } from '@react-spring/three'; // Added react-spring
-import { initialFormValues } from '../../app/state/initialState';
-import type { UserInfo, Experience, Project, TechStack, Contact } from '../../app/state/initialState'; // Added Contact
+import { initialFormValues } from '@/app/state/initialState';
+import type { UserInfo, Experience, Project, TechStack, Contact } from '@/app/state/initialState'; // Added Contact
 
 // Scene layout:
 // - Central area: Hero section (name, title, bio) - Potentially represented by a central 3D text or model.

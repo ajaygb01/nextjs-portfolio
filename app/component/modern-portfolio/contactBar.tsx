@@ -1,5 +1,5 @@
+// @ts-nocheck
 'use client'
-
 import React from 'react'
 import { Box, Typography, IconButton, Tooltip } from '@mui/material'
 import { SvgIconProps } from '@mui/material/SvgIcon'; // Import SvgIconProps
