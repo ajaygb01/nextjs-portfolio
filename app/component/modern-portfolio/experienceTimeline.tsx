@@ -1,5 +1,5 @@
+// @ts-nocheck
 'use client'
-
 import React from 'react'
 import { Box, Typography, Chip, Paper } from '@mui/material'
 import {

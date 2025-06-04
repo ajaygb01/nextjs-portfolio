@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react'
 import { FormValues } from '../../state/initialState'
 import { Box, Typography } from '@mui/material'

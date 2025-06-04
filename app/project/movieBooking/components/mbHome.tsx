@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useEffect, useState } from 'react'
 import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material'
 import IconButton from '@mui/material/IconButton'

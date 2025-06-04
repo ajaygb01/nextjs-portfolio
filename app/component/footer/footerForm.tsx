@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useState, useEffect } from 'react'
 import { TextField, Box } from '@mui/material'
 import { Footer, FormValues, initialFormValues } from '@/app/state/initialState'

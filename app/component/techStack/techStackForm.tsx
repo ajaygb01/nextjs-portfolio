@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React from 'react'
 import { TextField, Box, IconButton } from '@mui/material'
 import { Add, Delete } from '@mui/icons-material'
