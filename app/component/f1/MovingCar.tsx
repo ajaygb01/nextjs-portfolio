@@ -48,7 +48,7 @@ export function MovingCar({
   // Always render the fallback box
   return (
     <mesh ref={ref} scale={0.2} castShadow receiveShadow>
-      <boxGeometry args={[2, 0.5, 5]} />
+      <boxGeometry args={[0.5, 0.2, 1.0]} /> {/* Changed dimensions */}
       <meshStandardMaterial color="orange" />
     </mesh>
   );

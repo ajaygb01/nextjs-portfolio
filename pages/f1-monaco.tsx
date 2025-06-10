@@ -148,6 +148,30 @@ const StartFinishLine = ({ trackPathCurve }: StartFinishLineProps) => {
   return <mesh ref={meshRef} geometry={geometry} material={material} />;
 };
 
+interface TrackPathLineProps {
+  trackPathCurve: THREE.CatmullRomCurve3 | null;
+}
+
+const TrackPathLine: React.FC<TrackPathLineProps> = ({ trackPathCurve }) => {
+  const lineGeometry = useMemo(() => {
+    if (!trackPathCurve) return null;
+    const yLevelForLine = 0.28; // Slightly above track surface for visibility
+    // Get enough points for a smooth curve
+    const linePoints = trackPathCurve.getPoints(200).map(p => new THREE.Vector3(p.x, yLevelForLine, p.y));
+    return new THREE.BufferGeometry().setFromPoints(linePoints);
+  }, [trackPathCurve]);
+
+  const lineMaterial = useMemo(() => new THREE.LineBasicMaterial({
+    color: 0xffffff, // White color
+    // Note: linewidth > 1 might not work on all platforms/drivers with WebGL1
+    // For WebGL2 or specific extensions, it might. Otherwise, consider alternative ways for thicker lines if needed.
+  }), []);
+
+  if (!lineGeometry) return null;
+
+  return <primitive object={new THREE.Line(lineGeometry, lineMaterial)} />;
+};
+
 
 export default function F1MonacoScene() {
   const [svgTrackPoints, setSvgTrackPoints] = useState<THREE.Vector2[] | null>(null);
@@ -223,6 +247,8 @@ export default function F1MonacoScene() {
           {trackPathCurve && <Track trackPathCurve={trackPathCurve} />}
           {trackPathCurve && <StartFinishLine trackPathCurve={trackPathCurve} />}
         </group>
+        {/* Visual guide for the track path */}
+        {trackPathCurve && <TrackPathLine trackPathCurve={trackPathCurve} />}
         {/* Moving Cars along the track */}
         {trackPathCurve && (
           <MovingCar
