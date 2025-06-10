@@ -216,7 +216,7 @@ export default function F1MonacoScene() {
         data.paths.forEach(path => {
           const shapes = path.toShapes(true, false); // isCCW = true, noHoles = false
           shapes.forEach(shape => {
-            const points = shape.getPoints(50); // 50 divisions per shape
+            const points = shape.getPoints(100); // 100 divisions per shape
             points.forEach(p => {
               allPoints.push(p);
               if (p.x < minX) minX = p.x;
