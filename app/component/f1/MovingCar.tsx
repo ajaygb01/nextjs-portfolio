@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber';
-import React, { useRef } from 'react'; // Removed useState, useEffect
+import React, { useRef, useMemo } from 'react'; // Removed useState, useEffect
 import * as THREE from 'three';
 
 interface MovingCarProps {
@@ -22,7 +22,7 @@ export function MovingCar({
 
   // useEffect(() => { ... }); // Removed GLTF error handling effect
 
-  const fixedY = 0.15 + 0.3 / 2;
+  const fixedY = useMemo(() => 0.15 + 0.3 / 2, []);
 
   useFrame(({ clock }) => {
     if (!trackPathCurve || !ref.current) {

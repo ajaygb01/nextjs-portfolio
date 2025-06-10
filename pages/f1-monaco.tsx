@@ -155,7 +155,7 @@ interface TrackPathLineProps {
 const TrackPathLine: React.FC<TrackPathLineProps> = ({ trackPathCurve }) => {
   const lineGeometry = useMemo(() => {
     if (!trackPathCurve) return null;
-    const yLevelForLine = 0.28;
+    const yLevelForLine = 0.151;
     // Reverted p.x, p.y mapping here
     const linePoints = trackPathCurve.getPoints(200).map(p => new THREE.Vector3(p.x, yLevelForLine, p.y));
     return new THREE.BufferGeometry().setFromPoints(linePoints);
