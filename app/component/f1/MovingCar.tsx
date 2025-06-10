@@ -25,11 +25,21 @@ export function MovingCar({
   const fixedY = 0.15 + 0.3 / 2;
 
   useFrame(({ clock }) => {
-    if (!trackPathCurve || !ref.current) return;
+    // --- Add this log ---
+    console.log("MovingCar useFrame:", { time: clock.getElapsedTime(), speed, initialT });
+
+    if (!trackPathCurve || !ref.current) {
+      // Optional: Log if we are returning early
+      // console.log("MovingCar useFrame: Returning early", { hasTrackCurve: !!trackPathCurve, hasRefCurrent: !!ref.current });
+      return;
+    }
 
     const t = (clock.getElapsedTime() * speed + initialT) % 1;
     const p = trackPathCurve.getPointAt(t);
     const tan = trackPathCurve.getTangentAt(t);
+
+    // --- Add this log ---
+    console.log("MovingCar animation params:", { t, p_x: p.x, p_y: p.y, tan_x: tan.x, tan_y: tan.y });
 
     ref.current.position.set(p.x, fixedY, p.y);
     ref.current.lookAt(p.x + tan.x, fixedY, p.y + tan.y);
