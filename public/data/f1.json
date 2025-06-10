@@ -1,0 +1,20 @@
+[
+  {
+    "driver": "Max Verstappen",
+    "team": "Red Bull Racing",
+    "color": "#1E5ABC",
+    "number": "1"
+  },
+  {
+    "driver": "Lewis Hamilton",
+    "team": "Mercedes",
+    "color": "#00D2BE",
+    "number": "44"
+  },
+  {
+    "driver": "Charles Leclerc",
+    "team": "Ferrari",
+    "color": "#DC0000",
+    "number": "16"
+  }
+]
