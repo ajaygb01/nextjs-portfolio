@@ -226,7 +226,6 @@ export default function F1MonacoScene() {
         {/* Moving Cars along the track */}
         {trackPathCurve && (
           <MovingCar
-            modelUrl="/models/pixel_f1_car.glb"
             initialT={boxInitialProgress[0]}
             trackPathCurve={trackPathCurve}
             speed={0.05}
@@ -234,7 +233,6 @@ export default function F1MonacoScene() {
         )}
         {trackPathCurve && (
           <MovingCar
-            modelUrl="/models/pixel_f1_car.glb"
             initialT={boxInitialProgress[1]}
             trackPathCurve={trackPathCurve}
             speed={0.05}
@@ -242,7 +240,6 @@ export default function F1MonacoScene() {
         )}
         {trackPathCurve && (
           <MovingCar
-            modelUrl="/models/pixel_f1_car.glb"
             initialT={boxInitialProgress[2]}
             trackPathCurve={trackPathCurve}
             speed={0.05}
