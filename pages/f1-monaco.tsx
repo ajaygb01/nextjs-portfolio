@@ -2,6 +2,7 @@
 
 import { Canvas, useFrame } from '@react-three/fiber'
 import { OrbitControls, Plane, Box } from '@react-three/drei' // Will add more imports later
+import { MovingCar } from '@/app/component/f1/MovingCar';
 import React, { useMemo, useRef, useEffect, useState } from 'react'
 import * as THREE from 'three'
 import { SVGLoader } from 'three/examples/jsm/loaders/SVGLoader.js';
@@ -65,59 +66,6 @@ const Track = ({ trackPathCurve }: TrackProps) => {
   // The shape's X-axis (rectWidth) is perpendicular to the path, forming the track width.
   return (
     <mesh geometry={trackGeometry} material={asphaltMaterial} rotation={[-Math.PI / 2, 0, 0]} castShadow receiveShadow />
-  );
-};
-
-// Placeholder for MovingBox component
-// const MovingBox = ({ color, angleOffset }) => { ... }
-
-interface MovingBoxProps {
-  boxColor: THREE.ColorRepresentation;
-  initialT: number; // Initial progress along the track (0 to 1)
-  trackPathCurve: THREE.CatmullRomCurve3 | null; // Can be null
-  speed?: number; // Speed multiplier for movement along the track
-}
-
-const MovingBox = ({ boxColor, initialT, trackPathCurve, speed = 0.1 }: MovingBoxProps) => {
-  const meshRef = useRef<THREE.Mesh>(null!);
-
-  // Elevated slightly more than track's potential rectHeight/2 + group elevation, to ensure it's visibly above.
-  // Track is at y=0.05, rectHeight = 0.2 (from Track component), so track surface top is at 0.05 + 0.1 = 0.15.
-  // Box height is 0.3, so its center should be at 0.15 + 0.3/2 = 0.3 for it to sit on the track.
-  const fixedYPosition = 0.15 + 0.3 / 2;
-
-
-  useFrame(({ clock }) => {
-    if (!trackPathCurve || !meshRef.current) return; // Check inside useFrame
-
-    const elapsedTime = clock.getElapsedTime();
-    const t = (elapsedTime * speed + initialT) % 1; // Loop from 0 to 1
-
-    // if (meshRef.current && trackPathCurve) { // trackPathCurve is already checked
-      const positionOnCurve = trackPathCurve.getPointAt(t); // This is in XY plane of curve definition
-      const tangentToCurve = trackPathCurve.getTangentAt(t); // Also in XY plane
-
-      // Transform position and tangent from curve's XY plane to world's XZ plane
-      // Original curve point (x, y, 0) maps to world (x, fixedYPosition, y)
-      // due to track's rotation [-Math.PI / 2, 0, 0] which maps Y_curve -> Z_world, X_curve -> X_world.
-      meshRef.current.position.set(positionOnCurve.x, fixedYPosition, positionOnCurve.y);
-
-      // Orient the box
-      const lookAtPosition = new THREE.Vector3(
-        positionOnCurve.x + tangentToCurve.x,
-        fixedYPosition, // Keep Y level for lookAt to avoid tilting up/down
-        positionOnCurve.y + tangentToCurve.y
-      );
-      meshRef.current.lookAt(lookAtPosition);
-    // }
-  });
-
-  if (!trackPathCurve) return null; // Early return after all hooks
-
-  return (
-    <Box ref={meshRef} args={[0.3, 0.3, 0.3]} castShadow>
-      <meshStandardMaterial color={boxColor} />
-    </Box>
   );
 };
 
@@ -275,10 +223,31 @@ export default function F1MonacoScene() {
           {trackPathCurve && <Track trackPathCurve={trackPathCurve} />}
           {trackPathCurve && <StartFinishLine trackPathCurve={trackPathCurve} />}
         </group>
-        {/* Moving Boxes along the track */}
-        {trackPathCurve && <MovingBox boxColor="red" initialT={boxInitialProgress[0]} trackPathCurve={trackPathCurve} speed={0.05} />}
-        {trackPathCurve && <MovingBox boxColor="green" initialT={boxInitialProgress[1]} trackPathCurve={trackPathCurve} speed={0.05} />}
-        {trackPathCurve && <MovingBox boxColor="blue" initialT={boxInitialProgress[2]} trackPathCurve={trackPathCurve} speed={0.05} />}
+        {/* Moving Cars along the track */}
+        {trackPathCurve && (
+          <MovingCar
+            modelUrl="/models/pixel_f1_car.glb"
+            initialT={boxInitialProgress[0]}
+            trackPathCurve={trackPathCurve}
+            speed={0.05}
+          />
+        )}
+        {trackPathCurve && (
+          <MovingCar
+            modelUrl="/models/pixel_f1_car.glb"
+            initialT={boxInitialProgress[1]}
+            trackPathCurve={trackPathCurve}
+            speed={0.05}
+          />
+        )}
+        {trackPathCurve && (
+          <MovingCar
+            modelUrl="/models/pixel_f1_car.glb"
+            initialT={boxInitialProgress[2]}
+            trackPathCurve={trackPathCurve}
+            speed={0.05}
+          />
+        )}
         <OrbitControls />
       </Canvas>
     </div>
