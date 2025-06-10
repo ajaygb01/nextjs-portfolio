@@ -6,7 +6,7 @@ import { OrbitControls } from '@react-three/drei'
 import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 
-const TRACK_IMG = './public/track.png'
+const TRACK_IMG = './public/track.webp'
 
 const pathNodes = [
     new THREE.Vector3(4, 0, 0),
