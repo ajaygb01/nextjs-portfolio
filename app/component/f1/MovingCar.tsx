@@ -1,5 +1,5 @@
 import { useFrame } from '@react-three/fiber';
-import React, { useRef, useMemo } from 'react'; // Removed useState, useEffect
+import React, { useRef, useMemo, memo } from 'react'; // Removed useState, useEffect
 import * as THREE from 'three';
 
 interface MovingCarProps {
@@ -9,7 +9,7 @@ interface MovingCarProps {
   speed?: number;
 }
 
-export function MovingCar({
+export const MovingCar = memo(function MovingCar({
   // modelUrl, // Removed
   initialT,
   trackPathCurve,
@@ -46,4 +46,4 @@ export function MovingCar({
       <meshStandardMaterial color="orange" />
     </mesh>
   );
-}
+});
