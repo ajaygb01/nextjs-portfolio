@@ -42,8 +42,8 @@ export const MovingCar = memo(function MovingCar({
     const p = trackPathCurve.getPointAt(t);
     const tan = trackPathCurve.getTangentAt(t);
 
-    ref.current.position.set(p.x, fixedY, p.y);
-    ref.current.lookAt(p.x + tan.x, fixedY, p.y + tan.y);
+    ref.current.position.set(p.x, fixedY, -p.y);
+    ref.current.lookAt(p.x + tan.x, fixedY, -(p.y + tan.y));
   });
 
   // Always render the fallback box
