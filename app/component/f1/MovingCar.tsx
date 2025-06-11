@@ -22,7 +22,7 @@ export const MovingCar = memo(function MovingCar({
 
   // useEffect(() => { ... }); // Removed GLTF error handling effect
 
-  const fixedY = useMemo(() => 0.36, []);
+  const fixedY = useMemo(() => 0.351, []);
 
   useEffect(() => {
     if (trackPathCurve) {
