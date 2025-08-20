@@ -1,35 +1,24 @@
-// @ts-nocheck
-'use client'
-import React from 'react'
-import { Box, Typography } from '@mui/material'
+import React from 'react';
 
 interface FooterProps {
-    footer: {
-        year: number
-        companyName: string
+    copyright: string;
+    builtBy: {
+        name: string;
+        url: string;
     }
 }
 
-const Footer: React.FC<FooterProps> = ({ footer }) => {
-    return (
-        <Box
-            component="footer" // Semantic HTML element
-            sx={{
-                py: 3, // Vertical padding
-                px: 2, // Horizontal padding
-                mt: 'auto', // Push footer to the bottom if content is short
-                backgroundColor: (theme) =>
-                    theme.palette.mode === 'dark'
-                        ? theme.palette.grey[800]
-                        : theme.palette.grey[200],
-                textAlign: 'center',
-            }}
-        >
-            <Typography variant="body2" color="text.secondary">
-                © {footer.year} {footer.companyName}. All Rights Reserved.
-            </Typography>
-        </Box>
-    )
-}
+const Footer: React.FC<FooterProps> = ({ copyright, builtBy }) => {
+  return (
+    <footer className="text-center py-8 border-t border-[var(--border)] mt-16">
+      <p className="text-sm text-[var(--muted)]">{copyright}</p>
+      <p className="text-sm text-[var(--muted)]">
+        <a href={builtBy.url} target="_blank" rel="noopener noreferrer">
+          {builtBy.name}
+        </a>
+      </p>
+    </footer>
+  );
+};
 
-export default Footer
+export default Footer;
