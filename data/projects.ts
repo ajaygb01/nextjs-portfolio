@@ -1,14 +1,4 @@
-export interface Project {
-  name: string;
-  description: string;
-  links: {
-    live: string;
-    docs?: string;
-  };
-  tags: string[];
-}
-
-export const projects: Project[] = [
+export const projects = [
   {
     name: "FeedLite",
     description: "The cleanest feedback tool. Collect feedback, prioritize with voting, and share a public roadmap.",
