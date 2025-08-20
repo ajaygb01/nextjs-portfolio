@@ -6,35 +6,50 @@ export const heroContent = {
 
 export const aboutContent = {
   title: "About Me",
-  // Placeholder content, to be updated from resume
   bullets: [
-    "Placeholder: Bullet point 1 about my achievements and impact.",
-    "Placeholder: Bullet point 2 detailing a key project or skill.",
-    "Placeholder: Bullet point 3 summarizing my technical philosophy.",
+    "Architected and led end-to-end feature development, from planning and design to implementation, across the frontend, backend, database, and CI/CD layers.",
+    "Spearheaded the modernization of legacy pipelines, reducing release time by 80% through optimized CI/CD workflows and infrastructure enhancements.",
+    "Engineered a frontend configuration pattern system that eliminated repetitive code and enabled scalable, reusable UI components across the app.",
+    "Designed and implemented AI-powered solutions by fine-tuning OpenAI and Azure-based models on internal data—improving response accuracy and operational efficiency.",
   ],
-  resumeUrl: "/Ajay_Vigneshwar_GB.pdf",
+  resumeUrl: "/Ajay_Vigneshwar_GB.pdf", // Assuming the resume will be placed in public folder
 };
 
 export const experienceContent = {
   title: "Experience",
-  // Placeholder content, to be updated from resume
   roles: [
     {
-      company: "Lithia Motors",
-      position: "Software Developer",
-      duration: "2021 - Present",
+      company: "Lithia Motors, Inc.",
+      position: "Senior Software Developer",
+      duration: "Jan 2025 - Present",
       highlights: [
-        "Placeholder: Key achievement or responsibility 1.",
-        "Placeholder: Key achievement or responsibility 2.",
+        "Architected and led end-to-end feature development (frontend, backend, DB, CI/CD).",
+        "Modernized legacy pipelines, reducing release time by 80%.",
+        "Built scalable microservice and distributed system architectures.",
+        "Developed ETL pipelines using Azure Data Factory (ADF).",
+        "Engineered a frontend configuration pattern system for reusable UI components.",
+        "Fine-tuned OpenAI and Azure models on internal data to build AI solutions.",
       ],
     },
     {
-      company: "Pfaff Automotive Partners",
-      position: "Highlights from previous roles",
-      duration: "2019-2021",
+        company: "Lithia Motors, Inc.",
+        position: "Software Engineer",
+        duration: "Apr 2022 - Jan 2025",
+        highlights: [
+            "Led implementation of scalable backend services using FastAPI and PostgreSQL.",
+            "Enhanced CI/CD pipeline, optimizing release processes.",
+            "Developed and integrated RESTful APIs.",
+        ],
+    },
+    {
+      company: "Pfaff Automotive Motors",
+      position: "Software Developer",
+      duration: "Feb 2021 - Apr 2022",
       highlights: [
-        "Placeholder: Key achievement or responsibility 3.",
-        "Placeholder: Key achievement or responsibility 4.",
+        "Developed backend applications using FastAPI and Python.",
+        "Architected CI/CD pipelines in MS Azure.",
+        "Modernized legacy .NET applications.",
+        "Implemented Azure Functions and RPA bots to automate processes.",
       ],
     },
   ],
