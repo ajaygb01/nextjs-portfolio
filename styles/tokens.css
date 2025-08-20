@@ -1,0 +1,13 @@
+/*
+  Matrix Theme Design Tokens
+  Source: AGENTS.md
+*/
+:root {
+  --bg: #020402;
+  --fg: #e7ffe7;
+  --primary: #00ff41;
+  --muted: #7affc2;
+  --border: rgba(0, 255, 65, 0.18);
+
+  --font-mono: "IBM Plex Mono", "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
