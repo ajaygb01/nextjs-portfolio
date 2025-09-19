@@ -1,134 +1,17 @@
-@import '../styles/tokens.css';
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&display=swap');
+@layer base {
+  body {
+    @apply bg-background text-text font-sans;
+  }
 
-html,
-body {
-  background-color: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-mono);
-  line-height: 1.7;
-}
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
 
-h1, h2, h3, h4, h5, h6 {
-  color: var(--primary);
-  font-weight: 700;
-  letter-spacing: 0.05em;
-}
-
-a {
-  color: var(--primary);
-  text-decoration: none;
-  transition: all 0.2s ease-in-out;
-}
-
-a:hover, a:focus {
-  color: var(--muted);
-  outline: 2px solid var(--primary);
-  outline-offset: 4px;
-}
-
-button,
-a.button-style {
-  border: 1px solid var(--border);
-  padding: 0.5rem 1rem;
-  background-color: transparent;
-  color: var(--primary);
-  cursor: pointer;
-  transition: all 0.2s ease-in-out;
-}
-
-button:hover,
-a.button-style:hover,
-button:focus,
-a.button-style:focus {
-  background-color: rgba(0, 255, 65, 0.1);
-  border-color: var(--primary);
-  color: var(--primary);
-}
-
-.blinking-cursor {
-    animation: blink 1s steps(2, start) infinite;
-}
-@keyframes blink {
-    to {
-        visibility: hidden;
-    }
-}
-
-/* New Liquid Design Styles */
-.main-container {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-    background-color: var(--bg);
-    color: var(--fg);
-}
-
-.content-area {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    padding: 2rem;
-    overflow-y: auto;
-}
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.main-content {
-    flex-grow: 1;
-}
-
-.footer {
-    text-align: center;
-    padding-top: 1rem;
-    border-top: 1px solid var(--border);
-}
-
-.card {
-    background-color: #0c0c0c;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    margin-bottom: 2rem;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.card-header {
-    padding: 1rem;
-    border-bottom: 1px solid var(--border);
-}
-
-.card-header h2 {
-    color: var(--primary);
-    font-size: 1.25rem;
-    font-weight: 700;
-}
-
-.card-content {
-    padding: 1.5rem;
-}
-
-@media (max-width: 768px) {
-    .content-area {
-        padding: 1rem;
-    }
-
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-
-    .header nav {
-        margin-top: 1rem;
-    }
+  pre, code {
+    @apply font-mono;
+  }
 }
