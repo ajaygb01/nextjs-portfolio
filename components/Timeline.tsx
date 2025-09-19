@@ -7,19 +7,26 @@ const Timeline = () => {
         <h2 className="text-4xl font-bold text-center mb-12 font-heading">Experience Timeline</h2>
         <div className="relative max-w-2xl mx-auto">
           <div className="absolute left-1/2 w-0.5 h-full bg-accent/20"></div>
-          {jobs.map((job, index) => (
-            <div key={index} className="mb-8 flex justify-between items-center w-full">
-              <div className="order-1 w-5/12"></div>
-              <div className="z-10 flex items-center order-1 bg-accent text-background w-8 h-8 rounded-full shadow-xl">
-                <h1 className="mx-auto font-semibold text-lg">{jobs.length - index}</h1>
-              </div>
-              <div className="order-1 bg-surface rounded-lg shadow-xl w-5/12 px-6 py-4">
+          {jobs.map((job, index) => {
+            const isOdd = index % 2 !== 0;
+            const card = (
+              <div className={`bg-surface rounded-lg shadow-xl w-full px-6 py-4 ${isOdd ? "text-right" : ""}`}>
                 <h3 className="font-bold text-text text-xl">{job.role}</h3>
                 <p className="text-sm font-medium text-accent/80 mb-2">{job.company}</p>
                 <p className="text-sm text-text/60">{job.duration}</p>
               </div>
-            </div>
-          ))}
+            );
+
+            return (
+              <div key={index} className="mb-8 flex justify-between items-center w-full">
+                <div className="w-5/12">{!isOdd ? card : ""}</div>
+                <div className="z-10 flex items-center order-1 bg-accent text-background w-8 h-8 rounded-full shadow-xl absolute left-1/2 -translate-x-1/2">
+                  <h1 className="mx-auto font-semibold text-lg">{jobs.length - index}</h1>
+                </div>
+                <div className="w-5/12">{isOdd ? card : ""}</div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
