@@ -1,40 +1,22 @@
-import Hero from '@/components/Hero';
-import ImpactStrip from '@/components/ImpactStrip';
-import CaseStudyCard from '@/components/CaseStudyCard';
-import Timeline from '@/components/Timeline';
-import SkillsMatrix from '@/components/SkillsMatrix';
-import ContactCta from '@/components/ContactCta';
-import { caseStudies } from '@/data/caseStudies';
-import SectionAnimator from '@/components/SectionAnimator';
+import MatrixRain from '@/components/MatrixRain';
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between">
-      <Hero />
-      <SectionAnimator>
-        <ImpactStrip />
-      </SectionAnimator>
-      <SectionAnimator>
-        <section id="case-studies" className="w-full py-20">
-          <div className="container mx-auto px-4">
-            <h2 className="text-4xl font-bold text-center mb-12 font-heading">Case Studies</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {caseStudies.map((study) => (
-                <CaseStudyCard key={study.title} {...study} />
-              ))}
-            </div>
-          </div>
-        </section>
-      </SectionAnimator>
-      <SectionAnimator>
-        <Timeline />
-      </SectionAnimator>
-      <SectionAnimator>
-        <SkillsMatrix />
-      </SectionAnimator>
-      <SectionAnimator>
-        <ContactCta />
-      </SectionAnimator>
+    <main className="relative flex min-h-screen flex-col items-center justify-center bg-background overflow-hidden">
+      <MatrixRain />
+      <div className="relative z-10 flex flex-col items-center justify-center text-center p-4">
+        <h1 className="text-4xl md:text-6xl font-bold font-heading text-accent mb-4">
+          Jules
+        </h1>
+        <p className="max-w-3xl mx-auto text-lg md:text-xl text-text/80 mb-8">
+          AI Engineer & Full-Stack Developer
+        </p>
+        <div className="flex flex-wrap justify-center gap-4">
+          <a href="#" className="text-accent hover:underline">GitHub</a>
+          <a href="#" className="text-accent hover:underline">LinkedIn</a>
+          <a href="#" className="text-accent hover:underline">Resume</a>
+        </div>
+      </div>
     </main>
   );
 }
