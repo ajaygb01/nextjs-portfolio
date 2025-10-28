@@ -143,9 +143,9 @@ export default function Home() {
   };
 
   return (
-    <main className="relative flex min-h-screen flex-col items-center justify-center bg-background overflow-hidden p-4 md:p-8">
+    <main className="relative flex min-h-screen flex-col items-center justify-center bg-background overflow-hidden p-4 sm:p-6 md:p-8">
       <MatrixRain />
-      <div className="relative z-10 w-full max-w-4xl mx-auto bg-black bg-opacity-75 p-6 rounded-lg shadow-lg">
+      <div className="relative z-10 w-full max-w-4xl mx-auto bg-black bg-opacity-75 p-4 sm:p-6 rounded-lg shadow-lg">
         <button
           onClick={toggleLanguage}
           className="absolute top-4 right-4 bg-accent text-white py-1 px-3 rounded-md hover:bg-accent-secondary transition-colors"
@@ -162,8 +162,8 @@ export default function Home() {
           </p>
         </header>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <aside className="md:col-span-1">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+          <aside className="sm:col-span-1 md:col-span-1">
             <section className="mb-6">
               <h2 className="text-2xl font-bold font-heading text-accent-secondary mb-3">{t.contact}</h2>
               <ul className="text-text/90 space-y-1">
@@ -187,7 +187,7 @@ export default function Home() {
             </section>
           </aside>
 
-          <div className="md:col-span-2">
+          <div className="sm:col-span-1 md:col-span-2">
             <section className="mb-8">
               <h2 className="text-3xl font-bold font-heading text-accent-secondary mb-4">{t.summary}</h2>
               <p className="text-text/90">
